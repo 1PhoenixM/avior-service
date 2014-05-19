@@ -1,6 +1,10 @@
+//sources: http://nodejs.org/api/modules.html#modules_modules
+
 var http = require('http');
 var unparsed = "";
 var parsed = "";
+var switch_dpid = "";
+var switch_type = "";
 var openFlowInfo = [];
 
 var restURI = {
@@ -37,31 +41,38 @@ var FLRestCalls = [
 //this info should be sent from another file. what call to make?
 restURI.path = FLRestCalls[2];
 
-var request = http.get(restURI, function(res){
+function getData(callback){
+http.get(restURI, function(res){
     res.on('data', function(chunk){
     unparsed += chunk;
     });
     
-    
     res.on('end', function(){
-    var parsed = JSON.parse(unparsed);    
+    parsed = JSON.parse(unparsed);    
   
     if(restURI.path === FLRestCalls[2]){
-        var switch_dpid = parsed[0].dpid;
-        switch_dpid = openFlowInfo[0];
-        var switch_type = parsed[0].description.hardware;
+        switch_dpid = parsed[0].dpid;
+        switch_type = parsed[0].description.hardware;
+        callback();
     }
     else{
         console.log('Unsupported call or controller not connected');
     }	
     //console.log(switch_dpid);
     //console.log(switch_type);
-    module.exports = switch_dpid;
+    //module.exports = switch_dpid;
     //correct syntax, returns empty default module.exports object.
+    //problem: async does not recognize this.
     });
-    
     
     res.on('error', function(e){
     console.log("There was an error: " + e.message);
     });
-}) 
+})
+}
+
+function sendOut() {
+    module.exports = "Test";
+}
+
+getData(sendOut);

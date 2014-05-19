@@ -2,7 +2,7 @@
 //delegates
 //normalizes what the specified controller's adapter returns
 //data elements we want are according to openflow 1.3.1 spec (oldavior/ofp.js)
-var FloodlightDPID = require('./adapters/FLAdapter');
+
 //var OpenDaylightDPID = require('./adapters/ODLAdapter');
 //fl or odl is detected / selected.
 //takes variables from the specified adapter through module.exports
@@ -15,6 +15,10 @@ var FloodlightDPID = require('./adapters/FLAdapter');
 //courier next
 //server talks to client
 
+//async require is not supported.
+//we need a way to determine if the data is ready.
+
+var FloodlightDPID = require('./adapters/FLAdapter');
 console.log(FloodlightDPID);
 
 
