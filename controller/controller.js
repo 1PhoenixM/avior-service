@@ -1,7 +1,7 @@
 //selects controller
 //delegates
 //normalizes what the specified controller's adapter returns
-//data elements we want are according to openflow 1.3.1 spec (oldavior/ofp.js)
+//data elements we want are according to openflow 1.3.1/1.4 spec (oldavior/ofp.js)
 
 //var OpenDaylightDPID = require('./adapters/ODLAdapter');
 //fl or odl is detected / selected.
@@ -18,9 +18,13 @@
 //async require is not supported.
 //we need a way to determine if the data is ready.
 
-var FloodlightDPID = require('./adapters/FLAdapter');
-console.log(FloodlightDPID);
-
+var newAttr = require('./adapters/FLAdapter');
+console.log(newAttr);
+console.log("Received request for a Capability (get/put/post/del).");
+console.log("Asking appropriate adapter for information.");
+//The adapter takes over the request.
+console.log("Sending info back to Provider.");
+//Provider takes over from here.
 
 /*JSON call library of examples
 /wm/core/switch/all/<statType>/json  
@@ -79,5 +83,3 @@ the next is simply the previous, but per switch.
     
 [{"entityClass":"DefaultEntityClass","mac":["00:00:00:00:00:02"],"ipv4":[],"vlan":[],"attachmentPoint":[{"switchDPID":"00:00:00:00:00:00:00:01","port":2,"errorStatus":null}],"lastSeen":1399499692102},{"entityClass":"DefaultEntityClass","mac":["00:00:00:00:00:01"],"ipv4":[],"vlan":[],"attachmentPoint":[{"switchDPID":"00:00:00:00:00:00:00:01","port":1,"errorStatus":null}],"lastSeen":1399499691819}]
 */
-
-

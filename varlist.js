@@ -1,4 +1,7 @@
 //**VARLIST
+//This is a list of data elements given back from REST calls.
+
+//Floodlight
 dpid
 portNumber
 rxPackets
