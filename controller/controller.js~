@@ -1,0 +1,4 @@
+//selects controller
+//delegates
+//normalizes what the specified controller's adapter returns
+//data elements we want are according to openflow 1.3.1 spec (ofp.js)
