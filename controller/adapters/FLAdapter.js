@@ -1,4 +1,5 @@
 //sources: http://nodejs.org/api/modules.html#modules_modules
+//http://stackoverflow.com/questions/16745609/how-to-return-something-async-with-require
 
 var http = require('http');
 var unparsed = "";
@@ -72,7 +73,7 @@ http.get(restURI, function(res){
 }
 
 function sendOut() {
-    module.exports = "Test";
+    //module.exports = "Test";
 }
 
 getData(sendOut);

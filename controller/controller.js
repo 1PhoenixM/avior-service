@@ -17,9 +17,11 @@
 
 //async require is not supported.
 //we need a way to determine if the data is ready.
+//a "promise" may be the answer to this.
 
 var newAttr = require('./adapters/FLAdapter');
 console.log(newAttr);
+
 console.log("Received request for a Capability (get/put/post/del).");
 console.log("Asking appropriate adapter for information.");
 //The adapter takes over the request.
