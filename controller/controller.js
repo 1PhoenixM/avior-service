@@ -19,10 +19,12 @@
 //we need a way to determine if the data is ready.
 //a "promise" may be the answer to this.
 
-var newAttr = require('./adapters/FLAdapter');
-console.log(newAttr);
+attr = require('./adapters/FLAdapter');
 
+//console.log(newAttr);
+console.log(attr);
 console.log("Received request for a Capability (get/put/post/del).");
+//the provider will send a capability such as "GET all hosts on the network".
 console.log("Asking appropriate adapter for information.");
 //The adapter takes over the request.
 console.log("Sending info back to Provider.");
