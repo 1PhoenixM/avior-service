@@ -3,6 +3,8 @@
  * ofp.js - Base OpenFlow structures and values
  *
  */
+//load 1.3
+//change properties
 define(function(){
 
 return {
@@ -21,7 +23,7 @@ return {
         this.advertised = 0x00000000;
         this.supported = 0x00000000;
         this.peer = 0x00000000;
-        Object.seal(this);
+        //Object.seal(this);
     },
 
     /* Port numbering. Physical ports are numbered starting from 1. */
@@ -41,7 +43,7 @@ return {
         CONTROLLER: 0xfffffffd, // Send to controller
         LOCAL:      0xfffffffe, // Local openflow "port"
         ANY:        0xffffffff /* Wildcard port used only for flow mod(delete) and flow stats requests.
-                                Selectsall flows regardless of output port(including flows with no output port). */
+                                Selects all flows regardless of output port(including flows with no output port). */
         //NONE:       0xffffffff  // Not associated with a physical port
     },
 

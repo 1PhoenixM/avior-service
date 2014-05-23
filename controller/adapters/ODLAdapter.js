@@ -68,7 +68,8 @@ var ODLRestCalls = [
 //this info should be sent from another file. 
 restURI.path = ODLRestCalls[33];
 
-var request = http.get(restURI, function(res){
+function testODLGet(){
+http.get(restURI, function(res){
     res.on('data', function(chunk){
     unparsed += chunk;
     });
@@ -79,7 +80,8 @@ var request = http.get(restURI, function(res){
     if (restURI.path === ODLRestCalls[33]){
         var switch_dpid = parsed.node[0].id; //for however many dpid's in a for loop, see API stuff for example
         var switch_type = parsed.node[0].type;
-        module.exports = switch_dpid;
+        //module.exports = switch_dpid;
+        console.log(switch_dpid);
     }
     else{
         console.log('Unsupported call or controller not connected');
@@ -93,3 +95,6 @@ var request = http.get(restURI, function(res){
     console.log("There was an error: " + e.message);
     });
 }) 
+}
+
+module.exports.testODLGet = testODLGet;

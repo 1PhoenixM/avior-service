@@ -1,6 +1,11 @@
 //initialize, load validated plugins to system
 //add a new route to courier system for it
 //UI normalization? what will the new route show? what will the plugin look like?
+controllerData = require('/controller/controller');
+
+if(controllerData){
+ module.exports = controllerData;   
+}
 
 console.log("Request from Authorizer for Capability.");
 console.log("Sending request to controller object for data.");
@@ -16,7 +21,7 @@ console.log("Providing capability to Courier.");
     GET uptime
     GET status
     GET memory allocation
-    GET Java modules
+    GET Java modules //FL
     GET / change Firewall status (security risk*)
     
 
@@ -39,11 +44,11 @@ console.log("Providing capability to Courier.");
             GET Software version Number
             GET serial Number
             GET connected since date
-    GET number of ports 
+//PortStats is one capability    
+GET number of ports 
     GET port status
     GET port name
     GET port Number
-    GET rx packets
             GET tx packets
             GET rx bytes
             GET tx bytes

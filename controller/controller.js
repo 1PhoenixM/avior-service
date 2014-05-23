@@ -19,10 +19,17 @@
 //we need a way to determine if the data is ready.
 //a "promise" may be the answer to this.
 
-attr = require('./adapters/FLAdapter');
 
+attr = require('./adapters/FLAdapter');
+ODLattr = require('./adapters/ODLAdapter');
 //console.log(newAttr);
-console.log(attr);
+//console.log(attr.switch_dpid);
+
+//ODLattr.testODLGet();
+newdata = attr.testGet();
+module.exports = newdata;
+//accessing API
+
 console.log("Received request for a Capability (get/put/post/del).");
 //the provider will send a capability such as "GET all hosts on the network".
 console.log("Asking appropriate adapter for information.");

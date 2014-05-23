@@ -26,7 +26,7 @@ var FLRestCalls = [
 '/wm/core/counter/<switchId>/<counterName>/json', 
 '/wm/core/memory/json', 
 '/wm/core/health/json', 
-'/wm/core/systen/uptime/json', //sic
+'/wm/core/system/uptime/json', 
 '/wm/topology/links/json', //not in 0.8
 '/wm/topology/switchclusters/json', //not in 0.8
 '/wm/topology/external-links/json', 
@@ -44,10 +44,14 @@ var FLRestCalls = [
 
 //this info should be sent from another file. what call to make?
 restURI.path = FLRestCalls[2];
+//restURI.path = FLRestCalls[13];
+//hosts call. send this up to server. problem: still can't send async data. fix tues 5/26
+//use return parsed;?
 
-function getData(){
+//need to use http.request for POST and others, call end manually
+function testGet(){
 http.get(restURI, function(res){
-    var promise = new Promise.Promise();
+    //var promise = new Promise.Promise();
     res.on('data', function(chunk){
     unparsed += chunk;
     });
@@ -58,8 +62,11 @@ http.get(restURI, function(res){
     if(restURI.path === FLRestCalls[2]){
         switch_dpid = parsed[0].dpid;
         switch_type = parsed[0].description.hardware;
-        callback(switch_dpid);
-        promise.resolve(switch_dpid);
+        console.log(switch_dpid);  
+    }
+    else if(restURI.path === FLRestCalls[13]){
+        //console.log(parsed);
+        return parsed;
     }
     else{
         console.log('Unsupported call or controller not connected');
@@ -72,15 +79,16 @@ http.get(restURI, function(res){
     });
     
     res.on('error', function(e){
-    promise.reject( error );
+    //promise.reject( error );
     console.log("There was an error: " + e.message);
     });
     
-    return promise;
+    //return promise;
 })
 }
 
-   //module.exports = switch_dpid; 
+    module.exports.testGet = testGet;
+   module.exports.switch_dpid = switch_dpid; 
 
 
 //function sendOut(res, function(switch_dpid)

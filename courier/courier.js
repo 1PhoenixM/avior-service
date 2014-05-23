@@ -2,6 +2,8 @@
 //routing service
 //sets up routes to expose data thru browser
 
+capability = require('/capability/provider');
+
 console.log("Received dispatch from server.");
 console.log("Matching dispatch to matching route.");
 //Authorizer takes over here.
@@ -33,9 +35,9 @@ http.createServer(function (req, res) {
     } 
       else if (pathname === '/hosts') {
         res.writeHead(200, {
-        'Content-Type': 'text/html'
+        'Content-Type': 'application/json'
     });
-        res.end('Hosts\n')
+        res.end(capability)
     }
       else if (pathname === '/switches') {
         res.writeHead(200, {

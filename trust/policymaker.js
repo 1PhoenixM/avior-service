@@ -19,3 +19,5 @@ else if (route === '/staticflowmanager' || route === '/firewall'){
 }
 
 //etc.
+//customization: roles to capabilities. by the user.
+//roles: unknown, staff, admin. default

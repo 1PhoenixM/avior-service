@@ -2,6 +2,8 @@
 //user data - history, preferences
 //associated with individual and group identities and permissions
 
+//passport.js
+
 //these will be saved to the local machine.
 
 var fs = require('fs');
