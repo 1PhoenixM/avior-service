@@ -1,11 +1,15 @@
 //initialize, load validated plugins to system
 //add a new route to courier system for it
 //UI normalization? what will the new route show? what will the plugin look like?
-controllerData = require('/controller/controller');
+controllerData = require('../controller/controller');
 
-if(controllerData){
- module.exports = controllerData;   
-}
+//if(controllerData){
+ //module.exports = controllerData;   
+//}
+
+//better to require entire modules and access objects with dot operator.
+
+console.log(controllerData.datapath_id);
 
 console.log("Request from Authorizer for Capability.");
 console.log("Sending request to controller object for data.");
@@ -18,7 +22,7 @@ console.log("Providing capability to Courier.");
 //As of 5/19/14, here's what Avior can do.
 
 //Controller capabilities:
-    GET uptime
+    /*GET uptime
     GET status
     GET memory allocation
     GET Java modules //FL
@@ -83,4 +87,4 @@ GET number of ports
             
 //Future capabilities / possible plugins
             Plexxi interface
-            ???
+            ???*/

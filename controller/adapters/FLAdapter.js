@@ -3,13 +3,13 @@
 //http://stackoverflow.com/questions/16928838/writing-async-http-returns-in-nodejs
 //http://stevehanov.ca/blog/index.php?id=127
 
+//export entire file and return at end
+var normalizer = require('../controller');
 var http = require('http');
-//var Promise = require('../../node-promise/promise.js');
 var unparsed = "";
 var parsed = "";
 var switch_dpid = "";
 var switch_type = "";
-var openFlowInfo = [];
 
 var restURI = {
     host: 'localhost',    
@@ -18,7 +18,13 @@ var restURI = {
 }
 
 var FLRestCalls = [
-'/wm/core/switch/all/<statType>/json',
+'/wm/core/switch/all/port/json',
+'/wm/core/switch/all/queue/json',
+'/wm/core/switch/all/flow/json',
+'/wm/core/switch/all/aggregate/json',
+'/wm/core/switch/all/desc/json',
+'/wm/core/switch/all/table/json',
+'/wm/core/switch/all/features/json',
 '/wm/core/switch/<switchId>/<statType>/json',
 '/wm/core/controller/switches/json',    
 '/wm/core/controller/summary/json',    
@@ -43,15 +49,16 @@ var FLRestCalls = [
 ]; 
 
 //this info should be sent from another file. what call to make?
-restURI.path = FLRestCalls[2];
+//give as parameter?
+restURI.path = FLRestCalls[8];
 //restURI.path = FLRestCalls[13];
 //hosts call. send this up to server. problem: still can't send async data. fix tues 5/26
 //use return parsed;?
 
 //need to use http.request for POST and others, call end manually
-function testGet(){
-http.get(restURI, function(res){
-    //var promise = new Promise.Promise();
+function testGet(callback){
+req = http.request(restURI, function(res){
+ 
     res.on('data', function(chunk){
     unparsed += chunk;
     });
@@ -59,14 +66,13 @@ http.get(restURI, function(res){
     res.on('end', function(){
     parsed = JSON.parse(unparsed);    
   
-    if(restURI.path === FLRestCalls[2]){
+    if(restURI.path === FLRestCalls[8]){
         switch_dpid = parsed[0].dpid;
         switch_type = parsed[0].description.hardware;
-        console.log(switch_dpid);  
+        callback(switch_dpid);
     }
     else if(restURI.path === FLRestCalls[13]){
-        //console.log(parsed);
-        return parsed;
+    
     }
     else{
         console.log('Unsupported call or controller not connected');
@@ -79,16 +85,16 @@ http.get(restURI, function(res){
     });
     
     res.on('error', function(e){
-    //promise.reject( error );
+
     console.log("There was an error: " + e.message);
     });
     
-    //return promise;
 })
+req.end();
 }
 
-    module.exports.testGet = testGet;
-   module.exports.switch_dpid = switch_dpid; 
+module.exports.testGet = testGet;
+module.exports.switch_dpid = switch_dpid; 
 
 
 //function sendOut(res, function(switch_dpid)
@@ -115,10 +121,3 @@ getWebPageBody(res, function(pageRes) {
 
 //getData(sendOut);
 
-
-//var promise = doSomeAsynchronousOperation();
-//promise.then( function(result) {
-    //module.exports = result;
-//}, function(error) {
-    //console.log(error);
-//}

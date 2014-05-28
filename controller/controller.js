@@ -19,15 +19,29 @@
 //we need a way to determine if the data is ready.
 //a "promise" may be the answer to this.
 
+//obj = new OFP.SwitchFeatures();
+//if (obj instanceof OFP.SwitchFeatures)
+//newdata = controller.get(obj); // what is the best interface here??
 
-attr = require('./adapters/FLAdapter');
-ODLattr = require('./adapters/ODLAdapter');
-//console.log(newAttr);
-//console.log(attr.switch_dpid);
+//provide type and ip of controller
+OFP = require('../ofp.js');
+controller = require('./adapters/FLAdapter');
+//controller = require('./adapters/ODLAdapter');
 
-//ODLattr.testODLGet();
-newdata = attr.testGet();
-module.exports = newdata;
+var switchOBJ = new OFP.SwitchFeatures();
+
+function normalize(data) {
+    console.log(data);
+    switchOBJ.datapath_id = data;
+    module.exports = switchOBJ;
+    console.log(switchOBJ);
+}
+
+controller.testGet(normalize);
+
+//callback grabs data after request completes.
+
+//module.exports = newdata;
 //accessing API
 
 console.log("Received request for a Capability (get/put/post/del).");
@@ -36,6 +50,16 @@ console.log("Asking appropriate adapter for information.");
 //The adapter takes over the request.
 console.log("Sending info back to Provider.");
 //Provider takes over from here.
+
+
+
+
+
+
+
+
+
+
 
 /*JSON call library of examples
 /wm/core/switch/all/<statType>/json  
