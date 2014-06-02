@@ -32,3 +32,13 @@ AggregateStats
 TableStats
 PortStats
 QueueStats
+
+[
+
+{"src-switch":"00:00:00:00:00:00:00:01","src-port":3,"dst-switch":"00:00:00:00:00:00:00:04","dst-port":1,"type":"internal","direction":"bidirectional"},
+
+{"src-switch":"00:00:00:00:00:00:00:01","src-port":2,"dst-switch":"00:00:00:00:00:00:00:03","dst-port":1,"type":"internal","direction":"bidirectional"},
+
+{"src-switch":"00:00:00:00:00:00:00:02","src-port":3,"dst-switch":"00:00:00:00:00:00:00:01","dst-port":1,"type":"internal","direction":"unidirectional"}
+
+]
