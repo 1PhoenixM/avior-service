@@ -28,6 +28,7 @@ var toClient = function (ctlr) {
 //TODO: iterate on multiple switches. using #2 as a tester. what if multiple flows or matches or actions?
 //TODO: consider readable column names as properties
 //TODO: what to do with attributes that are not openflow, but floodlight? i.e. masklens
+//TODO: Are APIs completely covered? v1?
 //Accessing structs: reset normalize, then call this.normalize i.e. for flow and match nested structs. This allows
 //for more reuse.
 //ADAPTERS
@@ -444,37 +445,451 @@ var FLAdapter = {
 	}
 }
 
+
+////////////////////////////TODO: ModifySubnet is a POST request? Should it be PUT?
 var ODLAdapter = {
 //    hostname: 'localhost',
 	normalize: function (obj) {
-        var aPort = obj["portStatistics"][0]["portStatistic"][0];
-        console.log(aPort);
-        Port.port_no = obj["portStatistics"][0]["portStatistic"][0]["nodeConnector"].id;
-        Port.rx_packets = aPort.receivePackets;
-        Port.tx_packets = aPort.transmitPackets;
-        Port.rx_bytes = aPort.receiveBytes;
-        Port.tx_bytes = aPort.transmitBytes;
-        Port.rx_dropped = aPort.receiveDrops;
-        Port.tx_dropped = aPort.transmitDrops;
-        Port.rx_errors = aPort.receiveErrors;
-        Port.tx_errors = aPort.transmitErrors;
-        Port.rx_frame_err = aPort.receiveFrameError;
-        Port.rx_over_err = aPort.receiveOverRunError;
-        Port.rx_crc_err = aPort.receiveCrcError;
-        Port.collisions = aPort.collisionCount;
-		return Port;
+        if(normalizer === "PortStats"){
+            var aPort = obj["portStatistics"][0]["portStatistic"][0];
+            console.log(aPort);
+            Port.port_no = obj["portStatistics"][0]["portStatistic"][0]["nodeConnector"].id;
+            Port.rx_packets = aPort.receivePackets;
+            Port.tx_packets = aPort.transmitPackets;
+            Port.rx_bytes = aPort.receiveBytes;
+            Port.tx_bytes = aPort.transmitBytes;
+            Port.rx_dropped = aPort.receiveDrops;
+            Port.tx_dropped = aPort.transmitDrops;
+            Port.rx_errors = aPort.receiveErrors;
+            Port.tx_errors = aPort.transmitErrors;
+            Port.rx_frame_err = aPort.receiveFrameError;
+            Port.rx_over_err = aPort.receiveOverRunError;
+            Port.rx_crc_err = aPort.receiveCrcError;
+            Port.collisions = aPort.collisionCount;
+		    return Port;
+        }
 	},
-	getPortStats: function(id) {
+    
+              
+    getFlowStats: function(id) {
 		var self = this;
-		http.get({hostname:this.hostname,port:8080,path:'/controller/nb/v2/statistics/default/port',auth:'admin:admin'}, toClient(self));
-	},
-    postFlow: function(id, flow) {
-		var self = this;
-        normalizer = "PostFlow";
-		req = http.request({method:'POST',hostname:this.hostname,port:8080,path:'',auth:'admin:admin'}, toClient(self));
-        req.write(flow);
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/statistics/{containerName}/flow',auth:'admin:admin'}, toClient(self));
         req.end();
 	},
+            
+    getFlowStatsByNode: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/statistics/{containerName}/flow/node/{nodeType}/{nodeId}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    getPortStats: function(id) {
+		var self = this;
+        normalizer = "PortStats";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/statistics/{containerName}/port',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    getPortStatsByNode: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/statistics/{containerName}/port/node/{nodeType}/{nodeId}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    getTableStats: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/statistics/{containerName}/table',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    getTableStatsByNode: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/statistics/{containerName}/table/node/{nodeType}/{nodeId}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+          
+    getTopology: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/topology/{containerName}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	}, 
+        
+    addTopologyLinks: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'PUT',hostname:this.hostname,port:8080,path:'/controller/nb/v2/topology/{containerName}/userLink/{name}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+        
+    deleteTopologyLinks: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'DELETE',hostname:this.hostname,port:8080,path:'/controller/nb/v2/topology/{containerName}/userLink/{name}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+        
+    getTopologyLinks: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/topology/{containerName}/userLinks',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+        
+    getHost: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/hosttracker/{containerName}/address/{networkAddress}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+        
+    addHost: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'PUT',hostname:this.hostname,port:8080,path:'/controller/nb/v2/hosttracker/{containerName}/address/{networkAddress}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    deleteHost: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'DELETE',hostname:this.hostname,port:8080,path:'/controller/nb/v2/hosttracker/{containerName}/address/{networkAddress}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    getHosts: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/hosttracker/{containerName}/hosts/active',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    getInactiveHosts: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/hosttracker/{containerName}/hosts/inactive',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    getFlows: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/flowprogrammer/{containerName}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    getFlowsByNode: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/flowprogrammer/{containerName}/node/{nodeType}/{nodeId}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    getFlow: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/flowprogrammer/{containerName}/node/{nodeType}/{nodeId}/staticFlow/{name}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+    
+        
+    addFlow: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'PUT',hostname:this.hostname,port:8080,path:'/controller/nb/v2/flowprogrammer/{containerName}/node/{nodeType}/{nodeId}/staticFlow/{name}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    deleteFlow: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'DELETE',hostname:this.hostname,port:8080,path:'/controller/nb/v2/flowprogrammer/{containerName}/node/{nodeType}/{nodeId}/staticFlow/{name}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    toggleFlow: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'POST',hostname:this.hostname,port:8080,path:'/controller/nb/v2/flowprogrammer/{containerName}/node/{nodeType}/{nodeId}/staticFlow/{name}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    getStaticRoute: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/staticroute/{containerName}/route/{route}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    addStaticRoute: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'PUT',hostname:this.hostname,port:8080,path:'/controller/nb/v2/staticroute/{containerName}/route/{route}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+    
+            
+    deleteStaticRoute: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'DELETE',hostname:this.hostname,port:8080,path:'/controller/nb/v2/staticroute/{containerName}/route/{route}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    getStaticRoutes: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/staticroute/{containerName}/routes',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+    
+    getSubnet: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/subnetservice/{containerName}/subnet/{subnetName}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    addSubnet: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'PUT',hostname:this.hostname,port:8080,path:'/controller/nb/v2/subnetservice/{containerName}/subnet/{subnetName}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+            
+    deleteSubnet: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'DELETE',hostname:this.hostname,port:8080,path:'/controller/nb/v2/subnetservice/{containerName}/subnet/{subnetName}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    modSubnet: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'POST',hostname:this.hostname,port:8080,path:'/controller/nb/v2/subnetservice/{containerName}/subnet/{subnetName}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    getSubnets: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/subnetservice/{containerName}/subnets',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    getNodeConnectors: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/switchmanager/{containerName}/node/{nodeType}/{nodeId}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    getNodeProperty: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/switchmanager/{containerName}/node/{nodeType}/{nodeId}/property/{propertyName}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+    
+                    
+    deleteNodeProperty: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'DELETE',hostname:this.hostname,port:8080,path:'/controller/nb/v2/switchmanager/{containerName}/node/{nodeType}/{nodeId}/property/{propertyName}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    addNodeProperties: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'PUT',hostname:this.hostname,port:8080,path:' /controller/nb/v2/switchmanager/{containerName}/node/{nodeType}/{nodeId}/property/{propertyName}/{propertyValue}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    deleteNodeConnectorProperty: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'DELETE',hostname:this.hostname,port:8080,path:'/controller/nb/v2/switchmanager/{containerName}/nodeconnector/{nodeType}/{nodeId}/{nodeConnectorType}/{nodeConnectorId}/property/{propertyName}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    addNodeConnectorProperty: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'PUT',hostname:this.hostname,port:8080,path:'/controller/nb/v2/switchmanager/{containerName}/nodeconnector/{nodeType}/{nodeId}/{nodeConnectorType}/{nodeConnectorId}/property/{propertyName}/{propertyValue}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    getNodes: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/switchmanager/{containerName}/nodes',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    saveNodes: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'POST',hostname:this.hostname,port:8080,path:'/controller/nb/v2/switchmanager/{containerName}/save',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    addUser: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'POST',hostname:this.hostname,port:8080,path:'/controller/nb/v2/usermanager/users',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+        
+                    
+    deleteUser: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'DELETE',hostname:this.hostname,port:8080,path:'/controller/nb/v2/usermanager/users/{userName}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+    
+    getContainer: function(id) {
+		var self = this;
+        normalizer = "Container";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/containermanager/container/{container}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+    createContainer: function(id) {
+		var self = this;
+        normalizer = "CreateContainer";
+		req = http.request({method:'PUT',hostname:this.hostname,port:8080,path:'/controller/nb/v2/containermanager/container/{container}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+    deleteContainer: function(id) {
+		var self = this;
+        normalizer = "DeleteContainer";
+		req = http.request({method:'DELETE',hostname:this.hostname,port:8080,path:'/controller/nb/v2/containermanager/container/{container}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+    
+    getFlowSpec: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/containermanager/container/{container}/flowspec/{flowspec}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+        
+    addFlowSpec: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'PUT',hostname:this.hostname,port:8080,path:'/controller/nb/v2/containermanager/container/{container}/flowspec/{flowspec}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    deleteFlowSpec: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'DELETE',hostname:this.hostname,port:8080,path:'/controller/nb/v2/containermanager/container/{container}/flowspec/{flowspec}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    getFlowSpecs: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/containermanager/container/{container}/flowspecs',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+    
+    addNodeConnectors: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'PUT',hostname:this.hostname,port:8080,path:'/controller/nb/v2/containermanager/container/{container}/nodeconnector',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    removeNodeConnectors: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'DELETE',hostname:this.hostname,port:8080,path:'/controller/nb/v2/containermanager/container/{container}/nodeconnector',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+    
+    getContainers: function(id) {
+		var self = this;
+        normalizer = "Containers";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/containermanager/containers',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+    
+                    
+    addMgmtConnectionWithoutNodeType: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'PUT',hostname:this.hostname,port:8080,path:'/controller/nb/v2/connectionmanager/node/{nodeId}/address/{ipAddress}/port/{port}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    disconnectConnection: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'DELETE',hostname:this.hostname,port:8080,path:'/controller/nb/v2/connectionmanager/node/{nodeType}/{nodeId}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    addMgmtConnectionWithKnownNodeType: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'PUT',hostname:this.hostname,port:8080,path:'/controller/nb/v2/connectionmanager/node/{nodeType}/{nodeId}/address/{ipAddress}/port/{port}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    getNodeCluster: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({hostname:this.hostname,port:8080,path:'/controller/nb/v2/connectionmanager/nodes',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    createBridge: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'POST',hostname:this.hostname,port:8080,path:'/controller/nb/v2/networkconfig/bridgedomain/bridge/{nodeType}/{nodeId}/{bridgeName}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    deleteBridge: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'DELETE',hostname:this.hostname,port:8080,path:'/controller/nb/v2/networkconfig/bridgedomain/bridge/{nodeType}/{nodeId}/{bridgeName}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    addPortToBridge: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'POST',hostname:this.hostname,port:8080,path:'/controller/nb/v2/networkconfig/bridgedomain/port/{nodeType}/{nodeId}/{bridgeName}/{portName}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    deletePortFromBridge: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'DELETE',hostname:this.hostname,port:8080,path:'/controller/nb/v2/networkconfig/bridgedomain/port/{nodeType}/{nodeId}/{bridgeName}/{portName}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+                    
+    addPortAndVlanToBridge: function(id) {
+		var self = this;
+        normalizer = "";
+		req = http.request({method:'POST',hostname:this.hostname,port:8080,path:'/controller/nb/v2/networkconfig/bridgedomain/port/{nodeType}/{nodeId}/{bridgeName}/{portName}/{vlan}',auth:'admin:admin'}, toClient(self));
+        req.end();
+	},
+    
+    //Left to add: 
+    //Neutron: https://jenkins.opendaylight.org/controller/job/controller-merge/lastSuccessfulBuild/artifact/opendaylight/northbound/networkconfiguration/neutron/target/site/wsdocs/index.html
+    
 }
 
 /*
@@ -508,13 +923,12 @@ ODLAdapter.prototype.getPortStats = function(id) {
 }
 */
 
+//controller set below
 var CONTROLLERS = {
     Floodlight: FLAdapter,
     OpenDaylight: ODLAdapter
 };
 
-//app.controller = ODLAdapter;
-//this needs to be set via post. check for controller?
 
 //COURIER 
 
@@ -630,18 +1044,14 @@ app.del('/firewall/rule/:id', function(req,res){
 });
 
 app.post('/controller', function(req,res){
-    //var ControllerType = CONTROLLERS[req.body.type];
-    //app.controller = new ControllerType();
     app.controller = CONTROLLERS[req.body.type];
     if (app.controller) {
         app.controller.hostname = req.body.hostname;
         res.send("\nController set\n");
-        //app.controller.response = res;
-        //app.controller.response.send({"type":"Floodlight", "hostname":"localhost", "port":8080});
     }
 });
 
-//type and ip of controller is provided
+//type and ip of controller is provided by post
 
 //SERVER
 app.listen(process.env.PORT || 3412);
