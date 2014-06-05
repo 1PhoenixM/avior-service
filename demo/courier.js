@@ -9,6 +9,9 @@ var CONTROLLERS = {
     OpenDaylight: ODLAdapter
 };
 
+app.use(express.bodyParser()); // TODO bodyParser has security flaw? maybe use a different middleware here
+//express.json() 
+
 //Test routes
 app.get('/core/ports', function(req,res){
 	app.controller.response = res;
