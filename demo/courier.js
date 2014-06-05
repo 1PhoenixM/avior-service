@@ -132,11 +132,20 @@ app.post('/controller', function(req,res){
 });
 
 //Routes:
-//OpenFlow, FL, ODL
+//There are types of tasks: OpenFlow-only, FL-only, ODL-only, and common.
+//Venn Diagram for controllers
+
+//Could we include an immutable "Hello" route that gives back all supported routes?
+//What data is sent in the route url itself, and what in the POST req?
+//core is for routes that are not plugins?
+//odl: make distinction between node connector routes and mgmt connection routes
+
 /*GET /controller/uptime
 GET /controller/status
 GET /controller/memory
 GET /controller/modules
+
+//consolidate these into controller call?
 
 GET /topology
 GET /hosts
@@ -206,142 +215,142 @@ DELETE
 /firewall/rule/:id
 Remove an existing rule
 
-Floodlight:
+//////////////Floodlight:
 
 Switches, all or by id:
-        PortStats
-        QueueStats
-        Flows
-        Aggregate
-        Desc
-        TableStats
-        Features
+        PortStats /core/ports
+        QueueStats /core/queues
+        Flows /core/flows
+        Aggregate /core/aggregate
+        Desc /core/desc
+        TableStats /core/table
+        Features /core/features
 
-Switches
+Switches /core/switches
         
-#of switches, hosts and links
+#of switches, hosts and links /core/summary
         
-Counters, all or by switch 
+Counters, all or by switch /core/counters
         
-Memory
+Memory /core/memory (consolidate?)
         
-Health
+Health /core/health (consolidate?)
         
-Uptime
+Uptime /core/uptime (consolidate?)
         
-Links (deprecated)
+Links (deprecated) /core/topology/links
         
-Clusters (deprecated)
+Clusters (deprecated) /core/topology/clusters
         
-External links
+External links /core/topology/external
         
-Topo Links
+Topo Links (see above)
+         
+Devices (Hosts) /core/hosts
         
-Devices (Hosts)
+List flows per switch or all /core/flows (?) 
+
+Clear flows per switch or all /core/flows/clear
         
-List flows per switch or all 
-
-Clear flows per switch or all 
+Post/Del flow /core/flows/:id
         
-Post/Del flow 
+Virtual Network (not yet supported) 
         
-Virtual Network (not yet supported)
+Post firewall status /core/firewall/status
         
-Post firewall status 
+Get firewall status /core/firewall/status
         
-Get firewall status 
-        
-Get/post/del Rules
+Get/post/del Rules /core/firewall/rules/:id
 
-OpenDaylight:
+//////////////////OpenDaylight:
 
-Get flow stats, all or by node
+Get flow stats, all or by node /core/flows
 
-Get port stats, all or by node
+Get port stats, all or by node /core/ports
 
-Get table stats, all or by node
+Get table stats, all or by node /core/table
 
-Get topology
+Get topology /core/topology
 
-Get/Add/Delete topology links
+Get/Add/Delete topology links /core/topology/links/:id
 
-Get/Add/Delete a host
+Get/Add/Delete a host /core/hosts/:id
 
-Get all hosts
+Get all hosts /core/hosts
 
-Get inactive hosts
+Get inactive hosts /core/hosts/inactive
 
-Get flows, all or by node
+Get flows, all or by node /core/flows
 
-Get/Add/Delete/Toggle Flows
+Get/Add/Delete/Toggle Flows /core/flows/:id
 
-Get/Add/Delete Static Routes
+Get/Add/Delete Static Routes /core/staticroutes/:id
 
-Get all static routes
+Get all static routes /core/staticroutes
 
-Get/Add/Delete/Modify subnet
+Get/Add/Delete/Modify subnet /core/subnets/:id
 
-Get all subnets
+Get all subnets /core/subnets
 
-Get node connectors
+Get node connectors /core/connectors
 
-Get/add/delete node properties
+Get/add/delete node properties /core/connectors/properties
 
-Add/delete node connector properties
+Add/delete node connector properties /core/connectors/properties
 
-Get nodes
+Get nodes /core/nodes
 
-Save nodes
+Save nodes /core/nodes/save
 
-add/delete users
+add/delete users /core/users/:id
 
-get/add/delete containers
+get/add/delete containers /core/containers/:id
 
-get/add/delete flowspec
+get/add/delete flowspec /core/flows/specs/:id
 
-get all flowspecs
+get all flowspecs /core/flows/specs
 
-add/remove nodeconnectors
+add/remove nodeconnectors /core/connectors/:id
 
-get containers
+get containers /core/containers
 
-add a management connection with or without known node type
+add a management connection with or without known node type /core/connection/:id
 
-disconnect connection
+disconnect connection /core/connection/:id
 
-get node clusters
+get node clusters /core/connection/clusters
 
-add/delete bridge
+add/delete bridge /core/bridges/:id
 
-add/delete port from bridge
+add/delete port from bridge /core/bridges/ports/:id
 
-add port + vlan to bridge
+add port + vlan to bridge /core/bridges/ports/:id/vlan/:vlan
 
 /////////////Neutron/OpenStack supports: 
 
-    Floating IPs
-    Networks
-    Ports
-    Routers
-    Security Groups
-    Security Rules
-    Subnets
+    Floating IPs /core/neutron/floatingips
+    Networks /core/neutron/networks
+    Ports /core/neutron/ports
+    Routers /core/neutron/routers
+    Security Groups /core/neutron/security/groups
+    Security Rules /core/neutron/security/rules
+    Subnets /core/neutron/subnets
 
-///////////Plexxi capabilities through Affinity API Metadata Service:
-    Create an affinity group
+///////////Plexxi capabilities through Affinity API Metadata Service (not core):
+    Create an affinity group /affinity/groups/:name
     
-    Fetch an affinity group by name
+    Fetch an affinity group by name /affinity/groups/:name
     
-    Add an affinity element to an affinity group (mac, ip or host)
+    Add an affinity element to an affinity group (mac, ip or host) /affinity/groups/:name/element/:type/:name
     
-    Delete element (mac, ip or host)
+    Delete element (mac, ip or host)  /affinity/groups/:name/element/:type/:name
     
-    Add affinity link from one group to another
+    Add affinity link from one group to another /affinity/groups/link/:name/:name2
     
-    Create affinity elements (TBD)
+    Create affinity elements (TBD) /affinity/element/:id
     
-    List all affinities
+    List all affinities /affinity/affinities
     
-    List stats for affinities (TBD)
+    List stats for affinities (TBD) /affinity/stats
     
     */
