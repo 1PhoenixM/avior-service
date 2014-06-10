@@ -1,0 +1,3 @@
+get
+'/affinities'
+getAffinities

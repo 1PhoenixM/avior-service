@@ -12,6 +12,16 @@ var CONTROLLERS = {
 app.use(express.bodyParser()); // TODO bodyParser has security flaw? maybe use a different middleware here
 //express.json() 
 
+/*app.get('/core/features/:id', function(req,res){
+        app.controller.response = res;
+        app.controller.getFeatures({args:[req.param.id]});
+});
+
+app.post('/flow', function(req,res){
+        app.controller.response = res;
+        app.controller.postFlow({data:req.body});
+}*/
+
 //Test routes
 app.get('/core/ports', function(req,res){
 	app.controller.response = res;
