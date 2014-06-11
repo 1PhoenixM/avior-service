@@ -12,20 +12,10 @@ var CONTROLLERS = {
 app.use(express.bodyParser()); // TODO bodyParser has security flaw? maybe use a different middleware here
 //express.json() 
 
-/*app.get('/core/features/:id', function(req,res){
-        app.controller.response = res;
-        app.controller.getFeatures({args:[req.param.id]});
-});
-
-app.post('/flow', function(req,res){
-        app.controller.response = res;
-        app.controller.postFlow({data:req.body});
-}*/
-
 //Test routes
 app.get('/core/ports', function(req,res){
 	app.controller.response = res;
-	app.controller.getPortStats(); //empty id defaults to all switches for floodlight, empty container defaults to default container for opendaylight
+	app.controller.getPortStats({args:['all']}); //empty id defaults to all switches for floodlight, empty container defaults to default container for opendaylight
 });
 
 app.get('/core/aggregate', function(req,res){
@@ -64,7 +54,7 @@ app.get('/core/controller/summary', function(req,res){
 });
 
 app.post('/flow', function(req,res){
-    app.controller.postFlow(req.body);
+    app.controller.postFlow({data:req.body});
     res.send("\nFlow sent\n");
 });
 

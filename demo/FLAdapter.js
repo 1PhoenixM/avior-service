@@ -9,6 +9,7 @@
 var http = require('http');
 var OFP = require('./ofp.js'); //v1.0.0
 var toClient = require('./controller.js');
+var ctlr = require('./courier.js');
  
 /* NOTE Only fields that differare included below */
 var TO_OFP = {
@@ -74,27 +75,28 @@ var TO_OFP = {
     //networkSourceMaskLen = nw_src_ml
 	// etc. (you get the idea, I'm not going to include everything at the moment)
 };
- 
+
+/* Creates a function that, when called, will make a REST API call */
 var restCall = function(apiMethod,apiPath){
-	var self = this;
+	//var self = this;
 	return function(options){
 		if (options.args){
-			for (arg in args){
-				apiPath = apiPath.replace(':arg:', args[arg]);
+			for (arg in options.args){
+				apiPath = apiPath.replace(':arg:', options.args[arg]);
 			}
 		}
-		opts = {method:apiMethod,hostname:self.hostname,port:8080,path:apiPath};
-		req = http.request(opts, toClient(self));
+		opts = {method:apiMethod,hostname:this.hostname,port:8080,path:apiPath};
+		req = http.request(opts, toClient(this));
 		if (options.data) {
 			req.write(JSON.stringify(options.data));
 		}
 		req.end();
 	}
 };
- 
+
 module.exports = {
 //	hostname: 'localhost',
- 
+  
 	normalize: function (obj) {
 		var normalizedField;
 		var normalizedObj = {};
