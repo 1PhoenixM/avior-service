@@ -1,1 +1,1 @@
-Avior 2.0 is a node.js service designed for the administration and management of OpenFlow-capable networks. It is currently in the planning stage.
+Avior 2.0 is a node.js service designed for the administration and management of OpenFlow-capable networks. It is currently in the coding phase.

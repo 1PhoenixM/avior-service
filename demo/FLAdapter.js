@@ -9,9 +9,8 @@
 var http = require('http');
 var OFP = require('./ofp.js'); //v1.0.0
 var toClient = require('./controller.js');
-var ctlr = require('./courier.js');
  
-/* NOTE Only fields that differare included below */
+/* NOTE Only fields that differ are included below */
 var TO_OFP = {
 	/* PortStats */
 	portNumber: "port_no",
@@ -71,8 +70,30 @@ var TO_OFP = {
     advertisedFeatures: "advertised",
     supportedFeatures: "supported",
     peerFeatures: "peer",
-    //networkDestinationMaskLen = nw_dst_ml,
-    //networkSourceMaskLen = nw_src_ml
+    /* Switch only */
+    description: "desc",
+    inetAddress: "inet_address",  
+    connectedSince: "connected_since",
+    /* Switch Desc */
+    manufacturer: "mfr_desc",
+    hardware: "hw_desc", 
+    software: "sw_desc", 
+    serialNum: "serial_num", 
+    datapath: "dp_desc", 
+    /* Switch Attrs */
+    supportsOfppFlood: "supports_ofpp_flood", 
+    supportsNxRole: "supports_nx_role",
+    FastWildcards: "fast_wildcards", 
+    supportsOfppTable: "supports_ofpp_table"
+    //Not OF
+    //"# Switches": "n_switches", 
+    //"# hosts": "n_hosts", 
+    //"# quarantine ports": "n_quarantine_ports", 
+    //"# inter-switch links": "n_inter_switch_links", 
+    //systemUptimeMsec: "system_uptime_msec",
+    //harole: "role",
+    //networkDestinationMaskLen: nw_dst_ml,
+    //networkSourceMaskLen: nw_src_ml,
 	// etc. (you get the idea, I'm not going to include everything at the moment)
 };
 
@@ -96,18 +117,20 @@ var restCall = function(apiMethod,apiPath){
 
 module.exports = {
 //	hostname: 'localhost',
-  
+  //http://tobyho.com/2011/01/28/checking-types-in-javascript/
+    //TODO: Why is a number printed with the JSON?
 	normalize: function (obj) {
 		var normalizedField;
 		var normalizedObj = {};
-		if (obj instanceof String) { return obj; }
+		if (obj instanceof String || obj.constructor === Number) { return obj; } //TODO: Other possible types? This finds and returns the data, not an object
 		for (field in obj) {
 			if (TO_OFP[field]) {
 				normalizedField = TO_OFP[field];
+                console.log(normalizedField);
 			} else {
 				normalizedField = field;
 			}
-			normalizedObj[normalizedField] = this.normalize(obj[field]);
+			normalizedObj[normalizedField] = this.normalize(obj[field]); //Nested structs? Probably handled recursively
 		}
 		return normalizedObj;
 	},
