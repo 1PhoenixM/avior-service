@@ -1,3 +1,5 @@
-get
-'/affinities'
-getAffinities
+module.exports = {
+    method: 'get',
+    route: '/affinities',
+    hook: 'getAffinities'
+}

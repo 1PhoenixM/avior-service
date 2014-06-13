@@ -143,8 +143,28 @@ module.exports = {
 	getTableStats: restCall('GET','/wm/core/switch/:arg:/table/json'),
 	getFeatures: restCall('GET','/wm/core/switch/:arg:/features/json'),
 	getSwitches: restCall('GET','/wm/core/controller/switches/json'),
-	getSummary: restCall('GET','/wm/core/controller/summary/json'),
+    getSummary: restCall('GET','/wm/core/controller/summary/json'),
 	getCounters: restCall('GET','/wm/core/counter/:arg:/:arg:/json'),
-	// etc. (I think you'll get the idea after studying this for a bit)
+    //I want to consolidate these into getSummary
+    getMemory: restCall('GET',''),
+    getHealth: restCall('GET',''),
+    getUptime: restCall('GET',''),
+    
+    getTopologyLinks: restCall('GET',''),
+    getTopologyClusters: restCall('GET',''),
+    getTopologyExternalLinks: restCall('GET',''),
+    getHosts: restCall('GET',''),
+    postFlow: restCall('POST',''),
+    delFlow: restCall('DELETE',''),
+    getFlows: restCall('GET',''),
+    clearFlows: restCall('GET',''),
 	//////////////// PLACEHOLDER FOR VIRTUAL NETWORK CALLS
+    getFirewallStatus: restCall('GET',''),
+    enableFirewall: restCall('GET',''),
+    disableFirewall: restCall('GET',''),
+    getFirewallStorageRules: restCall('GET',''),
+    getFirewallSubnetMask: restCall('GET',''),
+    getFirewallRules: restCall('GET',''),
+    postFirewallRule: restCall('POST',''),
+    deleteFirewallRule: restCall('DELETE',''),
 }

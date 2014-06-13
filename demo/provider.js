@@ -1,3 +1,4 @@
+//this is unused.
 var fs = require('fs');
 
 //The plugin file must contain a route method, route path name, and function name.
@@ -19,3 +20,30 @@ fs.appendFileSync('./courier.js',
 //TODO: Add more appends to the adapter and anything else that needs to be updated.
 //TODO: Used synchronous methods for simplicity, might change later.
 console.log("Plugin successfully added to Avior."); //TODO: Make this a callback to the append, so that it really is true.
+
+//Plugins and use cases:
+Plexxi : Affinities
+Ciena : WDM gear
+Calient : Optical
+Provisioning, elephant flows, scheduling
+other Controllers: POX, NOX, Beacon, Ryu
+
+Plugin example:
+
+module.exports = [
+    plugin:,
+    {capability},
+    {capability}
+]
+
+For a capability object, Avior must know:
+
+>What route(s) i.e. /flows/:id
+>View(s) how is the view rendered?
+>Params (args) :id [STRING]
+>inputs {} POST/PUT/DEL
+>outputs [JSON]
+>southbound functions, names and processing
+>plugin name "FlowSpec"
+>universal identifiers (desired ofp fields) Match, Action etc.
+>private data (?) internal to application
