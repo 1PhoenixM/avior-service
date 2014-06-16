@@ -94,7 +94,8 @@ var TO_OFP = {
     //harole: "role",
     //networkDestinationMaskLen: nw_dst_ml,
     //networkSourceMaskLen: nw_src_ml,
-	// etc. (you get the idea, I'm not going to include everything at the moment)
+    
+	//incomplete
 };
 
 /* Creates a function that, when called, will make a REST API call */
@@ -135,36 +136,62 @@ module.exports = {
 		return normalizedObj;
 	},
  
+    //arg is 'all' or a dpid
 	getPortStats: restCall('GET','wm/core/switch/:arg:/port/json'),
-	getQueueStats: restCall('GET', '/wm/core/switch/:arg:/queue/json'),
-	getFlowStats: restCall('GET','/wm/core/switch/:arg:/flow/json'),
-	getAggregateStats: restCall('GET','/wm/core/switch/:arg:/aggregate/json'),
-	getDescStats: restCall('GET','/wm/core/switch/:arg:/desc/json'),
-	getTableStats: restCall('GET','/wm/core/switch/:arg:/table/json'),
-	getFeatures: restCall('GET','/wm/core/switch/:arg:/features/json'),
-	getSwitches: restCall('GET','/wm/core/controller/switches/json'),
-    getSummary: restCall('GET','/wm/core/controller/summary/json'),
-	getCounters: restCall('GET','/wm/core/counter/:arg:/:arg:/json'),
-    //I want to consolidate these into getSummary
-    getMemory: restCall('GET',''),
-    getHealth: restCall('GET',''),
-    getUptime: restCall('GET',''),
     
-    getTopologyLinks: restCall('GET',''),
-    getTopologyClusters: restCall('GET',''),
-    getTopologyExternalLinks: restCall('GET',''),
-    getHosts: restCall('GET',''),
-    postFlow: restCall('POST',''),
-    delFlow: restCall('DELETE',''),
-    getFlows: restCall('GET',''),
-    clearFlows: restCall('GET',''),
+	getQueueStats: restCall('GET', '/wm/core/switch/:arg:/queue/json'),
+    
+	getFlowStats: restCall('GET','/wm/core/switch/:arg:/flow/json'),
+    
+	getAggregateStats: restCall('GET','/wm/core/switch/:arg:/aggregate/json'),
+    
+	getDescStats: restCall('GET','/wm/core/switch/:arg:/desc/json'),
+    
+	getTableStats: restCall('GET','/wm/core/switch/:arg:/table/json'),
+    
+	getFeatures: restCall('GET','/wm/core/switch/:arg:/features/json'),
+    
+	getSwitches: restCall('GET','/wm/core/controller/switches/json'),
+    
+    getSummary: restCall('GET','/wm/core/controller/summary/json'),
+    
+	getCounters: restCall('GET','/wm/core/counter/:arg:/:arg:/json'),
+    
+    //I want to consolidate these into getSummary for Avior routes
+    getMemory: restCall('GET','/wm/core/memory/json'),
+    getHealth: restCall('GET','/wm/core/health/json'),
+    getUptime: restCall('GET','/wm/core/system/uptime/json'),
+    
+    getTopologyLinks: restCall('GET','/wm/topology/links/json'),
+    
+    getTopologyClusters: restCall('GET','/wm/topology/switchclusters/json'),
+    
+    getTopologyExternalLinks: restCall('GET','/wm/topology/external-links/json'),
+    
+    getHosts: restCall('GET','/wm/device'),
+    
+    postFlow: restCall('POST','/wm/staticflowentrypusher/json'),
+    
+    delFlow: restCall('DELETE','/wm/staticflowentrypusher/json'),
+    
+    getFlows: restCall('GET','/wm/staticflowentrypusher/list/:arg:/json'),
+    
+    clearFlows: restCall('GET','/wm/staticflowentrypusher/clear/:arg:/json'),
+    
 	//////////////// PLACEHOLDER FOR VIRTUAL NETWORK CALLS
-    getFirewallStatus: restCall('GET',''),
-    enableFirewall: restCall('GET',''),
-    disableFirewall: restCall('GET',''),
-    getFirewallStorageRules: restCall('GET',''),
-    getFirewallSubnetMask: restCall('GET',''),
-    getFirewallRules: restCall('GET',''),
-    postFirewallRule: restCall('POST',''),
-    deleteFirewallRule: restCall('DELETE',''),
+    getFirewallStatus: restCall('GET','/wm/firewall/module/status/json'),
+    
+    enableFirewall: restCall('GET','/wm/firewall/module/enable/json'),
+    
+    disableFirewall: restCall('GET','/wm/firewall/module/disable/json'),
+    
+    getFirewallStorageRules: restCall('GET','/wm/firewall/module/storageRules/json'),
+    
+    getFirewallSubnetMask: restCall('GET','/wm/firewall/module/subnet-mask/json'),
+    
+    getFirewallRules: restCall('GET','/wm/firewall/rules/json'),
+    
+    postFirewallRule: restCall('POST','/wm/firewall/rules/json'),
+    
+    deleteFirewallRule: restCall('DELETE','/wm/firewall/rules/json'),
 }
