@@ -1,0 +1,1 @@
+Avior 2.0 plugin system using sails.js.

@@ -7,8 +7,8 @@
 //for more reuse.
 //ADAPTERS
 var http = require('http');
-var OFP = require('./ofp.js'); //v1.0.0
-var toClient = require('./controller.js');
+//var OFP = require('./ofp.js'); //v1.0.0
+var toClient = require('./toClient.js');
  
 /* NOTE Only fields that differ are included below */
 var TO_OFP = {
@@ -156,11 +156,11 @@ module.exports = {
                   
     addMgmtConnectionWithoutNodeType: restCall('PUT', '/controller/nb/v2/connectionmanager/node/:nodeId:/address/:ipAddress:/port/:port:'),
                     
-    disconnectConnection: restCall('DELETE', '/controller/nb/v2/connectionmanager/node/:nodeType:/:nodeId:'), method:'DELETE',hostname:this.hostname,port:8080,path:'',
+    disconnectConnection: restCall('DELETE', '/controller/nb/v2/connectionmanager/node/:nodeType:/:nodeId:'),
         
     addMgmtConnectionWithKnownNodeType: restCall('PUT', '/controller/nb/v2/connectionmanager/node/:nodeType:/:nodeId:/address/:ipAddress:/port/:port:'), 
                     
-    getNodeCluster: restCall('GET', '/controller/nb/v2/connectionmanager/nodes'), method:'GET',hostname:this.hostname,port:8080,path:'',
+    getNodeCluster: restCall('GET', '/controller/nb/v2/connectionmanager/nodes'),
        
     createBridge: restCall('POST', '/controller/nb/v2/networkconfig/bridgedomain/bridge/:nodeType:/:nodeId:/:bridgeName:'), 
                     

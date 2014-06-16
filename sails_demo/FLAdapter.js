@@ -7,8 +7,8 @@
 //for more reuse.
 //ADAPTERS
 var http = require('http');
-var OFP = require('./ofp.js'); //v1.0.0
-var toClient = require('./controller.js');
+//var OFP = require('./ofp.js'); //v1.0.0
+var toClient = require('./toClient.js');
  
 /* NOTE Only fields that differ are included below */
 var TO_OFP = {
@@ -90,7 +90,7 @@ var TO_OFP = {
     //"# hosts": "n_hosts", 
     //"# quarantine ports": "n_quarantine_ports", 
     //"# inter-switch links": "n_inter_switch_links", 
-    //systemUptimeMsec: "system_uptime_msec",
+    systemUptimeMsec: "system_uptime_msec",
     //harole: "role",
     //networkDestinationMaskLen: nw_dst_ml,
     //networkSourceMaskLen: nw_src_ml,
@@ -104,7 +104,7 @@ var restCall = function(apiMethod,apiPath){
 	return function(options){
 		if (options.args){
 			for (arg in options.args){
-				apiPath = apiPath.replace(':arg:', options.args[arg]);
+				apiPath = apiPath.replace('/:[A-Za-z]+:/', options.args[arg]);
 			}
 		}
 		opts = {method:apiMethod,hostname:this.hostname,port:8080,path:apiPath};
@@ -123,11 +123,11 @@ module.exports = {
 	normalize: function (obj) {
 		var normalizedField;
 		var normalizedObj = {};
-		if (obj instanceof String || obj.constructor === Number) { return obj; } //TODO: Other possible types? This finds and returns the data, not an object
+        if (obj.constructor === String || obj.constructor === Number) { return obj; } //TODO: Other possible types? This finds and returns the data, not an object. null is a possible type in error field!
 		for (field in obj) {
 			if (TO_OFP[field]) {
 				normalizedField = TO_OFP[field];
-                console.log(normalizedField);
+                //console.log(normalizedField);
 			} else {
 				normalizedField = field;
 			}
