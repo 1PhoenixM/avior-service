@@ -13,7 +13,7 @@ var AviorController = {
         sdn_controller = FLAdapter;
         sdn_controller.response = res;
         sdn_controller.getHosts({});
-        //Hosts.create({});
+        
       },
     
     getUptime:  function (req,res) {

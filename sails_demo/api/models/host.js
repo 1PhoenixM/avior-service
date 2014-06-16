@@ -6,7 +6,7 @@
  * @docs		:: In imagination land
  */
 
-var Hosts = {
+var Host = {
   attributes: {
       IPAddress: {
           //type:'STRING'
@@ -30,4 +30,4 @@ var Hosts = {
   }
 };
 
-module.exports = Hosts;
+module.exports = Host;
