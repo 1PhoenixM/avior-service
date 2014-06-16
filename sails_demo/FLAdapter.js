@@ -123,7 +123,8 @@ module.exports = {
 	normalize: function (obj) {
 		var normalizedField;
 		var normalizedObj = {};
-        if (obj.constructor === String || obj.constructor === Number) { return obj; } //TODO: Other possible types? This finds and returns the data, not an object. null is a possible type in error field!
+        if(!obj){ return 'null'; }
+        else if (obj.constructor === String || obj.constructor === Number) { return obj; } //TODO: Other possible types? This finds and returns the data, not an object. null is a possible type in error field!
 		for (field in obj) {
 			if (TO_OFP[field]) {
 				normalizedField = TO_OFP[field];
@@ -137,7 +138,7 @@ module.exports = {
 	},
  
     //arg is 'all' or a dpid
-	getPortStats: restCall('GET','wm/core/switch/:arg:/port/json'),
+	getPortStats: restCall('GET','/wm/core/switch/:arg:/port/json'),
     
 	getQueueStats: restCall('GET', '/wm/core/switch/:arg:/queue/json'),
     
@@ -168,7 +169,7 @@ module.exports = {
     
     getTopologyExternalLinks: restCall('GET','/wm/topology/external-links/json'),
     
-    getHosts: restCall('GET','/wm/device'),
+    getHosts: restCall('GET','/wm/device/'),
     
     postFlow: restCall('POST','/wm/staticflowentrypusher/json'),
     

@@ -24,7 +24,7 @@ To run Avior on Ubuntu Linux, you will need:
     
 Replace "Floodlight" with "OpenDaylight" if using the OpenDaylight controller. The default address that Avior will look for the controller is at "localhost", change this in the request if the controller is located at an external IP.
 
-8. If successful, you should recieve a "Controller set" message. Routes are now available, and a full guide to available routes is coming soon. To get the most out of Avior, have an actual network or virtual Mininet network connected to your controller.
+If successful, you should recieve a "Controller set" message. Routes are now available, and a full guide to available routes is coming soon. To get the most out of Avior, have an actual network or virtual Mininet network connected to your controller.
 
 To use the sails.js demo, navigate into sails_demo directory.
 

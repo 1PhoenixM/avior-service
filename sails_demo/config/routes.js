@@ -36,7 +36,11 @@ module.exports.routes = {
     view: 'home/index'
   },
     
-    
+  'get /port/stats': {
+      controller : 'AviorController',
+      action : 'getPortStats'
+  },
+     
   'get /hosts': {
         controller    : 'AviorController',
         action        : 'getHost'
