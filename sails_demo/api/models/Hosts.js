@@ -6,7 +6,7 @@
  * @docs		:: In imagination land
  */
 
-var Host = {
+var Hosts = {
   attributes: {
       IPAddress: {
           //type:'STRING'
@@ -20,8 +20,15 @@ var Host = {
       },
       
       ConnectedToSwitch: {
-          type:'STRING',
-          required: true
+          DPID:{
+              type:'STRING',
+              required: true
+          },
+          
+          PortNum:{
+            type:'INT',
+            required:true
+          }
       },
       
       LastConnected: {
@@ -30,4 +37,4 @@ var Host = {
   }
 };
 
-module.exports = Host;
+module.exports = Hosts;
