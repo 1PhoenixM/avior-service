@@ -8,11 +8,19 @@
 //ADAPTERS
 var http = require('http');
 //var OFP = require('./ofp.js'); //v1.0.0
-var toClient = require('./toClient.js');
+var toClient = require('../../toClient.js');
  
 /* NOTE Only fields that differ are included below */
 var TO_OFP = {
 	//incomplete
+      //dataLayerAddress: "?",
+      //nodeType: "OF",
+      nodeId: "datapath_id",
+      //nodeConnectorType: "OF",
+      nodeConnectorId: "port_no",
+      //vlan: "vlan",
+      //staticHost: false,
+      //networkAddress: "10.0.0.4"
 };
 
 /* Creates a function that, when called, will make a REST API call */
@@ -21,7 +29,7 @@ var restCall = function(apiMethod,apiPath){
 	return function(options){
 		if (options.args){
 			for (arg in options.args){
-				apiPath = apiPath.replace('/:[A-Za-z]+:/', options.args[arg]); //look for args of form :container:
+				apiPath = apiPath.replace('/:[A-Za-z]+:/', options.args[arg]); //look for args of form :container:. not working?
 			}
 		}
 		opts = {method:apiMethod,hostname:this.hostname,port:8080,path:apiPath,auth:'admin:admin'}; //TODO: ODL auth protection
@@ -40,7 +48,7 @@ module.exports = {
 	normalize: function (obj) {
 		var normalizedField;
 		var normalizedObj = {};
-		if (obj instanceof String || obj.constructor === Number) { return obj; } //TODO: Other possible types? This finds and returns the data, not an object
+		if (obj instanceof String || obj.constructor === Number || obj.constructor === Array) { return obj; } //TODO: Other possible types? This finds and returns the data, not an object
 		for (field in obj) {
 			if (TO_OFP[field]) {
 				normalizedField = TO_OFP[field];

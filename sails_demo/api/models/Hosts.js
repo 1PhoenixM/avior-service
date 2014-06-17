@@ -7,6 +7,7 @@
  */
 
 var Hosts = {
+    
   attributes: {
       IPAddress: {
           //type:'STRING'
@@ -20,12 +21,12 @@ var Hosts = {
       },
       
       ConnectedToSwitch: {
-          DPID:{
               type:'STRING',
               required: true
-          },
+        
+        },
           
-          PortNum:{
+      PortNum:{
             type:'INT',
             required:true
           }
@@ -34,7 +35,6 @@ var Hosts = {
       LastConnected: {
           type: 'DATETIME'
       }
-  }
 };
 
 module.exports = Hosts;

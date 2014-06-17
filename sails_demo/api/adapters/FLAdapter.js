@@ -8,7 +8,7 @@
 //ADAPTERS
 var http = require('http');
 //var OFP = require('./ofp.js'); //v1.0.0
-var toClient = require('./toClient.js');
+var toClient = require('../../toClient.js');
  
 /* NOTE Only fields that differ are included below */
 var TO_OFP = {
@@ -124,7 +124,7 @@ module.exports = {
 		var normalizedField;
 		var normalizedObj = {};
         if(!obj){ return 'null'; }
-        else if (obj.constructor === String || obj.constructor === Number) { return obj; } //TODO: Other possible types? This finds and returns the data, not an object. null is a possible type in error field!
+        else if (obj.constructor === String || obj.constructor === Number || obj.constructor === Array) { return obj; } //TODO: Other possible types? This finds and returns the data, not an object. null is a possible type in error field!
 		for (field in obj) {
 			if (TO_OFP[field]) {
 				normalizedField = TO_OFP[field];
