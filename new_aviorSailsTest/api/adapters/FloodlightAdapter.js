@@ -3,24 +3,65 @@ var http = require('http');
 
 var FROM_OFP = {
 	// name-in-models: name-in-floodlight
-	MAC_Address: 'mac',
+	//Hosts Information    
+    MAC_Address: 'mac',
 	IP_Address: 'ipv4',
 	VLAN_ID: 'vlan',
 	Attached_To: 'attachmentPoint',
 	DPID: 'switchDPID',
 	Port: 'port',
 	Last_Seen: 'lastSeen',
+    //Uptime Information
+    Uptime_msec: 'systemUptimeMsec',
+    //Switch Description Information(Shortened to Desc in files)
+    Manufacturer:'manufacturerDescription',
+    Hardware:'hardwareDescription',
+    Software:'softwareDescription',
+    SerialNum:'serialNumber',
+    //Switch Features information
+    PortNum: "portNumber",
+    RXPackets: "receivePackets",
+    TXPackets: "transmitPackets",
+    RXBytes: "receiveBytes",
+    TXBytes:"transmitBytes",
+    DroppedPackets: "receiveDropped",
+    //Switch Port Information
+    //I assume that this will use PortNum from switch features above
+    PortName: "name",
+    //Keep in mind that it seems that a state of 512 means that the port is up and a state of 513 means that the port is down
+    PortState: "state",
+    
 };
 
 var TO_OFP = {
 	// name-in-floodlight: name-in-models
-	mac: 'MAC_Address',
+	//Hosts Information
+    mac: 'MAC_Address',
 	ipv4: 'IP_Address',
 	vlan: 'VLAN_ID',
 	attachmentPoint: 'Attached_To',
 	switchDPID: 'DPID',
 	port: 'Port',
 	lastSeen: 'Last_Seen',
+    //Uptime Information
+    systemUptimeMsec: 'Uptime_msec',
+    //Switch Description Information(Shortened to Desc in files)
+    manufacturerDescription:'Manufacturer',
+    hardwareDescription:'Hardware',
+    softwareDescription:'Software',
+    serialNumber:'SerialNum',
+    //Switch Features information
+    portNumber: "PortNum",
+    receivePackets: "RXPackets",
+    transmitPackets: "TXPackets",
+    receiveBytes: "RXBytes",
+    transmitBytes:"TXBytes",
+    receiveDropped: "DroppedPackets",
+    //Switch Port Information
+    //I assume that this will use PortNum from switch features above
+    name: "PortName",
+    //Keep in mind that it seems that a state of 512 means that the port is up and a state of 513 means that the port is down
+    state: "PortState",
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -29,7 +70,7 @@ var restCall = function(apiMethod,apiPath){
         return function(options,cb){
                 if (options.args){
                         for (arg in options.args){
-                                apiPath = apiPath.replace(/:[A-Za-z]+:/, options.args[arg]);
+                                apiPath = apiPath.replace('/:[A-Za-z]+:/', options.args[arg]);
                         }
                 }
                 opts = {method:apiMethod,hostname:'10.11.17.40',port:8080,path:apiPath};
@@ -53,67 +94,19 @@ module.exports = {
         find: function (conn, coll, options, cb) {
                 switch (coll){
                 case 'host': return this.getHosts({},cb);
-		default: return cb();
+                        break;
+                case 'uptime': return this.getUptime({},cb);
+                        break;
+                case 'switchdesc': return this.getSwitchDesc({},cb);
+                        break;
+                case 'switchfeatures': return this.getSwitchFeatures({},cb);
+                        break;
+                case 'switchports': return this.getSwitchPorts({},cb);
+                        break;
+		        default: return cb();
+                        break;
                 }
         },
-
-        getHosts: restCall('GET','/wm/device/'),
-    
-        getPortStats: restCall('GET','/wm/core/switch/:arg:/port/json'),
-
-        getQueueStats: restCall('GET', '/wm/core/switch/:arg:/queue/json'),
-
-        getFlowStats: restCall('GET','/wm/core/switch/:arg:/flow/json'),
-
-        getAggregateStats: restCall('GET','/wm/core/switch/:arg:/aggregate/json'),
-
-        getDescStats: restCall('GET','/wm/core/switch/:arg:/desc/json'),
-
-        getTableStats: restCall('GET','/wm/core/switch/:arg:/table/json'),
-
-        getFeatures: restCall('GET','/wm/core/switch/:arg:/features/json'),
-
-        getSwitches: restCall('GET','/wm/core/controller/switches/json'),
-
-        getSummary: restCall('GET','/wm/core/controller/summary/json'),
-
-        getCounters: restCall('GET','/wm/core/counter/:arg:/:arg:/json'),
-
-        //I want to consolidate these into getSummary for Avior routes
-        getMemory: restCall('GET','/wm/core/memory/json'),
-        getHealth: restCall('GET','/wm/core/health/json'),
-        getUptime: restCall('GET','/wm/core/system/uptime/json'),
-
-        getTopologyLinks: restCall('GET','/wm/topology/links/json'),
-
-        getTopologyClusters: restCall('GET','/wm/topology/switchclusters/json'),
-
-        getTopologyExternalLinks: restCall('GET','/wm/topology/external-links/json'),
-
-        postFlow: restCall('POST','/wm/staticflowentrypusher/json'),
-
-        delFlow: restCall('DELETE','/wm/staticflowentrypusher/json'),
-
-        getFlows: restCall('GET','/wm/staticflowentrypusher/list/:arg:/json'),
-
-        clearFlows: restCall('GET','/wm/staticflowentrypusher/clear/:arg:/json'),
-
-        //////////////// PLACEHOLDER FOR VIRTUAL NETWORK CALLS
-        getFirewallStatus: restCall('GET','/wm/firewall/module/status/json'),
-
-        enableFirewall: restCall('GET','/wm/firewall/module/enable/json'),
-
-        disableFirewall: restCall('GET','/wm/firewall/module/disable/json'),
-
-        getFirewallStorageRules: restCall('GET','/wm/firewall/module/storageRules/json'),
-
-        getFirewallSubnetMask: restCall('GET','/wm/firewall/module/subnet-mask/json'),
-
-        getFirewallRules: restCall('GET','/wm/firewall/rules/json'),
-
-        postFirewallRule: restCall('POST','/wm/firewall/rules/json'),
-
-        deleteFirewallRule: restCall('DELETE','/wm/firewall/rules/json'),
 
         normalize: function (obj) {
                 var normalizedField;
@@ -144,6 +137,16 @@ module.exports = {
                 }
                 return normalizedObj;
         },
+    
+        getHosts: restCall('GET','/wm/device/'),
+    
+        getUptime: restCall('GET','/wm/core/system/uptime/json'),
+    
+        getSwitchDesc: restCall('GET','/wm/core/switch/all/desc/json'),    
+    
+        getSwitchFeatures: restCall('GET','/wm/core/switch/all/features/json'),
+    
+        getSwitchPorts: restCall('GET','/wm/core/switch/all/ports/json'),
 
 }
 
