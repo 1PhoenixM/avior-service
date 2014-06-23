@@ -112,10 +112,10 @@ module.exports = {
                 case 'flows': return this.getFlows({args:['default']},cb);
                 case 'staticroute': return this.getStaticRoutes({args:['default']},cb);
                 case 'subnet': return this.getSubnets({args:['default']},cb);
-                case 'switch': return this.get({args:['default']},cb);
-                case 'flowspec': return this.getHosts({args:['default']},cb);
-                case 'container': return this.getHosts({args:['default']},cb);
-                case 'nodecluster': return this.getHosts({args:['default']},cb);        
+                case 'switch': return this.getSwitches({args:['default']},cb);
+                case 'flowspec': return this.getFlowSpecs({args:['default']},cb);
+                case 'container': return this.getContainers({args:['default']},cb);
+                case 'nodecluster': return this.getNodeCluster({args:['default']},cb);        
 		        default: return cb();
                 }
         },
