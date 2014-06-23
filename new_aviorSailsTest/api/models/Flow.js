@@ -1,25 +1,17 @@
 module.export = {
 	identity: 'flow',
 
-	connection: 'opendaylight',
+	connection: 'floodlight',
 
 	attributes: {
 		DPID: {
 			type: 'string',
 			required: true
 		},
-        MatchMask: {
-			type: 'integer',
-			required: false
-		},
-        MatchType: {
-			type: 'integer',
-			required: true
-		},
-        MatchValue: {
-			type: 'integer',
-			required: true
-		},
+        Match: {
+            model: 'match',
+            required: true
+        },
         ActionType: {
 			type: 'integer',
 			required: true

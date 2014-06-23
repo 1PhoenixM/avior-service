@@ -44,8 +44,12 @@ var TO_OFP = {
     node: 'AttachedTo',
     flowStatistic: '',
     flow: '',
-    match: '',
-    matchField: '',
+    match: 'Match',
+    matchField: 'MatchField',
+    type: 'Type',
+    value: 'MatchValue',
+    actions: 'Actions',
+    port: 'Port',
     
     priority: 'Priority',
     idleTimeout: 'IdleTimeout',
@@ -101,11 +105,42 @@ module.exports = {
                 switch (coll){
                 case 'flow': return this.getFlowStats({args:['default']},cb);
                 case 'port': return this.getPortStats({args:['default']},cb);
-                case 'table': return this.getTableStats({args:['default']},cb);        
+                case 'table': return this.getTableStats({args:['default']},cb);  
+                case 'topology': return this.getTopology({args:['default']},cb);
+                case 'topologylinks': return this.getTopologyLinks({args:['default']},cb); 
                 case 'host': return this.getHosts({args:['default']},cb);
+                case 'flows': return this.getFlows({args:['default']},cb);
+                case 'staticroute': return this.getStaticRoutes({args:['default']},cb);
+                case 'subnet': return this.getSubnets({args:['default']},cb);
+                case 'switch': return this.get({args:['default']},cb);
+                case 'flowspec': return this.getHosts({args:['default']},cb);
+                case 'container': return this.getHosts({args:['default']},cb);
+                case 'nodecluster': return this.getHosts({args:['default']},cb);        
 		        default: return cb();
                 }
         },
+    
+        create: function (conn, coll, options, cb) {
+                switch (coll){
+                
+		        default: return cb();
+                }
+        },
+    
+        update: function (conn, coll, options, cb) {
+                switch (coll){
+                
+		        default: return cb();
+                }
+        },
+    
+        destroy: function (conn, coll, options, cb) {
+                switch (coll){
+                
+		        default: return cb();
+                }
+        },
+    
     
     //Statistics API
     getFlowStats: restCall('GET', '/controller/nb/v2/statistics/:containerName:/flow'),
