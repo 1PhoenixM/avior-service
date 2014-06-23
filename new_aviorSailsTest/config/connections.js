@@ -86,7 +86,7 @@ module.exports.connections = {
     pathname: '/wm',       // base api path
     resource: '/device/',           // resource path to use (overrides model name)
     action: null,             // action to use for the given resource ([resource]/run)
-    query: {},                // query parameters to provide with all GET requests
+    query: {method:'GET'},                // query parameters to provide with all GET requests
     methods: {                // overrides default HTTP methods used for each CRUD action
       create: 'post',
       find: 'get',
