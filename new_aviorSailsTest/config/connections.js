@@ -25,6 +25,10 @@ module.exports.connections = {
   //
   // Installed by default.
   //
+    
+  //default: 'rest',
+ 
+
   localDiskDb: {
     adapter: 'sails-disk'
   },
@@ -70,6 +74,32 @@ module.exports.connections = {
     user: 'YOUR_POSTGRES_USER',
     password: 'YOUR_POSTGRES_PASSWORD',
     database: 'YOUR_POSTGRES_DB'
+  },
+    
+    
+  rest: {
+    adapter: 'sails-rest',
+    type: 'json',             // expected response type (json | string | http)
+    host: '10.11.17.40', // api host
+    port: 8080,                 // api port
+    protocol: 'http',         // HTTP protocol (http | https)
+    pathname: '/wm',       // base api path
+    resource: '/device/',           // resource path to use (overrides model name)
+    action: null,             // action to use for the given resource ([resource]/run)
+    query: {},                // query parameters to provide with all GET requests
+    methods: {                // overrides default HTTP methods used for each CRUD action
+      create: 'post',
+      find: 'get',
+      update: 'put',
+      destroy: 'del'
+    },
+    beforeFormatResult: function(result){return result},    // alter result prior to formatting
+    afterFormatResult: function(result){return result},     // alter result after formatting
+    beforeFormatResults: function(results){return results}, // alter results prior to formatting
+    afterFormatResults: function(results){return results},  // alter results after formatting
+    //cache: {                  // optional cache engine
+      //engine : require('someCacheEngine')
+    //}
   },
 
   floodlight: {
