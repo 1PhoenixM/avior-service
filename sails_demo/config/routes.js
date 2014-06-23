@@ -43,7 +43,7 @@ module.exports.routes = {
      
   'get /hosts': {
         controller    : 'AviorController',
-        action        : 'getHost'
+        action        : 'getHosts'
   },
     
   'get /uptime': {

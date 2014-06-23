@@ -9,10 +9,44 @@
 var http = require('http');
 //var OFP = require('./ofp.js'); //v1.0.0
 var toClient = require('../../toClient.js');
- 
-/* NOTE Only fields that differ are included below */
+
+
+var FROM_OFP = {
+	// name-in-models: name-in-floodlight
+	//Hosts Information
+    MACAddress: 'mac',
+	IPAddress: 'ipv4',
+	VLANID: 'vlan',
+	attachedTo: 'attachmentPoint',
+	DPID: 'switchDPID',
+	portNum: 'port',
+	lastSeen: 'lastSeen',
+    // Port Information
+	port_no: 'portNumber',
+	rx_packets: "receivePackets",
+	tx_packets: "transmitPackets",
+	rx_bytes: "receiveBytes",
+	tx_bytes: "transmitBytes",
+	rx_dropped: "receiveDropped",
+	tx_dropped: "transmitDropped",
+	rx_errors: "receiveErrors",
+	tx_errors: "transmitErrors",
+	rx_frame_err: "receiveFrameErrors",
+	rx_over_err: "receiveOverrunErrors",
+	rx_crc_err: "receiveCRCErrors",
+};
+
 var TO_OFP = {
-	/* PortStats */
+	// name-in-floodlight: name-in-models
+	//Hosts Infromation
+    mac: 'MACAddress',
+	ipv4: 'IPAddress',
+	vlan: 'VLANID',
+	attachmentPoint: 'attachedTo',
+	switchDPID: 'DPID',
+	port: 'portNum',
+	lastSeen: 'lastSeen',
+    // Port Information
 	portNumber: "port_no",
 	receivePackets: "rx_packets",
 	transmitPackets: "tx_packets",
@@ -25,17 +59,36 @@ var TO_OFP = {
 	receiveFrameErrors: "rx_frame_err",
 	receiveOverrunErrors: "rx_over_err",
 	receiveCRCErrors: "rx_crc_err",
+};
+ 
+
+//Melissa's Code
+/* NOTE Only fields that differ are included below */
+//var TO_OFP = {
+	/* PortStats */
+	/*portNumber: "port_no",
+	receivePackets: "rx_packets",
+	transmitPackets: "tx_packets",
+	receiveBytes: "rx_bytes",
+	transmitBytes: "tx_bytes",
+	receiveDropped: "rx_dropped",
+	transmitDropped: "tx_dropped",
+	receiveErrors: "rx_errors",
+	transmitErrors: "tx_errors",
+	receiveFrameErrors: "rx_frame_err",
+	receiveOverrunErrors: "rx_over_err",
+	receiveCRCErrors: "rx_crc_err",*/
 	/* FlowStats */
-	tableId: "table_id",
+	/*tableId: "table_id",
 	// TODO how to handle match fields
 	durationSeconds: "duration_sec",
 	durationNanoseconds: "duration_nsec",
 	idleTimeout: "idle_timeout",
 	hardTimeout: "hard_timeout",
     packetCount: "packet_count",
-    byteCount: "byte_count",
+    byteCount: "byte_count",*/
     /* Match (1.0.0) */
-    inputPort: "in_port",
+    /*inputPort: "in_port",
     dataLayerSource: "dl_src",
     dataLayerDestination: "dl_dst",
     dataLayerVirtualLan: "dl_vlan",
@@ -46,42 +99,42 @@ var TO_OFP = {
     networkSource: "nw_src",
     networkDestination: "nw_dst",
     transportSource: "tp_src",
-    transportDestination: "tp_dst",
+    transportDestination: "tp_dst",*/
     /* Aggregate Stats */
     //Packet and byte counts are assigned up in FlowStats
-    flowCount: "flow_count",
+    //flowCount: "flow_count",
     /* Desc Stats */
-    manufacturerDescription: "mfr_desc",
+    /*manufacturerDescription: "mfr_desc",
     hardwareDescription: "hw_desc",
     softwareDescription: "sw_desc",
     serialNumber: "serial_num",
-    datapathDescription: "dp_desc",
+    datapathDescription: "dp_desc",*/
     /* Table Stats */
-    maximumEntries: "max_entries",
+    /*maximumEntries: "max_entries",
     activeCount: "active_count",
     lookupCount: "lookup_count", 
-    matchedCount: "matched_count", 
+    matchedCount: "matched_count",*/
     /* Features */
-    datapathId: "datapath_id",
+    /*datapathId: "datapath_id",
     buffers: "n_buffers",
     tables: "n_tables",
     hardwareAddress: "hw_addr",
     currentFeatures: "curr",
     advertisedFeatures: "advertised",
     supportedFeatures: "supported",
-    peerFeatures: "peer",
+    peerFeatures: "peer",*/
     /* Switch only */
-    description: "desc",
+    /*description: "desc",
     inetAddress: "inet_address",  
-    connectedSince: "connected_since",
+    connectedSince: "connected_since",*/
     /* Switch Desc */
-    manufacturer: "mfr_desc",
+    /*manufacturer: "mfr_desc",
     hardware: "hw_desc", 
     software: "sw_desc", 
     serialNum: "serial_num", 
-    datapath: "dp_desc", 
+    datapath: "dp_desc",*/ 
     /* Switch Attrs */
-    supportsOfppFlood: "supports_ofpp_flood", 
+    /*supportsOfppFlood: "supports_ofpp_flood", 
     supportsNxRole: "supports_nx_role",
     FastWildcards: "fast_wildcards", 
     supportsOfppTable: "supports_ofpp_table",
@@ -93,10 +146,10 @@ var TO_OFP = {
     systemUptimeMsec: "system_uptime_msec",
     //harole: "role",
     //networkDestinationMaskLen: nw_dst_ml,
-    //networkSourceMaskLen: nw_src_ml,
+    //networkSourceMaskLen: nw_src_ml,*/
     
 	//incomplete
-};
+//};
 
 /* Creates a function that, when called, will make a REST API call */
 var restCall = function(apiMethod,apiPath){
@@ -107,7 +160,7 @@ var restCall = function(apiMethod,apiPath){
 				apiPath = apiPath.replace('/:[A-Za-z]+:/', options.args[arg]);
 			}
 		}
-		opts = {method:apiMethod,hostname:this.hostname,port:8080,path:apiPath};
+		opts = {method:apiMethod,hostname:'10.11.17.40',port:8080,path:apiPath};
 		req = http.request(opts, toClient(this));
 		if (options.data) {
 			req.write(JSON.stringify(options.data));
@@ -117,10 +170,58 @@ var restCall = function(apiMethod,apiPath){
 };
 
 module.exports = {
-//	hostname: 'localhost',
+    identity: 'floodlight',
+  
+    registerConnection: function (conn, coll, cb) {
+                if (!conn.port) { conn.port = 8080; }
+                if (!conn.method) { conn.method = 'GET'; }
+                cb();
+        },
+
+    
+    find: function (conn, coll, options, cb) {
+                switch (coll){
+                case 'hosts': return this.getHosts({},cb);
+		default: return cb();
+                }
+        },
+
+    normalize: function (obj) {
+                var normalizedField;
+                var normalizedObj;
+                if (!obj){ return 'null'; }
+		if (obj.constructor === Array) {
+			normalizedObj = [];
+			for (i in obj) {
+				normalizedObj.push(this.normalize(obj[i]))
+			}
+		} else if (obj.constructor === String || obj.constructor === Number) {
+			normalizedObj = obj;
+		} else {
+			normalizedObj = {};
+			for (fromField in TO_OFP) {
+				if (obj[fromField]) {
+		 	        	toField = TO_OFP[fromField];
+	                        	normalizedObj[toField] = this.normalize(obj[fromField]); //Nested structs? Probably handled recursively
+				}
+			}
+    	/* NOT CURRENTLY USED - REVERTED BACK TO TO_OFP APPROACH
+			for (toField in FROM_OFP) {
+                	        fromField = FROM_OFP[toField];
+				if (obj[fromField]) {
+	                        	normalizedObj[toField] = this.normalize(obj[fromField]); //Nested structs? Probably handled recursively
+				}
+			}*/
+                }
+                return normalizedObj;
+        },
+
+    
+    //Melissa's Code
+    //hostname: 'localhost',
   //http://tobyho.com/2011/01/28/checking-types-in-javascript/
     //TODO: Why is a number printed with the JSON?
-	normalize: function (obj) {
+	/*normalize: function (obj) {
 		var normalizedField;
 		var normalizedObj = {};
         if(!obj){ return 'null'; }
@@ -134,8 +235,10 @@ module.exports = {
 			}
 			normalizedObj[normalizedField] = this.normalize(obj[field]); //Nested structs? Probably handled recursively
 		}
+            
+            
 		return normalizedObj;
-	},
+	},*/
  
     //arg is 'all' or a dpid
 	getPortStats: restCall('GET','/wm/core/switch/:arg:/port/json'),
@@ -195,4 +298,4 @@ module.exports = {
     postFirewallRule: restCall('POST','/wm/firewall/rules/json'),
     
     deleteFirewallRule: restCall('DELETE','/wm/firewall/rules/json'),
-}
+};

@@ -6,7 +6,10 @@
  * @docs		:: In imagination land
  */
 
-var Hosts = {
+module.exports = {
+  identity:'hosts',
+    
+  connection: 'floodlight',
     
   attributes: {
       IPAddress: {
@@ -20,21 +23,23 @@ var Hosts = {
           required: true
       },
       
-      ConnectedToSwitch: {
+      VLANID: {
+        type: 'STRING'
+      },
+      
+      attachedTo: {
               type:'STRING',
               required: true
-        
-        },
+      },
           
-      PortNum:{
+      portNum:{
             type:'INT',
             required:true
           }
       },
       
-      LastConnected: {
+      lastSeen: {
           type: 'DATETIME'
       }
 };
 
-module.exports = Hosts;

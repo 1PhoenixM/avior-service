@@ -10,12 +10,15 @@ var AviorController = {
         sdn_controller.getPortStats({args:['all']});
         },
     
-    getHost: function (req,res) {
+    getHosts: function (req,res) {
         sdn_controller = FLAdapter;
         sdn_controller.response = res;
         sdn_controller.getHosts({args:['default']}); //arg is for odl only, will be ignored in fl.
         //can create models/destroy models from here
-        Hosts.create({
+        
+        
+        //Was causing an error so I comented it out idk if it is important
+        /*Hosts.create({
           MACAddress: "mac",
           ConnectedToSwitch: "switch",
           PortNum: 2 
@@ -27,7 +30,7 @@ var AviorController = {
           }else {
             console.log("Host created:\n", host);
           }
-        });
+        });*/
         //end create
       },
     
@@ -36,6 +39,22 @@ var AviorController = {
         sdn_controller.response = res;
         sdn_controller.getUptime({});
       },
+    
+    create: function(req, res) {
+
+    },
+
+    destroy: function(req, res) {
+
+    },
+
+    tag: function(req, res) {
+
+    },
+
+    like: function(req, res) {
+
+    }
 }
 
 module.exports = AviorController;
