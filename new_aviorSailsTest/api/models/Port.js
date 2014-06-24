@@ -1,64 +1,45 @@
+//In opendaylight, port info can be found in the switch manager. Ports are the "node connectors".
 module.export = {
 	identity: 'port',
 
 	connection: 'opendaylight',
 
 	attributes: {
-		DPID: {
+		PortNumber: {
 			type: 'string',
 			required: true
 		},
-        ID: {
+        HardwareAddress: {
 			type: 'string',
 			required: true
 		},
-        RXPackets: {
+        Name: {
 			type: 'string',
 			required: true
 		},
-        TXPackets: {
+        Config: {
 			type: 'string',
 			required: true
 		},
-        RXBytes: {
+        State: {
 			type: 'string',
 			required: true
 		},
-        TXBytes: {
+        CurrentFeatures: {
 			type: 'string',
 			required: true
 		},
-        RXDrops: {
+        AdvertisedFeatures: {
 			type: 'string',
 			required: true
 		},
-        TXDrops: {
+        SupportedFeatures: {
 			type: 'string',
 			required: true
 		},
-        RXErrors: {
+        PeerFeatures: {
 			type: 'string',
 			required: true
 		},
-        TXErrors: {
-			type: 'string',
-			required: true
-		},
-        RXFrameErr: {
-			type: 'string',
-			required: true
-		},
-        RXOverrunErr: {
-			type: 'string',
-			required: true
-		},
-        RXCrcErr: {
-			type: 'string',
-			required: true
-		},
-        Collisions: {
-			type: 'string',
-			required: true
-		}       
     }
 }

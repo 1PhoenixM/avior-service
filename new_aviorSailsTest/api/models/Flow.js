@@ -12,16 +12,8 @@ module.export = {
             model: 'match',
             required: true
         },
-        ActionType: {
-			type: 'integer',
-			required: true
-		},
-        ActionPortDPID: {
-			type: 'integer',
-			required: true
-		},
-        ActionPortID: {
-			type: 'integer',
+        Action: {
+			model: 'action',
 			required: true
 		},
         HardTimeout: {

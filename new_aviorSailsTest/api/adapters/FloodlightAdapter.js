@@ -70,7 +70,7 @@ var restCall = function(apiMethod,apiPath){
         return function(options,cb){
                 if (options.args){
                         for (arg in options.args){
-                                apiPath = apiPath.replace('/:[A-Za-z]+:/', options.args[arg]);
+                                apiPath = apiPath.replace(/:[A-Za-z]+:/, options.args[arg]);
                         }
                 }
                 opts = {method:apiMethod,hostname:'10.11.17.40',port:8080,path:apiPath};
@@ -97,14 +97,47 @@ module.exports = {
                         break;
                 case 'uptime': return this.getUptime({},cb);
                         break;
-                case 'switchdesc': return this.getSwitchDesc({},cb);
+                case 'switchdesc': return this.getSwitchDesc({args:['all']},cb);
                         break;
-                case 'switchfeatures': return this.getSwitchFeatures({},cb);
+                case 'switchfeatures': return this.getSwitchFeatures({args:['all']},cb);
                         break;
-                case 'switchports': return this.getSwitchPorts({},cb);
+                case 'switchports': return this.getSwitchPorts({args:['all']},cb);
+                        break;
+                case 'queue': return this.getQueueStats({args:['all']},cb);
+                        break;
+                case 'flow': return this.getFlowStats({args:['all']},cb);
+                        break;
+                case 'aggregate': return this.getAggregateStats({args:['all']},cb);
+                        break;
+                case 'table': return this.getTableStats({args:['all']},cb);
+                        break;
+                case 'switch': return this.getSwitches({args:['all']},cb);
+                        break;
+                case 'topology': return this.getTopologyLinks({args:['all']},cb);
                         break;
 		        default: return cb();
                         break;
+                }
+        },
+    
+        
+        create: function (conn, coll, options, cb) {
+                switch (coll){
+                case 'flow': return this.postFlow({data:{}},cb);
+		        default: return cb();
+                }
+        },
+    
+        update: function (conn, coll, options, cb) {
+                switch (coll){
+		        default: return cb();
+                }
+        },
+    
+        destroy: function (conn, coll, options, cb) {
+                switch (coll){
+                case 'flow': return this.delFlow({data:{}},cb);
+		        default: return cb();
                 }
         },
 
@@ -142,11 +175,63 @@ module.exports = {
     
         getUptime: restCall('GET','/wm/core/system/uptime/json'),
     
-        getSwitchDesc: restCall('GET','/wm/core/switch/all/desc/json'),    
+        getSwitchDesc: restCall('GET','/wm/core/switch/:arg:/desc/json'),    
     
-        getSwitchFeatures: restCall('GET','/wm/core/switch/all/features/json'),
+        getSwitchFeatures: restCall('GET','/wm/core/switch/:arg:/features/json'),
     
-        getSwitchPorts: restCall('GET','/wm/core/switch/all/ports/json'),
+        getSwitchPorts: restCall('GET','/wm/core/switch/:arg:/ports/json'),
+    
+        //arg is 'all' or a dpid
+    
+	getQueueStats: restCall('GET', '/wm/core/switch/:arg:/queue/json'),
+    
+	getFlowStats: restCall('GET','/wm/core/switch/:arg:/flow/json'),
+    
+	getAggregateStats: restCall('GET','/wm/core/switch/:arg:/aggregate/json'),
+    
+	getTableStats: restCall('GET','/wm/core/switch/:arg:/table/json'),
+    
+	getSwitches: restCall('GET','/wm/core/controller/switches/json'),
+    
+    getSummary: restCall('GET','/wm/core/controller/summary/json'),
+    
+	getCounters: restCall('GET','/wm/core/counter/:arg:/:arg:/json'),
+    
+    //I want to consolidate these into getSummary for Avior routes
+    getMemory: restCall('GET','/wm/core/memory/json'),
+    getHealth: restCall('GET','/wm/core/health/json'),
+    
+    getTopologyLinks: restCall('GET','/wm/topology/links/json'),
+    
+    getTopologyClusters: restCall('GET','/wm/topology/switchclusters/json'),
+    
+    getTopologyExternalLinks: restCall('GET','/wm/topology/external-links/json'),
+    
+    postFlow: restCall('POST','/wm/staticflowentrypusher/json'),
+    
+    delFlow: restCall('DELETE','/wm/staticflowentrypusher/json'),
+    
+    getFlows: restCall('GET','/wm/staticflowentrypusher/list/:arg:/json'),
+    
+    clearFlows: restCall('GET','/wm/staticflowentrypusher/clear/:arg:/json'),
+    
+	//////////////// PLACEHOLDER FOR VIRTUAL NETWORK CALLS
+    //Firewall is unused for now
+    getFirewallStatus: restCall('GET','/wm/firewall/module/status/json'),
+    
+    enableFirewall: restCall('GET','/wm/firewall/module/enable/json'),
+    
+    disableFirewall: restCall('GET','/wm/firewall/module/disable/json'),
+    
+    getFirewallStorageRules: restCall('GET','/wm/firewall/module/storageRules/json'),
+    
+    getFirewallSubnetMask: restCall('GET','/wm/firewall/module/subnet-mask/json'),
+    
+    getFirewallRules: restCall('GET','/wm/firewall/rules/json'),
+    
+    postFirewallRule: restCall('POST','/wm/firewall/rules/json'),
+    
+    deleteFirewallRule: restCall('DELETE','/wm/firewall/rules/json'),
 
 }
 
