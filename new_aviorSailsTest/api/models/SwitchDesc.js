@@ -20,6 +20,10 @@ module.export = {
             type:'string',
             required:'true'
         },
+        Datapath:{
+            type:'string',
+            required:'true'
+        },
 	}
 }
 

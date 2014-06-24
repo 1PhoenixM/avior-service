@@ -143,23 +143,23 @@ module.exports = {
 
         normalize: function (obj) {
                 var normalizedField;
-                var normalizedObj;
+                var normalizedObj;    
                 if (!obj){ return 'null'; }
-		if (obj.constructor === Array) {
-			normalizedObj = [];
-			for (i in obj) {
-				normalizedObj.push(this.normalize(obj[i]))
-			}
-		} else if (obj.constructor === String || obj.constructor === Number) {
-			normalizedObj = obj;
-		} else {
-			normalizedObj = {};
-			for (fromField in TO_OFP) {
-				if (obj[fromField]) {
-		 	        	toField = TO_OFP[fromField];
-	                        	normalizedObj[toField] = this.normalize(obj[fromField]); //Nested structs? Probably handled recursively
-				}
-			}
+		        if (obj.constructor === Array) {
+			         normalizedObj = [];
+			         for (i in obj) {
+				        normalizedObj.push(this.normalize(obj[i]))
+			         }
+		        } else if (obj.constructor === String || obj.constructor === Number) {
+			         normalizedObj = obj;
+		        } else {
+			         normalizedObj = {};
+			         for (fromField in TO_OFP) {
+				        if (obj[fromField]) {
+		 	        	       toField = TO_OFP[fromField];
+	                        	  normalizedObj[toField] = this.normalize(obj[fromField]); //Nested structs? Probably handled recursively
+				        }
+			         }
 			/* NOT CURRENTLY USED - REVERTED BACK TO TO_OFP APPROACH
 			for (toField in FROM_OFP) {
                 	        fromField = FROM_OFP[toField];
@@ -169,6 +169,15 @@ module.exports = {
 			}*/
                 }
                 return normalizedObj;
+        },
+    
+        dpidCheck: function (obj) {
+            for (field in obj){
+             if (field === '/[A-Za-z0-9]+:[A-Za-z0-9]+:[A-Za-z0-9]+:[A-Za-z0-9]+:[A-Za-z0-9]+:[A-Za-z0-9]+:[A-Za-z0-9]+:[A-Za-z0-9]+:[A-Za-z0-9]+:/'){
+                obj = obj[field];
+             }
+            }
+            this.normalize(obj);
         },
     
         getHosts: restCall('GET','/wm/device/'),

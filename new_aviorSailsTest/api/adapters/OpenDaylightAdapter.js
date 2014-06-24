@@ -288,7 +288,7 @@ module.exports = {
         normalize: function (obj) {
                 var normalizedField;
                 var normalizedObj;
-                if (!obj){ return 'null'; }
+        if (!obj){ return 'null'; }
 		if (obj.constructor === Array) {
 			normalizedObj = [];
 			for (i in obj) {
@@ -301,14 +301,14 @@ module.exports = {
 			for (fromField in TO_OFP) {
 				if (obj[fromField]) {
 		 	        	toField = TO_OFP[fromField];
-	                        	normalizedObj[toField] = this.normalize(obj[fromField]); //Nested structs? Probably handled recursively
+	                        	normalizedObj[toField] = this.normalize(obj[fromField]);
 				}
 			}
 			/* NOT CURRENTLY USED - REVERTED BACK TO TO_OFP APPROACH
 			for (toField in FROM_OFP) {
                 	        fromField = FROM_OFP[toField];
 				if (obj[fromField]) {
-	                        	normalizedObj[toField] = this.normalize(obj[fromField]); //Nested structs? Probably handled recursively
+	                        	normalizedObj[toField] = this.normalize(obj[fromField]);
 				}
 			}*/
                 }

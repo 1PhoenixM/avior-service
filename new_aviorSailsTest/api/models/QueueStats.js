@@ -8,5 +8,17 @@ module.export = {
 			type: 'string',
 			required: true
 		},
+        TXBytes: {
+			type: 'string',
+			required: true
+		},
+        TXPackets: {
+			type: 'string',
+			required: true
+		},
+        TXErrors: {
+			type: 'string',
+			required: true
+		},
     }
 }
