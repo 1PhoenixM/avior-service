@@ -36,6 +36,7 @@ var FROM_OFP = {
 var TO_OFP = {
 	// name-in-floodlight: name-in-models
 	//Hosts Information
+    Stats: 'Stats',
     mac: 'MAC_Address',
 	ipv4: 'IP_Address',
 	vlan: 'VLAN_ID',
@@ -119,7 +120,7 @@ module.exports = {
                         break;
                 case 'health': return this.getHealth({args:['all']},cb);
                         break;
-                case 'topologyclusters':return this..getTopologyClusters({args:['all']},cb);
+                case 'topologyclusters':return this.getTopologyClusters({args:['all']},cb);
                         break;
                 case 'topologyexternallinks':return this.getTopologyExternalLinks({args:['all']},cb);
                         break;
@@ -132,19 +133,19 @@ module.exports = {
                 case 'clearflows':return this.clearFlows({args:['all']},cb);
                         break;
                 case 'getFirewallStatus':return this.getFirewallStatus({args:['all']},cb); 
-
+                         break;
                 case 'enableFirewall':return this.enableFirewall({args:['all']},cb); 
-
+                         break;
                 case 'disableFirewall':return this.disableFirewall({args:['all']},cb); 
-
+                         break;
                 case 'getFirewallStorageRules':return this.getFirewallStorageRules({args:['all']},cb);
-
+                         break;
                 case 'getFirewallSubnetMask':return this.getFirewallSubnetMask({args:['all']},cb);
-
+                         break;
                 case 'getFirewallRules':return this.getFirewallRules({args:['all']},cb); 
-
+                         break;
                 case 'postFirewallRule':return this.postFirewallRule({args:['all']},cb); 
-
+                         break;
                 case 'deleteFirewallRule':return this.deleteFirewallRule({args:['all']},cb);
 		        default: return cb();
                         break;
@@ -202,6 +203,16 @@ module.exports = {
                 return normalizedObj;
         },
     
+        dpidParse: function (obj) {
+            newObj = {};
+            arr = [];
+            for (dpid in obj){
+                arr.push(dpid);
+                arr.push(obj[dpid]);
+            }
+            newObj.Stats = arr;
+            return newObj;
+        },
   
     getSwitchDesc: restCall('GET','/wm/core/switch/:arg:/desc/json'),    //"all" returns switch dpid objects
     getSwitchFeatures: restCall('GET','/wm/core/switch/:arg:/features/json'),   //"all" returns switch dpid objects
@@ -219,7 +230,6 @@ module.exports = {
     getHosts: restCall('GET','/wm/device/'), //array of unnamed Host objects
     getTopologyLinks: restCall('GET','/wm/topology/links/json'), //an array of unnamed objects, each with a Topology link
    
-    
     getUptime: restCall('GET','/wm/core/system/uptime/json'), //one unnamed object containing uptime
     getMemory: restCall('GET','/wm/core/memory/json'), //an unnamed object with memory
     getHealth: restCall('GET','/wm/core/health/json'), //an unnamed object with health

@@ -9,7 +9,8 @@ module.exports = function (ctlr,cb) {
  
 		res.on('end', function() {
                         var responseObject = JSON.parse(responseString);
-                        var normalizedObject = ctlr.normalize(responseObject);
+                        var newObject = ctlr.dpidParse(responseObject);
+                        var normalizedObject = ctlr.normalize(newObject);
                         console.log(normalizedObject);
                         //ctlr.response.send(normalizedObject);
                         cb(null,normalizedObject);
