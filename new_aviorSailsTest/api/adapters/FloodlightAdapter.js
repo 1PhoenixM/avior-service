@@ -202,76 +202,45 @@ module.exports = {
                 return normalizedObj;
         },
     
-        dpidCheck: function (obj) {
-            for (field in obj){
-             if (field === '/[A-Za-z0-9]+:[A-Za-z0-9]+:[A-Za-z0-9]+:[A-Za-z0-9]+:[A-Za-z0-9]+:[A-Za-z0-9]+:[A-Za-z0-9]+:[A-Za-z0-9]+:[A-Za-z0-9]+:/'){
-                obj = obj[field];
-             }
-            }
-            this.normalize(obj);
-        },
+  
+    getSwitchDesc: restCall('GET','/wm/core/switch/:arg:/desc/json'),    //"all" returns switch dpid objects
+    getSwitchFeatures: restCall('GET','/wm/core/switch/:arg:/features/json'),   //"all" returns switch dpid objects
+    getSwitchPorts: restCall('GET','/wm/core/switch/:arg:/port/json'), //"all" returns switch dpid objects
+	getQueueStats: restCall('GET', '/wm/core/switch/:arg:/queue/json'), //"all" returns switch dpid objects
+	getFlowStats: restCall('GET','/wm/core/switch/:arg:/flow/json'), //"all" returns switch dpid objects
+	getAggregateStats: restCall('GET','/wm/core/switch/:arg:/aggregate/json'),  //"all" returns switch dpid objects
+	getTableStats: restCall('GET','/wm/core/switch/:arg:/table/json'),  //"all" returns switch dpid objects
+	getCounters: restCall('GET','/wm/core/counter/:arg:/:arg:/json'), //an object with dynamic counter titles as property names
+    getTopologyClusters: restCall('GET','/wm/topology/switchclusters/json'), //an object with switch dpids as property names
+    getFlows: restCall('GET','/wm/staticflowentrypusher/list/:arg:/json'),  //an object with switch dpids as property names
     
-        getHosts: restCall('GET','/wm/device/'),
+    getSwitches: restCall('GET','/wm/core/controller/switches/json'), //array of unnamed Switch objects
+    getSummary: restCall('GET','/wm/core/controller/summary/json'), //one unnamed Controller object  
+    getHosts: restCall('GET','/wm/device/'), //array of unnamed Host objects
+    getTopologyLinks: restCall('GET','/wm/topology/links/json'), //an array of unnamed objects, each with a Topology link
+   
     
-        getUptime: restCall('GET','/wm/core/system/uptime/json'),
+    getUptime: restCall('GET','/wm/core/system/uptime/json'), //one unnamed object containing uptime
+    getMemory: restCall('GET','/wm/core/memory/json'), //an unnamed object with memory
+    getHealth: restCall('GET','/wm/core/health/json'), //an unnamed object with health
+    getFirewallStatus: restCall('GET','/wm/firewall/module/status/json'), //single object with status
+    enableFirewall: restCall('GET','/wm/firewall/module/enable/json'), //single object with success/failure
+    disableFirewall: restCall('GET','/wm/firewall/module/disable/json'), //single object with success/failure
     
-        getSwitchDesc: restCall('GET','/wm/core/switch/:arg:/desc/json'),    
+    getTopologyExternalLinks: restCall('GET','/wm/topology/external-links/json'), //unknown
+    getFirewallStorageRules: restCall('GET','/wm/firewall/module/storageRules/json'), //unknown
+    getFirewallRules: restCall('GET','/wm/firewall/rules/json'), //unknown
+    clearFlows: restCall('GET','/wm/staticflowentrypusher/clear/:arg:/json'), //unknown
     
-        getSwitchFeatures: restCall('GET','/wm/core/switch/:arg:/features/json'),
+    postFlow: restCall('POST','/wm/staticflowentrypusher/json'),
+    delFlow: restCall('DELETE','/wm/staticflowentrypusher/json'),
+    postFirewallRule: restCall('POST','/wm/firewall/rules/json'),
+    deleteFirewallRule: restCall('DELETE','/wm/firewall/rules/json'),
     
-        getSwitchPorts: restCall('GET','/wm/core/switch/:arg:/ports/json'),
+	//////////////// PLACEHOLDER FOR VIRTUAL NETWORK CALLS
+    //Firewall is unused for now
     
-        //arg is 'all' or a dpid
-    
-        getQueueStats: restCall('GET', '/wm/core/switch/:arg:/queue/json'),
-
-        getFlowStats: restCall('GET','/wm/core/switch/:arg:/flow/json'),
-
-        getAggregateStats: restCall('GET','/wm/core/switch/:arg:/aggregate/json'),
-
-        getTableStats: restCall('GET','/wm/core/switch/:arg:/table/json'),
-
-        getSwitches: restCall('GET','/wm/core/controller/switches/json'),
-
-        getSummary: restCall('GET','/wm/core/controller/summary/json'),
-
-        getCounters: restCall('GET','/wm/core/counter/:arg:/:arg:/json'),
-
-        //I want to consolidate these into getSummary for Avior routes
-        getMemory: restCall('GET','/wm/core/memory/json'),
-        getHealth: restCall('GET','/wm/core/health/json'),
-
-        getTopologyLinks: restCall('GET','/wm/topology/links/json'),
-
-        getTopologyClusters: restCall('GET','/wm/topology/switchclusters/json'),
-
-        getTopologyExternalLinks: restCall('GET','/wm/topology/external-links/json'),
-
-        postFlow: restCall('POST','/wm/staticflowentrypusher/json'),
-
-        delFlow: restCall('DELETE','/wm/staticflowentrypusher/json'),
-
-        getFlows: restCall('GET','/wm/staticflowentrypusher/list/:arg:/json'),
-
-        clearFlows: restCall('GET','/wm/staticflowentrypusher/clear/:arg:/json'),
-
-        //////////////// PLACEHOLDER FOR VIRTUAL NETWORK CALLS
-        //Firewall is unused for now
-        getFirewallStatus: restCall('GET','/wm/firewall/module/status/json'),
-
-        enableFirewall: restCall('GET','/wm/firewall/module/enable/json'),
-
-        disableFirewall: restCall('GET','/wm/firewall/module/disable/json'),
-
-        getFirewallStorageRules: restCall('GET','/wm/firewall/module/storageRules/json'),
-
-        getFirewallSubnetMask: restCall('GET','/wm/firewall/module/subnet-mask/json'),
-
-        getFirewallRules: restCall('GET','/wm/firewall/rules/json'),
-
-        postFirewallRule: restCall('POST','/wm/firewall/rules/json'),
-
-        deleteFirewallRule: restCall('DELETE','/wm/firewall/rules/json'),
+    getFirewallSubnetMask: restCall('GET','/wm/firewall/module/subnet-mask/json'), //not an object, just a subnet.
 
 }
 
