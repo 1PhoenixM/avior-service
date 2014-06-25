@@ -115,6 +115,37 @@ module.exports = {
                         break;
                 case 'topology': return this.getTopologyLinks({args:['all']},cb);
                         break;
+                case 'memory': return this.getMemory({args:['all']},cb);
+                        break;
+                case 'health': return this.getHealth({args:['all']},cb);
+                        break;
+                case 'topologyclusters':return this..getTopologyClusters({args:['all']},cb);
+                        break;
+                case 'topologyexternallinks':return this.getTopologyExternalLinks({args:['all']},cb);
+                        break;
+                case 'postflow':return this.postFlow({args:['all']},cb);
+                        break;
+                case 'delflow': return this.delFlow({args:['all']},cb);
+                        break;
+                case 'getflows': return this.getFlows({args:['all']},cb);
+                        break;
+                case 'clearflows':return this.clearFlows({args:['all']},cb);
+                        break;
+                case 'getFirewallStatus':return this.getFirewallStatus({args:['all']},cb); 
+
+                case 'enableFirewall':return this.enableFirewall({args:['all']},cb); 
+
+                case 'disableFirewall':return this.disableFirewall({args:['all']},cb); 
+
+                case 'getFirewallStorageRules':return this.getFirewallStorageRules({args:['all']},cb);
+
+                case 'getFirewallSubnetMask':return this.getFirewallSubnetMask({args:['all']},cb);
+
+                case 'getFirewallRules':return this.getFirewallRules({args:['all']},cb); 
+
+                case 'postFirewallRule':return this.postFirewallRule({args:['all']},cb); 
+
+                case 'deleteFirewallRule':return this.deleteFirewallRule({args:['all']},cb);
 		        default: return cb();
                         break;
                 }
@@ -192,55 +223,55 @@ module.exports = {
     
         //arg is 'all' or a dpid
     
-	getQueueStats: restCall('GET', '/wm/core/switch/:arg:/queue/json'),
-    
-	getFlowStats: restCall('GET','/wm/core/switch/:arg:/flow/json'),
-    
-	getAggregateStats: restCall('GET','/wm/core/switch/:arg:/aggregate/json'),
-    
-	getTableStats: restCall('GET','/wm/core/switch/:arg:/table/json'),
-    
-	getSwitches: restCall('GET','/wm/core/controller/switches/json'),
-    
-    getSummary: restCall('GET','/wm/core/controller/summary/json'),
-    
-	getCounters: restCall('GET','/wm/core/counter/:arg:/:arg:/json'),
-    
-    //I want to consolidate these into getSummary for Avior routes
-    getMemory: restCall('GET','/wm/core/memory/json'),
-    getHealth: restCall('GET','/wm/core/health/json'),
-    
-    getTopologyLinks: restCall('GET','/wm/topology/links/json'),
-    
-    getTopologyClusters: restCall('GET','/wm/topology/switchclusters/json'),
-    
-    getTopologyExternalLinks: restCall('GET','/wm/topology/external-links/json'),
-    
-    postFlow: restCall('POST','/wm/staticflowentrypusher/json'),
-    
-    delFlow: restCall('DELETE','/wm/staticflowentrypusher/json'),
-    
-    getFlows: restCall('GET','/wm/staticflowentrypusher/list/:arg:/json'),
-    
-    clearFlows: restCall('GET','/wm/staticflowentrypusher/clear/:arg:/json'),
-    
-	//////////////// PLACEHOLDER FOR VIRTUAL NETWORK CALLS
-    //Firewall is unused for now
-    getFirewallStatus: restCall('GET','/wm/firewall/module/status/json'),
-    
-    enableFirewall: restCall('GET','/wm/firewall/module/enable/json'),
-    
-    disableFirewall: restCall('GET','/wm/firewall/module/disable/json'),
-    
-    getFirewallStorageRules: restCall('GET','/wm/firewall/module/storageRules/json'),
-    
-    getFirewallSubnetMask: restCall('GET','/wm/firewall/module/subnet-mask/json'),
-    
-    getFirewallRules: restCall('GET','/wm/firewall/rules/json'),
-    
-    postFirewallRule: restCall('POST','/wm/firewall/rules/json'),
-    
-    deleteFirewallRule: restCall('DELETE','/wm/firewall/rules/json'),
+        getQueueStats: restCall('GET', '/wm/core/switch/:arg:/queue/json'),
+
+        getFlowStats: restCall('GET','/wm/core/switch/:arg:/flow/json'),
+
+        getAggregateStats: restCall('GET','/wm/core/switch/:arg:/aggregate/json'),
+
+        getTableStats: restCall('GET','/wm/core/switch/:arg:/table/json'),
+
+        getSwitches: restCall('GET','/wm/core/controller/switches/json'),
+
+        getSummary: restCall('GET','/wm/core/controller/summary/json'),
+
+        getCounters: restCall('GET','/wm/core/counter/:arg:/:arg:/json'),
+
+        //I want to consolidate these into getSummary for Avior routes
+        getMemory: restCall('GET','/wm/core/memory/json'),
+        getHealth: restCall('GET','/wm/core/health/json'),
+
+        getTopologyLinks: restCall('GET','/wm/topology/links/json'),
+
+        getTopologyClusters: restCall('GET','/wm/topology/switchclusters/json'),
+
+        getTopologyExternalLinks: restCall('GET','/wm/topology/external-links/json'),
+
+        postFlow: restCall('POST','/wm/staticflowentrypusher/json'),
+
+        delFlow: restCall('DELETE','/wm/staticflowentrypusher/json'),
+
+        getFlows: restCall('GET','/wm/staticflowentrypusher/list/:arg:/json'),
+
+        clearFlows: restCall('GET','/wm/staticflowentrypusher/clear/:arg:/json'),
+
+        //////////////// PLACEHOLDER FOR VIRTUAL NETWORK CALLS
+        //Firewall is unused for now
+        getFirewallStatus: restCall('GET','/wm/firewall/module/status/json'),
+
+        enableFirewall: restCall('GET','/wm/firewall/module/enable/json'),
+
+        disableFirewall: restCall('GET','/wm/firewall/module/disable/json'),
+
+        getFirewallStorageRules: restCall('GET','/wm/firewall/module/storageRules/json'),
+
+        getFirewallSubnetMask: restCall('GET','/wm/firewall/module/subnet-mask/json'),
+
+        getFirewallRules: restCall('GET','/wm/firewall/rules/json'),
+
+        postFirewallRule: restCall('POST','/wm/firewall/rules/json'),
+
+        deleteFirewallRule: restCall('DELETE','/wm/firewall/rules/json'),
 
 }
 
