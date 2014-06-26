@@ -1,3 +1,5 @@
+//QueueStats
+
 module.export = {
 	identity: 'queuestats',
 

@@ -1,3 +1,5 @@
+//A queue structure.
+
 module.export = {
 	identity: 'queue',
 

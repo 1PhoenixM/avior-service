@@ -1,4 +1,6 @@
 //In opendaylight, port info can be found in the switch manager. Ports are the "node connectors".
+//A port structure.
+
 module.export = {
 	identity: 'port',
 
@@ -39,6 +41,10 @@ module.export = {
 		},
         PeerFeatures: {
 			type: 'string',
+			required: true
+		},
+        PortStats: {
+			model: 'portstats',
 			required: true
 		},
     }

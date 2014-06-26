@@ -1,3 +1,5 @@
+//Aggregate stats
+
 module.export = {
 	identity: 'aggregate',
 

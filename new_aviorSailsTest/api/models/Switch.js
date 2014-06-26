@@ -7,121 +7,37 @@
  */
 
 module.exports = {
+    
+    identity: 'switch',
+
+	connection: 'floodlight',
+
 
   attributes: {
-      Manufacturer:{
-        type:'STRING',
+      Features:{
+        model:'switchfeatures',
         required:true
       },
-      
-      Hardware: {
-        type:'STRING',
+      Desc:{
+        model:'switchdesc',
         required:true
       },
-      
-      Software: {
-        type:'STRING',
+      Flows:{
+        model:'flow',
         required:true
       },
-      
-      SerialNum: {
-        type:'STRING',
+      Aggregate:{
+        model:'aggregate',
         required:true
       },
-      
-      ConnectedSince: {
-        type:'DATETIME',
+      Table:{
+        model:'table',
         required:true
       },
-      
-      Ports: {
-        LinkStatus: {
-            type:'STRING',
-            required:true
-        },
-          
-        Name: {
-            type:'STRING',
-            required:true
-        },
-          
-        Number: {
-            type:'INT',
-            required:true
-        },
-          
-        RXPackets: {
-            type:'INT',
-            required:true
-        },
-          
-        TXPackets: {
-            type:'INT',
-            required:true
-        },
-          
-        RXBytes: {
-            type:'INT',
-            required:true
-        },
-          
-        TXBytes: {
-            type:'INT',
-            required:true
-        },
-          
-        DroppedBytes: {
-            type:'INT',
-            required:true
-        },
-          
-        Errors: {
-            type:'INT',
-            required:true
-        },
-      },
-      
-      Flows: {
-        FlowName: {
-            type:'STRING',
-            required:true
-        },
-          
-        FlowPriority: {
-            type:'INT',
-            required:true
-        },
-          
-        InputPort: {
-            type:'INT',
-            required:true
-        },
-          
-        Actions: {
-            type:'STRING',
-            required:true
-        },
-          
-        Packets: {
-            type:'INT',
-            required:true
-        },
-          
-        Bytes: {
-            type:'INT',
-            required:true
-        },
-          
-        Age: {
-            type:'STRING',
-            required:true
-        },
-          
-        Timeout: {
-            type:'INT',
-            required:true
-        }
-      }
+      Queue:{
+        model:'queuestats',
+        required:true
+      },   
   }
 
-};
+}

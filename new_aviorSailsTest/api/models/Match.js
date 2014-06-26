@@ -1,3 +1,5 @@
+//A flow match.
+
 module.export = {
 	identity: 'match',
 

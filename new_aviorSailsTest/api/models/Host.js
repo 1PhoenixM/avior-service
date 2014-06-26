@@ -1,3 +1,5 @@
+//A host (not OpenFlow-defined)
+
 module.export = {
 	identity: 'host',
 
@@ -26,4 +28,3 @@ module.export = {
 		}
 	}
 }
-

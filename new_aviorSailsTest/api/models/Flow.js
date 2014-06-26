@@ -1,7 +1,9 @@
+//A flow structure
+
 module.export = {
 	identity: 'flow',
 
-	connection: 'floodlight',
+	connection: 'opendaylight',
 
 	attributes: {
 		DPID: {
@@ -37,6 +39,10 @@ module.export = {
 			required: true
 		},
         TableID: {
+			type: 'integer',
+			required: true
+		},
+        Cookie: {
 			type: 'integer',
 			required: true
 		},

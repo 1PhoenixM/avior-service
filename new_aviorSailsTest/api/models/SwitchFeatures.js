@@ -1,33 +1,34 @@
+//Switch features
+
 module.export = {
 	identity: 'switchfeatures',
 
 	connection: 'floodlight',
 
 	attributes: {
-		PortNum: {
+		Datapath: {
             type:'integer',
             required:'true'
         },
-        RXPackets: {
+        Buffers: {
             type:'integer',
             required:'true'
         },
-        TXPackets: {
+        Tables: {
             type:'integer',
             required:'true'
         },
-        RXBytes: {
+        Capabilities: {
             type:'integer',
             required:'true'
         },
-        TXBytes:{
-            type:'integer',
+        Actions: {
+            model:'action',
             required:'true'
         },
-        DroppedPackets:{
-            type:'integer',
+        Ports: {
+            model:'port',
             required:'true'
         },
 	}
 }
-

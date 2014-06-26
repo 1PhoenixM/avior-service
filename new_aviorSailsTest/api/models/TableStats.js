@@ -1,3 +1,5 @@
+//TableStats
+
 module.export = {
 	identity: 'table',
 
@@ -5,6 +7,14 @@ module.export = {
 
 	attributes: {
 		DPID: {
+			type: 'string',
+			required: true
+		},
+        Name: {
+			type: 'string',
+			required: true
+		},
+        Wildcards: {
 			type: 'string',
 			required: true
 		},

@@ -37,6 +37,7 @@ var TO_OFP = {
 	// name-in-floodlight: name-in-models
 	//Hosts Information
     Stats: 'Stats',
+    
     mac: 'MAC_Address',
 	ipv4: 'IP_Address',
 	vlan: 'VLAN_ID',

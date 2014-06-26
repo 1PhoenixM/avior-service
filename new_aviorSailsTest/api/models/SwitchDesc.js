@@ -1,3 +1,5 @@
+//Desc Stats
+
 module.export = {
 	identity: 'switchdesc',
 
@@ -26,4 +28,3 @@ module.export = {
         },
 	}
 }
-

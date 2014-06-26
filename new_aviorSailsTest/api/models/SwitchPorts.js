@@ -1,3 +1,5 @@
+//A port on a switch
+
 module.export = {
 	identity: 'switchports',
 

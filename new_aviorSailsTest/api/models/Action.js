@@ -1,3 +1,5 @@
+//A flow action.
+
 module.export = {
 	identity: 'action',
 

@@ -1,3 +1,5 @@
+//A test struct for uptime
+
 module.export = {
 	identity: 'uptime',
 
@@ -11,4 +13,3 @@ module.export = {
         
 	}
 }
-
