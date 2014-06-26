@@ -1,7 +1,7 @@
 //TableStats
 
 module.export = {
-	identity: 'table',
+	identity: 'tablestats',
 
 	connection: 'opendaylight',
 

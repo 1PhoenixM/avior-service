@@ -14,7 +14,7 @@ module.exports = {
 
 
   attributes: {
-      Features:{
+      /*Features:{
         model:'switchfeatures',
         required:true
       },
@@ -27,17 +27,17 @@ module.exports = {
         required:true
       },
       Aggregate:{
-        model:'aggregate',
+        model:'aggregatestats',
         required:true
       },
       Table:{
-        model:'table',
+        model:'tablestats',
         required:true
       },
       Queue:{
         model:'queuestats',
         required:true
-      },   
+      },*/
   }
 
 }

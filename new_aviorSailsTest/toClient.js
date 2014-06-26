@@ -8,8 +8,11 @@ module.exports = function (ctlr,cb) {
 		});
  
 		res.on('end', function() {
+                        console.log(responseString);
                         var responseObject = JSON.parse(responseString);
+                        console.log('\n\n\n\n\n\n\n\n\n\n\n' + responseObject);
                         var newObject = ctlr.dpidParse(responseObject);
+                        console.log('\n\n\n\n\n\n\n\n\n\n\n' + newObject);
                         var normalizedObject = ctlr.normalize(newObject);
                         console.log(normalizedObject);
                         //ctlr.response.send(normalizedObject);
