@@ -107,7 +107,7 @@ module.exports = {
                         break;
                 case 'queue': return this.getQueueStats({args:['all']},cb);
                         break;
-                case 'flow': return this.getFlowStats({args:['all']},cb);
+                case 'flowstats': return this.getFlowStats({args:['all']},cb);
                         break;
                 case 'aggregate': return this.getAggregateStats({args:['all']},cb);
                         break;
@@ -129,7 +129,7 @@ module.exports = {
                         break;
                 case 'delflow': return this.delFlow({args:['all']},cb);
                         break;
-                case 'getflows': return this.getFlows({args:['all']},cb);
+                case 'flow': return this.getFlows({args:['all']},cb);
                         break;
                 case 'clearflows':return this.clearFlows({args:['all']},cb);
                         break;

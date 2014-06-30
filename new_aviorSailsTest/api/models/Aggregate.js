@@ -1,7 +1,7 @@
 //Aggregate stats
 
 module.export = {
-	identity: 'aggregatestats',
+	identity: 'aggregate',
 
 	connection: 'floodlight',
 
