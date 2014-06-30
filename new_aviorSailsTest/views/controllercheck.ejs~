@@ -1,0 +1,20 @@
+<div id="check"> 
+<h2> Welcome to Avior </h2>
+<h4> Please choose your controller below. </h4>
+<form>
+	<input type="radio" name="sdn_controller" value="floodlight" checked/>Floodlight<br />
+	<input type="radio" name="sdn_controller" value="opendaylight" />OpenDaylight<br />
+	<input type="radio" name="sdn_controller" value="pox" disabled/>POX<br />
+	<input type="radio" name="sdn_controller" value="nox" disabled/>NOX<br />
+	<input type="radio" name="sdn_controller" value="jaxon" disabled/>Jaxon<br />
+	<input type="radio" name="sdn_controller" value="beacon" disabled/>Beacon<br />
+	<input type="radio" name="sdn_controller" value="nodeflow" disabled/>Nodeflow<br />
+	<input type="radio" name="sdn_controller" value="openiris" disabled/>OpenIris<br />
+	<input type="radio" name="sdn_controller" value="mul" disabled/>Mul<br />
+	<input type="radio" name="sdn_controller" value="juniper" disabled/>Juniper<br />
+	<input type="radio" name="sdn_controller" value="maestro" disabled/>Maestro<br />
+	<input type="radio" name="sdn_controller" value="ryu" disabled/>Ryu
+</form>
+<h4> Please enter the IP address at which the controller is located. </h4>
+<input type="text" name="sdn_controller_host"><button name="sdn_info_send">Start Avior</button>
+</div>

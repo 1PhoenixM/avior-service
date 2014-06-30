@@ -1,0 +1,11 @@
+<tr id="portStats">
+	<td> <% var s = [state]; if (s == 0 || s == 512) { %> UP <% }else{%> DOWN <% } %>  </td>
+	<td> <%= name  %> </td>
+	<td> <%= portNumber %> </td>
+	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.receivePackets %><% } %> </td>
+	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.transmitPackets %><%} %> </td>
+	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.receiveBytes %><%} %> </td>
+	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.transmitBytes %><%} %> </td>
+	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.receiveDropped + portStatistics.transmitDropped %><%} %> </td>
+	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.receiveErrors + portStatistics.transmitErrors + portStatistics.receiveFrameErrors + portStatistics.receiveOverrunErrors + portStatistics.receiveCRCErrors %><%} %> </td>
+</tr>

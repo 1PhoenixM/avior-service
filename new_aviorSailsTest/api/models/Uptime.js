@@ -6,7 +6,7 @@ module.export = {
 	connection: 'floodlight',
 
 	attributes: {
-		Uptime_msec: {
+		UptimeMsec: {
             type: 'integer',
             required: true,
         }

@@ -1,0 +1,135 @@
+<div class="large-12 columns">	
+	<div id="container2">
+		<h3> Firewall </h3>
+		<div id="firewallEdTable">
+			<label for="firewallEdTableLabel">Select DPID:</label>
+			<select name="dpid" id="dpid">
+				<option value="dpidOption"></option>
+				<% _.each(coll, function(i) { %>  <option><%= i.dpid %></option> <% }); %>
+			</select>
+		 </div>
+	</div>
+ 
+
+	<!--This is the HTML that will render if the device is a mobile device--> 
+	<div class="show-for-medium-down">
+		<button id="getRules">Push Rule</button>
+		<button id="removeRule">Delete Rule</button>
+		<button id="removeAllRules">Delete All Rules</button>
+		<button id="enableRules">Enable</button>
+		<button id="disableRules">Disable</button>
+		<button id="refreshRules">Refresh</button>
+		<button id="clearRule">Clear</button>
+		
+
+		<p>
+			<details id="advancedRuleDetails">
+	  		<summary id="advancedRules">Advanced Firewall Editor</summary>
+		
+			<input type="text" name="textinput-6" 
+			id="src-mac" placeholder="Data Layer Source" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="dst-mac" placeholder="Data Layer Destination" value=""
+			data-mini="true" class="">
+
+			<input type="text" name="textinput-6" 
+			id="ether-type" placeholder="Data Layer Type" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="src-ip" placeholder="Network Source" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="dst-ip" placeholder="Network Destination" value=""
+			data-mini="true" class="">
+		
+			<input type="text" name="textinput-6" 
+			id="protocol" placeholder="Network Protocol" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="src-port" placeholder="Transport Source" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="dst-port" placeholder="Transport Destination" value=""
+			data-mini="true" class="">
+			</details>
+		</p>
+	</div>
+
+	<!--This is the HTML that will render if the device is a desktop-->
+	<div class="show-for-large-up">
+		<div class="large-12 columns">
+			<div class="large-3 medium-3 columns">
+				<button id="getRules">Push Rule</button>
+			</div>
+			<div class="large-3 medium-3 columns">
+				<button id="removeRule">Delete Rule</button>
+			</div>
+			<div class="large-3 medium-3 columns">
+				<button id="removeAllRules">Delete All Rules</button>
+			</div>
+			<div class="large-3 medium-3 columns">
+				<button id="enableRules">Enable</button>
+			</div>
+			<div class="large-4 medium-4 columns">
+				<button id="disableRules">Disable</button>
+			</div>
+			<div class="large-4 medium-4 columns">
+				<button id="refreshRules">Refresh</button>
+			</div>
+			<div class="large-4 medium-4 columns">
+				<button id="clearRule">Clear</button>
+			</div>
+		</div>
+		
+
+		<div class="large-12 columns">
+		<p>
+			<details id="advancedRuleDetails">
+	  		<summary id="advancedRules">Advanced Firewall Editor</summary>
+		
+			<div class="large-6 medium-6 columns">
+			<input type="text" name="textinput-6" 
+			id="src-mac" placeholder="Data Layer Source" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="dst-mac" placeholder="Data Layer Destination" value=""
+			data-mini="true" class="">
+
+			<input type="text" name="textinput-6" 
+			id="ether-type" placeholder="Data Layer Type" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="src-ip" placeholder="Network Source" value=""
+			data-mini="true" class="">
+			</div>
+			
+			<div class="large-6 medium-6 columns">
+			<input type="text" name="textinput-6" 
+			id="dst-ip" placeholder="Network Destination" value=""
+			data-mini="true" class="">
+		
+			<input type="text" name="textinput-6" 
+			id="protocol" placeholder="Network Protocol" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="src-port" placeholder="Transport Source" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="dst-port" placeholder="Transport Destination" value=""
+			data-mini="true" class="">
+			</div>
+			</details>
+		</p>
+		</div>
+	</div>	
+</div>		
