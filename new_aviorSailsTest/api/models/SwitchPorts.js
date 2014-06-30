@@ -6,14 +6,51 @@ module.export = {
 	connection: 'floodlight',
 
 	attributes: {
-		PortState:{
+	
+        RXPackets:{
             type:'integer',
-            required:'true',
+            required:true
         },
-        PortName:{
+        TXPackets:{
             type:'integer',
-            required:'true',
+            required:true
         },
+        RXBytes:{
+            type:'integer',
+            required:true
+        },
+        TXBytes:{
+            type:'integer',
+            required:true
+        },
+        RXDrops:{
+            type:'integer',
+            required:true
+        },
+        TXDrops:{
+            type:'integer',
+            required:true
+        },
+        RXErrors:{
+            type:'integer',
+            required:true
+        },
+        TXErrors:{
+            type:'integer',
+            required:true
+        },
+        RXFrameErr:{
+            type:'integer',
+            required:true
+        },
+        RXOverrunErr:{
+            type:'integer',
+            required:true
+        },
+        RXCrcErr:{
+            type:'integer',
+            required:true
+        }
     }
 }
 

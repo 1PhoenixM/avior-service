@@ -10,6 +10,13 @@ var FROM_OFP = {
 	Attached_To: 'attachmentPoint',
 	DPID: 'switchDPID',
 	Port: 'port',
+    IdleTimeout: 'idleTimeout', 
+    HardTimeout: 'hardTimeout',
+    TableID: 'tableId',
+    DurationSeconds:'durationSeconds', 
+    DurationNanoSeconds:'durationNanoseconds',
+    PacketCount:'packetCount',
+    ByteCount:'byteCount',
 	Last_Seen: 'lastSeen',
     //Uptime Information
     Uptime_msec: 'systemUptimeMsec',
@@ -18,13 +25,18 @@ var FROM_OFP = {
     Hardware:'hardwareDescription',
     Software:'softwareDescription',
     SerialNum:'serialNumber',
-    //Switch Features information
+    //Switch Port information
     PortNum: "portNumber",
     RXPackets: "receivePackets",
     TXPackets: "transmitPackets",
     RXBytes: "receiveBytes",
     TXBytes:"transmitBytes",
-    DroppedPackets: "receiveDropped",
+    RXErrors: "receiveErrors",
+    TXErrors: "transmitErrors",
+    RXFrameErr: "receiveFrameErrors",
+    RXOverrunErr: "receiveOverrunErrors",
+    RXCrcErr: "receiveCRCErrors",
+    Collisions: "collisions",
     //Switch Port Information
     //I assume that this will use PortNum from switch features above
     PortName: "name",
@@ -44,6 +56,13 @@ var TO_OFP = {
 	attachmentPoint: 'Attached_To',
 	switchDPID: 'DPID',
 	port: 'Port',
+    idleTimeout: 'IdleTimeout', 
+    hardTimeout: 'HardTimeout',
+    tableId: 'TableID',
+    durationSeconds:'DurationSeconds', 
+    durationNanoseconds:'DurationNanoSeconds',
+    packetCount:'PacketCount',
+    byteCount:'ByteCount',
 	lastSeen: 'Last_Seen',
     //Uptime Information
     systemUptimeMsec: 'Uptime_msec',
@@ -58,7 +77,12 @@ var TO_OFP = {
     transmitPackets: "TXPackets",
     receiveBytes: "RXBytes",
     transmitBytes:"TXBytes",
-    receiveDropped: "DroppedPackets",
+    receiveErrors: "RXErrors",
+    transmitErrors: "TXErrors",
+    receiveFrameErrors: "RXFrameErr",
+    receiveOverrunErrors: "RXOverrunErr",
+    receiveCRCErrors: "RXCrcErr",
+    collisions: "Collisions",
     //Switch Port Information
     //I assume that this will use PortNum from switch features above
     name: "PortName",
