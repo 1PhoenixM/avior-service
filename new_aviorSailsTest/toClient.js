@@ -10,10 +10,17 @@ module.exports = function (ctlr,cb) {
 		res.on('end', function() {
                         //console.log(responseString);
                         var responseObject = JSON.parse(responseString);
+            
+                        if(ctlr.dpidParse){
                         //console.log('\n\n\n\n\n\n\n\n\n\n\n' + responseObject);
                         var newObject = ctlr.dpidParse(responseObject);
                         //console.log('\n\n\n\n\n\n\n\n\n\n\n' + newObject);
                         var normalizedObject = ctlr.normalize(newObject);
+                        }
+            
+                        else{
+                        var normalizedObject = ctlr.normalize(responseObject);
+                        }
                         //console.log(normalizedObject);
                         //ctlr.response.send(normalizedObject);
                         cb(null,normalizedObject);

@@ -46,8 +46,8 @@ var TO_OFP = {
     flow: '',
     match: 'Match',
     matchField: 'MatchField',
-    type: 'Type',
-    value: 'MatchValue',
+    type: 'Type', //switch type or match type?
+    value: 'Value', //this is used a lot
     actions: 'Actions',
     port: 'Port',
     
@@ -60,6 +60,10 @@ var TO_OFP = {
     durationNanoseconds: 'DurationNanoSeconds',
     packetCount: 'PacketCount',
     byteCount: 'ByteCount',
+    
+    portStatistics: '',
+    portStatistic: '',
+    nodeConnector: 'Port',
     receivePackets: 'RXPackets',
     transmitPackets: 'TXPackets',
     receiveBytes: 'RXBytes',
@@ -72,6 +76,22 @@ var TO_OFP = {
     receiveOverRunError: 'RXOverrunErr',
     receiveCrcError: 'RXCrcErr',
     collisionCount: 'Collisions',
+    
+    properties: '',
+    tables: 'Tables',
+    actions: 'Actions',
+    macAddress: 'MAC_Address',
+    capabilities: 'Capabilities',
+    buffers: 'Buffers',
+    
+    tableStatistics: '',
+    tableStatistic: '',
+    activeCount: 'ActiveCount',
+    lookupCount: 'LookupCount',
+    matchedCount: 'MatchedCount',
+    maximumEntries: 'MaxEntries', 
+    
+    nodeProperties: '',
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -112,7 +132,7 @@ module.exports = {
                 case 'flows': return this.getFlows({args:['default']},cb);
                 case 'staticroute': return this.getStaticRoutes({args:['default']},cb);
                 case 'subnet': return this.getSubnets({args:['default']},cb);
-                case 'switch': return this.getSwitches({args:['default']},cb);
+                case 'switchfeatures': return this.getNodes({args:['default']},cb);
                 case 'flowspec': return this.getFlowSpecs({args:['default']},cb);
                 case 'container': return this.getContainers({args:['default']},cb);
                 case 'nodecluster': return this.getNodeCluster({args:['default']},cb);        
@@ -294,7 +314,7 @@ module.exports = {
 			for (i in obj) {
 				normalizedObj.push(this.normalize(obj[i]))
 			}
-		} else if (obj.constructor === String || obj.constructor === Number) {
+		} else if (obj.constructor === String || obj.constructor === Number || obj === 0) {
 			normalizedObj = obj;
 		} else {
 			normalizedObj = {};

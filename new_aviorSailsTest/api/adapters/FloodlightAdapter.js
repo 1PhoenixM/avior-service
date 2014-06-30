@@ -183,7 +183,7 @@ module.exports = {
 			         for (i in obj) {
 				        normalizedObj.push(this.normalize(obj[i]))
 			         }
-		        } else if (obj.constructor === String || obj.constructor === Number) {
+		        } else if (obj.constructor === String || obj.constructor === Number || obj === 0) {
 			         normalizedObj = obj;
 		        } else {
 			         normalizedObj = {};
