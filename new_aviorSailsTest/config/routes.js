@@ -30,7 +30,8 @@ module.exports.routes = {
   '/': {
     view: 'controllercheck' //original: 'homepage'
   },
-
+    
+  '/sdncontroller': 'MainController.setinfo',
 
   // Custom routes here...
 

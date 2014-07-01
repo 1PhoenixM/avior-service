@@ -119,27 +119,34 @@ module.exports = {
 
         find: function (conn, coll, options, cb) {
                 switch (coll){
-                case 'host': return this.getHosts({},cb);
-                        break;
-                case 'uptime': return this.getUptime({},cb);
-                        break;
-                case 'switchdesc': return this.getSwitchDesc({args:['all']},cb);
-                        break;
-                case 'switchfeatures': return this.getSwitchFeatures({args:['all']},cb);
+                        
+                //core        
+                case 'flow': return this.getFlows({args:['all']},cb);
                         break;
                 case 'switchports': return this.getSwitchPorts({args:['all']},cb);
                         break;
-                case 'queue': return this.getQueueStats({args:['all']},cb);
+                case 'table': return this.getTableStats({args:['all']},cb);
+                        break;
+                case 'topology': return this.getTopologyLinks({args:['all']},cb);
+                        break;
+                case 'host': return this.getHosts({},cb);
+                        break;
+                case 'switchfeatures': return this.getSwitchFeatures({args:['all']},cb);
                         break;
                 case 'flowstats': return this.getFlowStats({args:['all']},cb);
                         break;
-                case 'aggregate': return this.getAggregateStats({args:['all']},cb);
+                case 'switchdesc': return this.getSwitchDesc({args:['all']},cb);
                         break;
-                case 'table': return this.getTableStats({args:['all']},cb);
+                case 'queue': return this.getQueueStats({args:['all']},cb);
+                        break;
+                case 'aggregate': return this.getAggregateStats({args:['all']},cb);
                         break;
                 case 'switch': return this.getSwitches({args:['all']},cb);
                         break;
-                case 'topology': return this.getTopologyLinks({args:['all']},cb);
+                        
+                
+                //fl only
+                case 'uptime': return this.getUptime({},cb);
                         break;
                 case 'memory': return this.getMemory({args:['all']},cb);
                         break;
@@ -149,11 +156,11 @@ module.exports = {
                         break;
                 case 'topologyexternallinks':return this.getTopologyExternalLinks({args:['all']},cb);
                         break;
-                case 'postflow':return this.postFlow({args:['all']},cb);
+                
+                 //firewall and not used in find   
+               /* case 'postflow':return this.postFlow({args:['all']},cb);
                         break;
                 case 'delflow': return this.delFlow({args:['all']},cb);
-                        break;
-                case 'flow': return this.getFlows({args:['all']},cb);
                         break;
                 case 'clearflows':return this.clearFlows({args:['all']},cb);
                         break;
@@ -171,7 +178,7 @@ module.exports = {
                          break;
                 case 'postFirewallRule':return this.postFirewallRule({args:['all']},cb); 
                          break;
-                case 'deleteFirewallRule':return this.deleteFirewallRule({args:['all']},cb);
+                case 'deleteFirewallRule':return this.deleteFirewallRule({args:['all']},cb);*/
 		        default: return cb();
                         break;
                 }
@@ -194,6 +201,9 @@ module.exports = {
         destroy: function (conn, coll, options, cb) {
                 switch (coll){
                 case 'flow': return this.delFlow({data:{}},cb);
+                        break;
+                case 'clearflows':return this.clearFlows({args:['all']},cb);
+                        break;
 		        default: return cb();
                 }
         },

@@ -123,26 +123,46 @@ module.exports = {
 
         find: function (conn, coll, options, cb) {
                 switch (coll){
+                        
+                //core
                 case 'flow': return this.getFlowStats({args:['default']},cb);
-                case 'port': return this.getPortStats({args:['default']},cb);
-                case 'table': return this.getTableStats({args:['default']},cb);  
+                        break;
+                case 'switchports': return this.getPortStats({args:['default']},cb);
+                         break;
+                case 'table': return this.getTableStats({args:['default']},cb);
+                         break;
                 case 'topology': return this.getTopology({args:['default']},cb);
-                case 'topologylinks': return this.getTopologyLinks({args:['default']},cb); 
+                         break;
+                case 'topologylinks': return this.getTopologyLinks({args:['default']},cb);
+                         break;
                 case 'host': return this.getHosts({args:['default']},cb);
+                         break;
                 case 'flows': return this.getFlows({args:['default']},cb);
-                case 'staticroute': return this.getStaticRoutes({args:['default']},cb);
-                case 'subnet': return this.getSubnets({args:['default']},cb);
+                         break;
                 case 'switchfeatures': return this.getNodes({args:['default']},cb);
+                         break;
                 case 'flowspec': return this.getFlowSpecs({args:['default']},cb);
+                         break;
+                        
+                //odl only        
+                case 'staticroute': return this.getStaticRoutes({args:['default']},cb);
+                         break;
+                case 'subnet': return this.getSubnets({args:['default']},cb);
+                         break;
+                case 'flowspec': return this.getFlowSpecs({args:['default']},cb);
+                         break;
                 case 'container': return this.getContainers({args:['default']},cb);
-                case 'nodecluster': return this.getNodeCluster({args:['default']},cb);        
+                         break;
+                case 'nodecluster': return this.getNodeCluster({args:['default']},cb);
+                         break;
 		        default: return cb();
+                        break;
                 }
         },
     
         create: function (conn, coll, options, cb) {
                 switch (coll){
-                
+                case 'flow': return this.addFlow();
 		        default: return cb();
                 }
         },
@@ -156,7 +176,7 @@ module.exports = {
     
         destroy: function (conn, coll, options, cb) {
                 switch (coll){
-                
+                case 'flow': return this.deleteFlow();
 		        default: return cb();
                 }
         },

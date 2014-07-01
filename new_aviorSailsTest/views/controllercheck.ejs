@@ -1,7 +1,44 @@
+<script>
+    function sdn_info_send(){
+        //var http = require('http');
+        var rads=document.getElementsByName('sdn_controller');
+        for (var i=0; i < rads.length; i++){
+            if (rads[i].checked){
+                var conn=rads[i].value;
+            }
+        }
+        var host=document.getElementById('sdn_controller_host').value;
+        
+        if(host){
+        $.post(
+                '/sdncontroller',
+                {connection:conn, hostname:host},
+                function () {
+                   alert("Sent");
+                }
+            ).fail(function(res){
+                alert("Error: " + res.getResponseHeader("error"));
+        });
+        /*var opts = {method:'POST',hostname:'localhost',port:1337,path:'/sdncontroller'};
+        var req = http.request(opts, function(res) {
+          res.setEncoding('utf8');
+          res.on('data', function (chunk) {
+            console.log('BODY: ' + chunk);
+          });
+        });
+        req.write('{connection:conn, hostname:host}');
+        req.end();*/
+        alert("Sent.");
+        }
+        else{
+         alert("Please provide an IP address.");   
+        }
+}
+</script>
 <div id="check"> 
 <h2> Welcome to Avior </h2>
 <h4> Please choose your controller below. </h4>
-<form id="sdn_controller">
+<form>
 	<input type="radio" name="sdn_controller" value="floodlight" checked/>Floodlight<br />
 	<input type="radio" name="sdn_controller" value="opendaylight" />OpenDaylight<br />
 	<input type="radio" name="sdn_controller" value="pox" disabled/>POX<br />
@@ -16,6 +53,5 @@
 	<input type="radio" name="sdn_controller" value="ryu" disabled/>Ryu
 </form>
 <h4> Please enter the IP address at which the controller is located. </h4>
-<input type="text" name="sdn_controller_host" id="sdn_controller_host" style="width:200px;" value="">
-<button name="sdn_info_send" onclick="">Start Avior</button>
+<input type="text" name="sdn_controller_host" id="sdn_controller_host" style="width:200px;" value=""><button name="sdn_info_send" onclick="sdn_info_send();">Start Avior</button>
 </div>
