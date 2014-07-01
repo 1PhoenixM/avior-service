@@ -3,7 +3,7 @@
 module.export = {
 	identity: 'portstats',
 
-	connection: 'opendaylight',
+	connection: 'floodlight',
 
 	attributes: {
 		DPID: {

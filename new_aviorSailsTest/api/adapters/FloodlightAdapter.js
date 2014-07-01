@@ -200,21 +200,21 @@ module.exports = {
 
         normalize: function (obj) {
                 var normalizedField;
-                var normalizedObj;    
-                if (!obj){ return 'null'; }
+                var normalizedObj;
+                if (!obj){ return 0; } //to fix: this applies to both "null" and "0" responses.
 		        if (obj.constructor === Array) {
 			         normalizedObj = [];
 			         for (i in obj) {
 				        normalizedObj.push(this.normalize(obj[i]))
 			         }
 		        } else if (obj.constructor === String || obj.constructor === Number || obj === 0) {
-			         normalizedObj = obj;
+                        normalizedObj = obj;
 		        } else {
 			         normalizedObj = {};
 			         for (fromField in TO_OFP) {
-				        if (obj[fromField]) {
+				        if (obj[fromField] || obj[fromField] === 0) { //added so that "0" responses are not discarded
 		 	        	       toField = TO_OFP[fromField];
-	                        	  normalizedObj[toField] = this.normalize(obj[fromField]); //Nested structs? Probably handled recursively
+	                           normalizedObj[toField] = this.normalize(obj[fromField]); //Nested structs? Probably handled recursively
 				        }
 			         }
 			/* NOT CURRENTLY USED - REVERTED BACK TO TO_OFP APPROACH

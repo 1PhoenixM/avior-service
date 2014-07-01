@@ -308,7 +308,7 @@ module.exports = {
         normalize: function (obj) {
                 var normalizedField;
                 var normalizedObj;
-        if (!obj){ return 'null'; }
+        if (!obj){ return 0; }
 		if (obj.constructor === Array) {
 			normalizedObj = [];
 			for (i in obj) {
@@ -319,7 +319,7 @@ module.exports = {
 		} else {
 			normalizedObj = {};
 			for (fromField in TO_OFP) {
-				if (obj[fromField]) {
+				if (obj[fromField] || obj[fromField] === 0) {
 		 	        	toField = TO_OFP[fromField];
 	                        	normalizedObj[toField] = this.normalize(obj[fromField]);
 				}
