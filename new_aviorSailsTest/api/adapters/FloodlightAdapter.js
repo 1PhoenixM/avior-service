@@ -49,7 +49,7 @@ var TO_OFP = {
 	// name-in-floodlight: name-in-models
 	//Hosts Information
     Stats: 'Stats',
-    
+    DPID: 'DPID',
     mac: 'MAC_Address',
 	ipv4: 'IP_Address',
 	vlan: 'VLAN_ID',
@@ -242,7 +242,9 @@ module.exports = {
             newObj = {};
             arr = [];
             for (dpid in obj){
-                arr.push(dpid);
+                innerObj = {};
+                innerObj.DPID = dpid;
+                arr.push(innerObj);
                 arr.push(obj[dpid]);
             }
             newObj.Stats = arr;
