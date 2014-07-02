@@ -32,6 +32,10 @@ module.exports.routes = {
   },
     
   '/sdncontroller': 'MainController.setinfo',
+    
+  '/avior':{
+    view: 'login' 
+  },
 
   // Custom routes here...
 
