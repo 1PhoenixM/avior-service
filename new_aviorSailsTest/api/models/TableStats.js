@@ -3,12 +3,12 @@
 module.export = {
 	identity: 'tablestats',
 
-	connection: 'opendaylight',
+	connection: 'floodlight',
 
 	attributes: {
 		DPID: {
 			type: 'string',
-			required: true
+			required: false
 		},
         Name: {
 			type: 'string',

@@ -88,6 +88,21 @@ var TO_OFP = {
     name: "PortName",
     //Keep in mind that it seems that a state of 512 means that the port is up and a state of 513 means that the port is down
     state: "PortState",
+    //TableStats
+    activeCount: "ActiveCount",
+    wildcards: "Wildcards",
+    tableId: "TableID",
+    maximumEntries: "MaxEntries",
+    lookupCount: "LookupCount",
+    matchedCount: "MatchedCount",
+    name: "Name",
+    //src-switch: "SourceDPID",
+    //src-port: "SourcePortNum",
+    //src-port-state: "SourcePortState",
+    //dst-switch: "DestinationDPID",
+    //dst-port: "DestinationPort",
+    //dst-port-state: "DestinationPortState",
+    type: "LinkType",
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -125,7 +140,7 @@ module.exports = {
                         break;
                 case 'switchports': return this.getSwitchPorts({args:['all']},cb);
                         break;
-                case 'table': return this.getTableStats({args:['all']},cb);
+                case 'tablestats': return this.getTableStats({args:['all']},cb);
                         break;
                 case 'topology': return this.getTopologyLinks({args:['all']},cb);
                         break;
