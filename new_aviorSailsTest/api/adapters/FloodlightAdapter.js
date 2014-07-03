@@ -88,6 +88,12 @@ var TO_OFP = {
     name: "PortName",
     //Keep in mind that it seems that a state of 512 means that the port is up and a state of 513 means that the port is down
     state: "PortState",
+    currentFeatures: "CurrentFeatures",
+    advertisedFeatures: "AdvertisedFeatures",
+    supportedFeatures: "SupportedFeatures",
+    peerFeatures: "PeerFeatures",
+    config: "Config",
+    hardwareAddress: "HardwareAddress",
     //TableStats
     activeCount: "ActiveCount",
     wildcards: "Wildcards",
@@ -95,14 +101,21 @@ var TO_OFP = {
     maximumEntries: "MaxEntries",
     lookupCount: "LookupCount",
     matchedCount: "MatchedCount",
-    name: "Name",
+    //name: "Name",
     //src-switch: "SourceDPID",
     //src-port: "SourcePortNum",
     //src-port-state: "SourcePortState",
     //dst-switch: "DestinationDPID",
     //dst-port: "DestinationPort",
     //dst-port-state: "DestinationPortState",
-    type: "LinkType",
+    type: "Type",
+    //SwitchFeatures
+    actions: "Actions",
+    buffers: "Buffers",
+    capabilities: "Capabilities",
+    datapathId: "Datapath",
+    ports: "Ports",
+    healthy: "Healthy",
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -232,7 +245,7 @@ module.exports = {
 			         for (i in obj) {
 				        normalizedObj.push(this.normalize(obj[i]))
 			         }
-		        } else if (obj.constructor === String || obj.constructor === Number || obj === 0) {
+		        } else if (obj.constructor === String || obj.constructor === Number || obj.constructor === Boolean || obj === 0) {
                         normalizedObj = obj;
 		        } else {
 			         normalizedObj = {};
@@ -254,7 +267,7 @@ module.exports = {
         },
     
         dpidParse: function (obj) {
-            newObj = {};
+            /*newObj = {};
             arr = [];
             for (dpid in obj){
                 innerObj = {};
@@ -263,7 +276,11 @@ module.exports = {
                 arr.push(obj[dpid]);
             }
             newObj.Stats = arr;
-            return newObj;
+            return newObj;*/
+            
+    
+                return obj;    
+
         },
   
     getSwitchDesc: restCall('GET','/wm/core/switch/:arg:/desc/json'),    //"all" returns switch dpid objects

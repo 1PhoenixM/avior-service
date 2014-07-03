@@ -9,7 +9,7 @@ require.config({
 		underscore: "lib/lodash.min",
 		backbone: "lib/backbone.min",
 		marionette: "lib/backbone.marionette.min",
-		template: "../tpl",
+		template: "../../tpl",
 		openflow: "openflow/ofp",
                 jqm: "junaid.js/jqm-docs",
 	},
