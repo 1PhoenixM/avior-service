@@ -42,6 +42,9 @@ var FROM_OFP = {
     PortName: "name",
     //Keep in mind that it seems that a state of 512 means that the port is up and a state of 513 means that the port is down
     PortState: "state",
+    TotalMemory: "total",
+    FreeMemory: "free",
+    Health: "healthy"
     
 };
 
@@ -108,6 +111,9 @@ var TO_OFP = {
     //dst-switch: "DestinationDPID",
     //dst-port: "DestinationPort",
     //dst-port-state: "DestinationPortState",
+    total: "TotalMemory",
+    free: "FreeMemory",
+    healthy: "Health",
     type: "Type",
     //SwitchFeatures
     actions: "Actions",
@@ -116,6 +122,11 @@ var TO_OFP = {
     datapathId: "Datapath",
     ports: "Ports",
     healthy: "Healthy",
+    type: "LinkType",
+    total: "TotalMemory",
+    free: "FreeMemory",
+    healthy: "Health"
+
 };
 
 // Creates a function that, when called, will make a REST API call
