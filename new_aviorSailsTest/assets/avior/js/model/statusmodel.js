@@ -6,7 +6,7 @@ define([
 	var StatusModel = Backbone.Model.extend({
 		urlRoot: Util.missingCtlrErr,
 		defaults: {
-			healthy: 'unknown'
+			Health: 'unknown'
 		},
 	});
 	

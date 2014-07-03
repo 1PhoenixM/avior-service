@@ -9,11 +9,13 @@
 module.exports = {
 
   attributes: {
-  	
-  	/* e.g.
-  	nickname: 'string'
-  	*/
-    
+      TotalMemory:{
+        type: 'integer',
+        required: true
+      },
+      FreeMemory:{
+        type: 'integer',
+        required: true
+      }
   }
-
 };

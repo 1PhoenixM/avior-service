@@ -7,8 +7,8 @@ define([
 		/* Check for controller specific URL */
 		urlRoot: Util.missingCtlrErr,
 		defaults: {
-			total: 0,
-			free: 0
+			TotalMemory: 0,
+			FreeMemory: 0
 		},
 	});
 	return MemoryModel;

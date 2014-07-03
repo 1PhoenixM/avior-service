@@ -9,11 +9,11 @@
 module.exports = {
 
   attributes: {
-  	
-  	/* e.g.
-  	nickname: 'string'
-  	*/
-    
+  	Health: {
+        type: "boolean",
+        required: true
+        
+    }
   }
 
 };
