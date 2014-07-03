@@ -8,7 +8,7 @@
 		model: Host,
 		url: Util.missingCtlrErr,
                 comparator: function(hst){
-                        var addresses = hst.get("ipv4");
+                        var addresses = hst.get("IP_Address");
                         if (addresses.length){
                                 return this.ipstr2ipnum(addresses[0]);
                         }

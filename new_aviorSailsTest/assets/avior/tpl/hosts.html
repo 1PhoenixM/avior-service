@@ -6,8 +6,8 @@
 	<!-- Loop over hosts, display each one as own accordion -->
 	<% _.each(hosts, function(host) { %>
 	<div data-role="collapsible">
-		<h3><% if (host.get("ipv4").length > 0) {
-				%><%= host.get("ipv4")[0] %><% } 
+		<h3><% if (host.get("IP_Address").length > 0) {
+				%><%= host.get("IP_Address")[0] %><% } 
 			else {
 				%>(no IP address found)<%;
 			}
@@ -16,23 +16,23 @@
 			Code in place to handle singular and plural in title
 			Table borders invisible -->
 		<p>
-			<table border="0"><tr><td>IP Address<% if (_.size(host.get("ipv4")) > 1) { %>es<%}%>: </td>
-			<% _.each(host.get("ipv4"), function(current) {
+			<table border="0"><tr><td>IP Address<% if (_.size(host.get("IP_Address")) > 1) { %>es<%}%>: </td>
+			<% _.each(host.get("IP_Address"), function(current) {
 				%><td><%= current %></td><%
 			}); %>
 		</tr>
 		
 		<!-- Use same table as IP addresses -->
-		<tr><td>Mac Address<% if (_.size(host.get("mac")) > 1) { %>es<%}%>: </td>
-			<% _.each(host.get("mac"), function(current) {
+		<tr><td>Mac Address<% if (_.size(host.get("MAC_Address")) > 1) { %>es<%}%>: </td>
+			<% _.each(host.get("MAC_Address"), function(current) {
 				%><td><%= current %></td><%
 			 }); %>
 		
 		</tr>
 		
 		<!-- Same table still -->
-		<tr><td>Attached to switch<% if (_.size(host.get("attachmentPoint")) > 1) { %>es<%}%>: </td>
-		<% _.each(host.get("attachmentPoint"), function(current) {
+		<tr><td>Attached to switch<% if (_.size(host.get("Attached_To")) > 1) { %>es<%}%>: </td>
+		<% _.each(host.get("Attached_To"), function(current) {
 				%><td><%= current.switchDPID %>
 				, on port <%= current.port %></td><%
 			 }); %>
@@ -40,7 +40,7 @@
 		
 		<!-- TODO: Need to get .toLocalString() working -->
 		<tr><td>Last Seen: </td>
-			<td><%= new Date(host.get("lastSeen")).toLocaleString() %> </td>
+			<td><%= new Date(host.get("Last_Seen")).toLocaleString() %> </td>
 		</tr></table>
 		</p>
 	</div>

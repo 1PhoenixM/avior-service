@@ -2,7 +2,7 @@ define([
 	"model/features"
 ], function(Features){
 	/* Floodlight specific URL for switch features */
-	Features.prototype.url = "/wm/core/switch/all/features/json"; 
+	Features.prototype.url = "/switchfeatures/find"; 
 	
 	Features.prototype.parse = function(resp) {
 		function compare(a,b) {
