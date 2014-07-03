@@ -1,4 +1,4 @@
-module.exports = function (ctlr,cb) {
+module.exports = function (ctlr,call,cb) {
 	return function (res) {
 		var responseString = '';
 		res.setEncoding('utf-8');
@@ -13,7 +13,7 @@ module.exports = function (ctlr,cb) {
             
                         if(ctlr.dpidParse){
                         //console.log('\n\n\n\n\n\n\n\n\n\n\n' + responseObject);
-                        var newObject = ctlr.dpidParse(responseObject);
+                        var newObject = ctlr.dpidParse(call, responseObject);
                         //console.log('\n\n\n\n\n\n\n\n\n\n\n' + newObject);
                         var normalizedObject = ctlr.normalize(newObject);
                         }

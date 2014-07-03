@@ -122,6 +122,7 @@ var TO_OFP = {
     capabilities: "Capabilities",
     datapathId: "Datapath",
     ports: "Ports",
+    dpid: "DPID",
     healthy: "Healthy",
     //type: "LinkType",
     total: "TotalMemory",
@@ -140,7 +141,7 @@ var restCall = function(apiMethod,apiPath){
                         }
                 }
                 opts = {method:apiMethod,hostname:'10.11.17.40',port:8080,path:apiPath};
-                req = http.request(opts, toClient(this,cb));
+                req = http.request(opts, toClient(this,options.call,cb));
                 if (options.data) {
                         req.write(JSON.stringify(options.data));
                 }
@@ -158,67 +159,68 @@ module.exports = {
         },
 
         find: function (conn, coll, options, cb) {
+            
                 switch (coll){
-                        
+                    
                 //core        
-                case 'flow': return this.getFlows({args:['all']},cb);
+                case 'flow': return this.getFlows({args:['all'],call:coll},cb);
                         break;
-                case 'switchports': return this.getSwitchPorts({args:['all']},cb);
+                case 'switchports': return this.getSwitchPorts({args:['all'],call:coll},cb);
                         break;
-                case 'tablestats': return this.getTableStats({args:['all']},cb);
+                case 'tablestats': return this.getTableStats({args:['all'],call:coll},cb);
                         break;
-                case 'topology': return this.getTopologyLinks({args:['all']},cb);
+                case 'topology': return this.getTopologyLinks({args:['all'],call:coll},cb);
                         break;
-                case 'host': return this.getHosts({},cb);
+                case 'host': return this.getHosts({call:coll},cb);
                         break;
-                case 'switchfeatures': return this.getSwitchFeatures({args:['all']},cb);
+                case 'switchfeatures': return this.getSwitchFeatures({args:['all'],call:coll},cb);
                         break;
-                case 'flowstats': return this.getFlowStats({args:['all']},cb);
+                case 'flowstats': return this.getFlowStats({args:['all'],call:coll},cb);
                         break;
-                case 'switchdesc': return this.getSwitchDesc({args:['all']},cb);
+                case 'switchdesc': return this.getSwitchDesc({args:['all'],call:coll},cb);
                         break;
-                case 'queue': return this.getQueueStats({args:['all']},cb);
+                case 'queue': return this.getQueueStats({args:['all'],call:coll},cb);
                         break;
-                case 'aggregate': return this.getAggregateStats({args:['all']},cb);
+                case 'aggregate': return this.getAggregateStats({args:['all'],call:coll},cb);
                         break;
-                case 'switch': return this.getSwitches({args:['all']},cb);
+                case 'switch': return this.getSwitches({args:['all'],call:coll},cb);
                         break;
                         
                 
                 //fl only
-                case 'uptime': return this.getUptime({},cb);
+                case 'uptime': return this.getUptime({args:['all'],call:coll},cb);
                         break;
-                case 'memory': return this.getMemory({args:['all']},cb);
+                case 'memory': return this.getMemory({args:['all'],call:coll},cb);
                         break;
-                case 'health': return this.getHealth({args:['all']},cb);
+                case 'health': return this.getHealth({args:['all'],call:coll},cb);
                         break;
-                case 'topologyclusters':return this.getTopologyClusters({args:['all']},cb);
+                case 'topologyclusters':return this.getTopologyClusters({args:['all'],call:coll},cb);
                         break;
-                case 'topologyexternallinks':return this.getTopologyExternalLinks({args:['all']},cb);
+                case 'topologyexternallinks':return this.getTopologyExternalLinks({args:['all'],call:coll},cb);
                         break;
                 
                  //firewall and not used in find   
-               /* case 'postflow':return this.postFlow({args:['all']},cb);
+               /* case 'postflow':return this.postFlow({args:['all'],call:coll},cb);
                         break;
-                case 'delflow': return this.delFlow({args:['all']},cb);
+                case 'delflow': return this.delFlow({args:['all'],call:coll},cb);
                         break;
-                case 'clearflows':return this.clearFlows({args:['all']},cb);
+                case 'clearflows':return this.clearFlows({args:['all'],call:coll},cb);
                         break;
-                case 'getFirewallStatus':return this.getFirewallStatus({args:['all']},cb); 
+                case 'getFirewallStatus':return this.getFirewallStatus({args:['all'],call:coll},cb); 
                          break;
-                case 'enableFirewall':return this.enableFirewall({args:['all']},cb); 
+                case 'enableFirewall':return this.enableFirewall({args:['all'],call:coll},cb); 
                          break;
-                case 'disableFirewall':return this.disableFirewall({args:['all']},cb); 
+                case 'disableFirewall':return this.disableFirewall({args:['all'],call:coll},cb); 
                          break;
-                case 'getFirewallStorageRules':return this.getFirewallStorageRules({args:['all']},cb);
+                case 'getFirewallStorageRules':return this.getFirewallStorageRules({args:['all'],call:coll},cb);
                          break;
-                case 'getFirewallSubnetMask':return this.getFirewallSubnetMask({args:['all']},cb);
+                case 'getFirewallSubnetMask':return this.getFirewallSubnetMask({args:['all'],call:coll},cb);
                          break;
-                case 'getFirewallRules':return this.getFirewallRules({args:['all']},cb); 
+                case 'getFirewallRules':return this.getFirewallRules({args:['all'],call:coll},cb); 
                          break;
-                case 'postFirewallRule':return this.postFirewallRule({args:['all']},cb); 
+                case 'postFirewallRule':return this.postFirewallRule({args:['all'],call:coll},cb); 
                          break;
-                case 'deleteFirewallRule':return this.deleteFirewallRule({args:['all']},cb);*/
+                case 'deleteFirewallRule':return this.deleteFirewallRule({args:['all'],call:coll},cb);*/
 		        default: return cb();
                         break;
                 }
@@ -247,7 +249,7 @@ module.exports = {
 		        default: return cb();
                 }
         },
-
+    
         normalize: function (obj) {
                 var normalizedField;
                 var normalizedObj;
@@ -278,21 +280,23 @@ module.exports = {
                 return normalizedObj;
         },
     
-        dpidParse: function (obj) {
-            /*newObj = {};
-            arr = [];
-            for (dpid in obj){
-                innerObj = {};
-                innerObj.DPID = dpid;
-                arr.push(innerObj);
-                arr.push(obj[dpid]);
+        dpidParse: function (current, obj) {
+            if(current === 'switchports' || current === 'queue' || current === 'flowstats' || current === 'aggregate' || current === 'switchdesc' || current ===                            'tablestats' || current === 'switchfeatures'){
+                    newObj = {};
+                    arr = [];
+                    for (dpid in obj){
+                        innerObj = {};
+                        innerObj.DPID = dpid;
+                        arr.push(innerObj);
+                        arr.push(obj[dpid]);
+                    }
+                    newObj.Stats = arr;
+                    return newObj;
             }
-            newObj.Stats = arr;
-            return newObj;*/
             
-    
+            else{
                 return obj;    
-
+            }
         },
   
     getSwitchDesc: restCall('GET','/wm/core/switch/:arg:/desc/json'),    //"all" returns switch dpid objects

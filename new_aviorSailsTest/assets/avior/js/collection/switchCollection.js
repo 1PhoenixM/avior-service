@@ -8,7 +8,7 @@ define([
                 url: Util.missingCtlrErr,
                 model: Switch,
                 comparator: function(sw){
-                        return sw.get("dpid");
+                        return sw.get("DPID");
                 },
         });
         return SwitchCollection;
