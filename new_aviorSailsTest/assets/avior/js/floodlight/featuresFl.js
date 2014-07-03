@@ -24,7 +24,7 @@ define([
 			object.type = resp[key].type;
 			object.version = resp[key].version;
 			object.xid = resp[key].xid;
-			object.ports = resp[key].ports;
+			object.ports = resp[key].Ports;
 			
 			object.ports.sort(compare);
 			

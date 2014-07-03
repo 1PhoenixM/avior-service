@@ -13,6 +13,8 @@
 		FlowCollection.prototype.parse = function(response){
 		    var innerArray = response[this.dpid];
    			return innerArray;
+            // for uptime, do something like this
+            // get and return response[0]
 		}; 
 	return FlowCollection;
 });

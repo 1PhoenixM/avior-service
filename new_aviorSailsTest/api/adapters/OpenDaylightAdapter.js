@@ -39,7 +39,7 @@ var TO_OFP = {
 	nodeId: 'DPID',
 	nodeConnectorId: 'Port',
     //ODL includes many object/array labels that FL doesn't, such as the below.
-    hostConfig: '',
+    hostConfig: 'Hosts',
     flowStatistics: '',
     node: 'AttachedTo',
     flowStatistic: '',
@@ -104,7 +104,7 @@ var restCall = function(apiMethod,apiPath){
                         }
                 }
                 opts = {method:apiMethod,hostname:'localhost',port:8080,path:apiPath,auth:'admin:admin'}; //TODO: mask auth
-                req = http.request(opts, toClient(this,cb));
+                req = http.request(opts, toClient(this,null,cb));
                 if (options.data) {
                         req.write(JSON.stringify(options.data));
                 }
@@ -334,7 +334,7 @@ module.exports = {
 			for (i in obj) {
 				normalizedObj.push(this.normalize(obj[i]))
 			}
-		} else if (obj.constructor === String || obj.constructor === Number || obj === 0) {
+		} else if (obj.constructor === String || obj.constructor === Number ||  obj.constructor === Boolean || obj === 0) {
 			normalizedObj = obj;
 		} else {
 			normalizedObj = {};
@@ -352,6 +352,7 @@ module.exports = {
 				}
 			}*/
                 }
+                normalizedObj = normalizedObj.Hosts; //parse out unnessecary fields
                 return normalizedObj;
         },
 
