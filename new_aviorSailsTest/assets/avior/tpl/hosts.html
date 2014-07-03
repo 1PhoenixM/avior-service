@@ -33,8 +33,8 @@
 		<!-- Same table still -->
 		<tr><td>Attached to switch<% if (_.size(host.get("Attached_To")) > 1) { %>es<%}%>: </td>
 		<% _.each(host.get("Attached_To"), function(current) {
-				%><td><%= current.switchDPID %>
-				, on port <%= current.port %></td><%
+				%><td><%= current.DPID %>
+				, on port <%= current.Port %></td><%
 			 }); %>
 		</tr>
 		

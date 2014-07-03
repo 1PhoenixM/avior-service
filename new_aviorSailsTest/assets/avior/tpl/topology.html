@@ -7,7 +7,7 @@
 			
 			<select name="nodeList" id="nodeList" data-icon="false" data-theme="b" style="width: 100px;">
 				<option value="nodeList">Local View</option>
-				<% _.each(coll, function(i) { %>  <option><%= i.dpid || i['mac'][0] %></option> <% }); %>
+				<% _.each(coll, function(i) { %>  <option><%= i.DPID || i['MAC_Address'][0] %></option> <% }); %>
 			</select>
 
 			<button id="showAdvanced" data-icon="false" data-theme="b" style="display:block;" onclick="if(document.getElementById('advancedTopo').style.display==='none'

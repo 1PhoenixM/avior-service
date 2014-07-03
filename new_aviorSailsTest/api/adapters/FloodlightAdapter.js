@@ -105,11 +105,12 @@ var TO_OFP = {
     lookupCount: "LookupCount",
     matchedCount: "MatchedCount",
     //name: "Name",
+    //Topology
     "src-switch": "SourceDPID",
     "src-port": "SourcePortNum",
     "src-port-state": "SourcePortState",
     "dst-switch": "DestinationDPID",
-    "dst-port": "DestinationPort",
+    "dst-port": "DestinationPortNum",
     "dst-port-state": "DestinationPortState",
     total: "TotalMemory",
     free: "FreeMemory",
@@ -122,7 +123,7 @@ var TO_OFP = {
     datapathId: "Datapath",
     ports: "Ports",
     healthy: "Healthy",
-    type: "LinkType",
+    //type: "LinkType",
     total: "TotalMemory",
     free: "FreeMemory",
     healthy: "Health"

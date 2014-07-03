@@ -2,6 +2,6 @@ define([
 	"collection/topologyCollection"
 ], function(TopologyCollection){
 	/* Floodlight specific URL for topology */
-	TopologyCollection.prototype.url = "/wm/topology/links/json"; 
+	TopologyCollection.prototype.url = "/topology/find"; 
 	return TopologyCollection;
 }); 

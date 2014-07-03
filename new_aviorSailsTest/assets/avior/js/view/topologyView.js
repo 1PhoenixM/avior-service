@@ -37,15 +37,15 @@ define([
 				//item.set("id", item.dpid);
 			}, this);
 			_.forEach(this.hosts.models, function(item) {
-				var mac = item.get("mac")[0];
+				var MAC_Address = item.get("MAC_Address")[0];
 				//console.log("HOST IDS");
-				//console.log(mac);
-				item.set("id", mac);
+				//console.log(MAC_Address);
+				item.set("id", MAC_Address);
 				//console.log("ITEMS AFTER SETTING HOST ID");
 				//console.log(JSON.stringify(item));
 				
-					if (item.attributes.ipv4.length === 0) {
-						item.set("ipv4", "ip not found");
+					if (item.attributes.IP_Address.length === 0) {
+						item.set("IP_Address", "ip not found");
 					}
 					this.switches.push(item);
 			}, this);
@@ -160,13 +160,13 @@ define([
     			console.log(e);
     			console.log(JSON.stringify(e));
     			// Get the source and target nodes
-    			if (e.attributes['src-switch'] !== e.attributes['dst-switch']){
+    			if (e.attributes['SourceDPID'] !== e.attributes['DestinationDPID']){
     			//console.log(JSON.stringify(e));
     			var sourceNode = self.switches.filter(function(n) {
-    												  	return n.attributes.dpid === e.attributes['src-switch']; 
+    												  	return n.attributes.dpid === e.attributes['SourceDPID']; 
     												  })[0],
         		targetNode = self.switches.filter(function(n) {
-    											  		return n.attributes.dpid === e.attributes['dst-switch']; 
+    											  		return n.attributes.dpid === e.attributes['DestinationDPID']; 
     											 })[0];
 	
     			// Add the edge to the array
@@ -184,14 +184,14 @@ define([
 				//console.log(JSON.stringify(e));
     			// Get the source and target nodes
     			// UNCOMMENT THIS IF STATEMENT WHEN USING MININET!!
-    			//if (e.attributes.ipv4.length > 0 && e.attributes.ipv4 !== "ip not found") {
+    			//if (e.attributes.IP_Address.length > 0 && e.attributes.IP_Address !== "ip not found") {
     				var sourceNode = self.switches.filter(function(n) {
-    														if (e.attributes.attachmentPoint[0] != undefined)
-    															return e.attributes.attachmentPoint[0].switchDPID ===  n.attributes.dpid; 
+    														if (e.attributes.Attached_To[0] != undefined)
+    															return e.attributes.Attached_To[0].DPID ===  n.attributes.dpid; 
     												  	  })[0],
         			targetNode = self.switches.filter(function(n) { 
-        													if (e.attributes.attachmentPoint[0] != undefined)
-    											  				return n.attributes.dpid === e.attributes.attachmentPoint[0].switchDPID; 
+        													if (e.attributes.Attached_To[0] != undefined)
+    											  				return n.attributes.dpid === e.attributes.Attached_To[0].DPID; 
     											  	 	  })[0];
 
     			// Add the edge to the array
@@ -232,7 +232,7 @@ define([
    			node = node.data(this.switches.models)
    					   .enter().append("g")
    					   .attr("class", "node")
-   					   .attr("id", function(d) { if (d.attributes.dpid === undefined) return d.attributes['mac'][0]; else return d.attributes.dpid; })
+   					   .attr("id", function(d) { if (d.attributes.dpid === undefined) return d.attributes['MAC_Address'][0]; else return d.attributes.dpid; })
       				   .call(drag);
       		//console.log("after nodes");
       		node.append("circle")
@@ -348,9 +348,9 @@ define([
     				.attr("dy", ".35em")
     				.attr("id", "nodeLabels")
     				.text(function(d) {if (d.attributes.id === undefined || d.attributes.id.length < 23) 
-    										if(d.attributes['ipv4'] === "ip not found") 
-    											return d.attributes['ipv4'] + "/" + d.attributes['mac'][0]; 
-    										else return d.attributes['ipv4'][0] + "/" + d.attributes['mac'][0]; 
+    										if(d.attributes['IP_Address'] === "ip not found") 
+    											return d.attributes['IP_Address'] + "/" + d.attributes['MAC_Address'][0]; 
+    										else return d.attributes['IP_Address'][0] + "/" + d.attributes['MAC_Address'][0]; 
     									else return d.attributes.id; });
 				this.toggleCount++;	
 			}
