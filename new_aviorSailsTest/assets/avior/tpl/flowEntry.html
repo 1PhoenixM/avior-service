@@ -1,0 +1,88 @@
+<tr id="flowEntry">
+	<td> <%= name %> </td>
+	<td> <%= priority %> </td>
+	<td> <%= match.inputPort %> </td>
+	<td> <% _.each(actions, function(action) {
+				 var temp = (action.type).toString();
+				 switch (temp) {
+                            case "OUTPUT":
+                                %> Type= output, port= <%= action.port %> <% 
+                                if (action != _.last(actions)) {
+                    				%><br> <%
+                    			} 
+                                return;
+                            case "OPAQUE_ENQUEUE":
+                                %> Type= enqueue, port= <%= action.port %>, queue id=  <%= action.queueId %> <% 
+                                if (action != _.last(actions)) {
+                    				%><br> <%
+                    			} 
+                                return;
+                            case "STRIP_VLAN":
+                                %> Type=  strip VLAN <% 
+                                if (action != _.last(actions)) {
+                    				%><br> <%
+                    			} 
+                                return;
+                            case "SET_VLAN_ID":
+                                %> Type=  set_VLAN_ID, VLAN= <%= action.virtualLanIdentifier %> <% 
+                                if (action != _.last(actions)) {
+                    				%><br> <%
+                    			} 
+                                return;
+                            case "SET_VLAN_PCP":
+                                %> Type=  set_VLAN_PCP, prio= <%= action.virtualLanPriorityCodePoint %> <% 
+                                if (action != _.last(actions)) {
+                    				%><br> <%
+                    			} 
+                                return;
+                            case "SET_DL_SRC":
+                            %>    %> Type=  set_DL_SRC, src=  <%= action.dataLayerAddress %> <% 
+                                if (action != _.last(actions)) {
+                    				%><br> <%
+                    			} 
+                                return;
+                            case "SET_DL_DST":
+                                %> Type=  set_DL_destination, destination=  <%= action.dataLayerAddress %> <% 
+                                if (action != _.last(actions)) {
+                    				%><br> <%
+                    			} 
+                                return;
+                            case "SET_NW_TOS":
+                                %> Type= set_network_TOS,  TOS=  <%= action.networkTypeOfService %> <% 
+                                if (action != _.last(actions)) {
+                    				%><br> <%
+                    			} 
+                                return;
+                            case "SET_NW_SRC":
+                                %> Type=  set_network_SRC, src=  <%= action.networkAddress %> <% 
+                                if (action != _.last(actions)) {
+                    				%><br> <%
+                    			} 
+                                return;
+                            case "SET_NW_DST":
+                                %> Type=  set_network_destination, destination=  <%= action.networkAddress %> <% 
+                                if (action != _.last(actions)) {
+                    				%><br> <%
+                    			} 
+                                return;
+                            case "SET_TP_SRC":
+                                %> Type=  set_TP_SRC, src port=  <%= action.transportPort %> <% 
+                                if (action != _.last(actions)) {
+                    				%><br> <%
+                    			} 
+                                return;
+                            case "SET_TP_DST":
+                                %> Type=  set_TP_destination, destination port=  <%= action.transportPort %> <% 
+                                if (action != _.last(actions)) {
+                    				%><br> <%
+                    			} 
+                                return; 
+                         }                     
+					}) %>
+		</td>
+	<td> <%= packetCount %> </td>
+	<td> <%= byteCount %> </td>
+	<td> <%= durationSeconds %> seconds </td>
+	<td> <%= idleTimeout %> </td>
+	<!--<td> <input type="checkbox" name="checkbox" id="checkbox"> </td>-->
+</tr>

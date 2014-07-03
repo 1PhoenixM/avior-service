@@ -1,0 +1,44 @@
+<div overflow: hidden;">
+    <!--<div id="buttonGroup" style="width: window.innerWidth/2; float: left;" data-role="controlgroup" data-type="horizontal">-->
+	<h3> Network Topology </h3>
+	<div>
+		<div class="large-3 medium-3 columns">
+			<button id="showLabels" data-icon="false" data-theme="b">Show Labels</button>
+			
+			<select name="nodeList" id="nodeList" data-icon="false" data-theme="b" style="width: 100px;">
+				<option value="nodeList">Local View</option>
+				<% _.each(coll, function(i) { %>  <option><%= i.dpid || i['mac'][0] %></option> <% }); %>
+			</select>
+
+			<button id="showAdvanced" data-icon="false" data-theme="b" style="display:block;" onclick="if(document.getElementById('advancedTopo').style.display==='none'
+			)document.getElementById('advancedTopo').style.display='block'; else document.getElementById('advancedTopo').style.display='none';">Advanced</button>
+				
+			<div id="advancedTopo" data-theme="c" data-content-theme="d" style="display:none;">
+				<input type="text" id="switchColor" placeholder="Switch Color" value=""></input>
+				<input type="text" id="hostColor" placeholder="Host Color" value=""  onKeydown="if(event.keyCode==13) colorChange.click()"></input>
+				<button id="colorChange">Change Colors</button>
+			</div>
+		</div>
+		
+		<!--</div>-->
+
+	    <div class="rightLegend" id="legendDiv" style="display:none; margin-left: function() {if (window.innerWidth > 350) 
+	    														return window.innerWidth/2;
+	    													else 
+	    														return 0;};"></div>
+    </div>														
+</div>
+
+<div class="leftLegend" id="legendDiv" style="display:none;"></div>
+
+
+<div id="doneDiv" style="display:none">
+	<div data-role="controlgroup" data-type="horizontal">
+		<button id="doneButton" data-icon="false" data-theme="b" style="float:right">Done</button>
+	</div>
+</div>
+
+
+<div class="outer">
+    <div class="inner"></div>
+</div>
