@@ -127,7 +127,24 @@ var TO_OFP = {
     //type: "LinkType",
     total: "TotalMemory",
     free: "FreeMemory",
-    healthy: "Health"
+    healthy: "Health",
+    //Match Criteria
+    match: "Match",
+    dataLayerDestination: "DataLayerDestination",
+    dataLayerSource: "DataLayerSource",
+    dataLayerType: "DataLayerType",
+    dataLayerVirtualLan: "DataLayerVLAN",
+    dataLayerVirtualLanPriorityCodePoint: "DataLayerVLAN_PCP",
+    inputPort: "InputPort",
+    networkDestination: "NetworkDestination",
+    networkDestinationMaskLen: "NetworkDestinationMaskLen",
+    networkProtocol: "NetworkProtocol",
+    networkSource: "NetworkSource",
+    networkSourceMaskLen: "NetworkSourceMaskLen",
+    networkTypeOfService: "NetworkTOS",
+    transportDestination: "TransportDestination",
+    transportSource: "TransportSource",
+    wildcards: "Wildcards",
 
 };
 
@@ -281,17 +298,26 @@ module.exports = {
         },
     
         dpidParse: function (current, obj) {
-            if(current === 'switchports' || current === 'queue' || current === 'flowstats' || current === 'aggregate' || current === 'switchdesc' || current ===                            'tablestats' || current === 'switchfeatures'){
-                    newObj = {};
+            if(current === 'switchports' || current === 'queue' || current === 'flowstats' || current === 'aggregate' || current === 'switchdesc' || current ===                            'tablestats' || current === 'switchfeatures' || current === 'flow'){
                     arr = [];
                     for (dpid in obj){
                         innerObj = {};
                         innerObj.DPID = dpid;
+                        ob = obj[dpid];
+                        if(ob.constructor === Array){
+                            ob = ob[0]; //TODO: Iterate
+                        }
+                        for (key in ob){
+                             /*if(current === 'flow'){
+                             for (flow in ob){
+                                ob = ob[""+flow+""];
+                                }
+                            }*/ //flow/find has hypenated (5-10) props it can't read
+                            innerObj[key] = ob[key];
+                        }
                         arr.push(innerObj);
-                        arr.push(obj[dpid]);
                     }
-                    newObj.Stats = arr;
-                    return newObj;
+                    return arr;
             }
             
             else{

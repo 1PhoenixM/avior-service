@@ -106,7 +106,7 @@ define([
 			_.forEach(self.collection.models, function(item) {
 				//console.log("ITEM");
 				//console.log(item);
-				var dp = item.get("dpid");	
+				var dp = item.get("DPID");	
 				this.displayDesc(dp, item);
 				this.displayPorts(dp, item);
     	 		this.displayFlows(dp, item);		
@@ -120,11 +120,11 @@ define([
 			var self = this;
 			_.forEach(this.collection.models, function(item) {
 						//console.log(self.features);
-						var dp = item.get("dpid");
+						var dp = item.get("DPID");
 						item.set("description", self.description.get(dp));
 						item.set("features", self.features.get(dp));
 						item.set("switchStatistics", self.switchStats.get(dp));
-						item.set("id", item.get("dpid"));
+						item.set("id", item.get("DPID"));
   						//self.renderSwitch(item, switchList);
   						//console.log((item));
 					}, this);
@@ -132,7 +132,7 @@ define([
 			//console.log(JSON.stringify(description.get("00:00:00:00:00:00:00:03")));
 		},
 		
-		//display the dpid list
+		//display the DPID list
 		renderSwitch: function(item,container){
 			var switchSum = new SwitchSummary({
 				model: item
@@ -142,27 +142,27 @@ define([
 		
 		
 		//attach switch description info to page
-		displayDesc: function(dpid, oneSwitch){
-			var x = document.getElementById("my" + dpid);
-			var desc = this.description.get(dpid);
-			this.manufacturer = desc[0]["manufacturerDescription"];
-			desc[0]["dpid"] = dpid;
+		displayDesc: function(DPID, oneSwitch){
+			var x = document.getElementById("my" + DPID);
+			var desc = this.description.get(DPID);
+			this.manufacturer = desc[0]["Manufacturer"];
+			desc[0]["DPID"] = DPID;
 			desc[0]["connectedSince"] = oneSwitch.get("connectedSince");
 			//console.log(JSON.stringify(desc));	
 			$(x).append(this.template3(desc[0])).trigger('create');
 		},
 		
 		//attach port info to page
-		displayPorts: function(dpid, oneSwitch){
+		displayPorts: function(DPID, oneSwitch){
 			var self = this;
-			var x = document.getElementById("my" + dpid);
-			var y = document.getElementById("container" + dpid);
+			var x = document.getElementById("my" + DPID);
+			var y = document.getElementById("container" + DPID);
 			$(y).append(this.template4(oneSwitch.toJSON())).trigger('create');
 			var ports = new PortCollection();
 			var portArray = oneSwitch.get("features").ports;
 			//console.log("PORT ARRAY");
 			//console.log(JSON.stringify(oneSwitch.get("features")));
-			var portStatArray = new PortStatistics(dpid);
+			var portStatArray = new PortStatistics(DPID);
 					
 			
 			//get port statistics, append as a submodel to port model
@@ -186,7 +186,7 @@ define([
 					//console.log("PORT STAT ARRAY");
 					     //console.log(JSON.stringify(portStatArray));
 					var p = new Port(item);
-					p.set("portStatistics", portStatArray.get(dpid)[numPorts]);
+					p.set("portStatistics", portStatArray.get(DPID)[numPorts]);
 					     //console.log(JSON.stringify(oneSwitch));
 					     //console.log(JSON.stringify(p));
         			ports.add(p);
@@ -196,7 +196,7 @@ define([
      					
         		_.forEach(ports.models, function(item) {
         			     console.log(JSON.stringify(item));
-        			var z = document.getElementById("portTable" + dpid);
+        			var z = document.getElementById("portTable" + DPID);
 					$(z).append(self.template5(item.toJSON())).trigger('create');
         		}, this);
         		oneSwitch.set("portModel", ports);
@@ -213,7 +213,7 @@ define([
 				_.forEach(oneSwitch.get("features").ports, function(item) {
 					//console.log(item);
 					item["portStatistics"] = null;
-        			var z = document.getElementById("portTable" + dpid);
+        			var z = document.getElementById("portTable" + DPID);
 					$(z).append(self.template5(item)).trigger('create');
         		}, this);   		
         	
@@ -221,10 +221,10 @@ define([
 		},
 		
 		//attach flow info to page
-		displayFlows: function(dpid, oneSwitch){
+		displayFlows: function(DPID, oneSwitch){
 			var self = this;
-			var flows = new FlowCollection(dpid);
-			var flowDpid = dpid;
+			var flows = new FlowCollection(DPID);
+			var flowDPID = DPID;
 			
 			flows.fetch().complete(function () {
 					//move outside of flows.fetch?
@@ -234,9 +234,9 @@ define([
 					//static flows listed at the top or bottom of flow table grouped together
 					var sf = new FlowMod("listAll");
 					sf.fetch().complete(function () {
-    	  				console.log(sf.attributes[flowDpid]);
-    	  				if (sf.attributes[flowDpid] != undefined){
-    	  					var stringed = JSON.stringify(sf.attributes[flowDpid]);
+    	  				console.log(sf.attributes[flowDPID]);
+    	  				if (sf.attributes[flowDPID] != undefined){
+    	  					var stringed = JSON.stringify(sf.attributes[flowDPID]);
     	  					if (stringed == "{}"){
     	  						console.log("empty object");
     	  						console.log(stringed);
@@ -244,9 +244,9 @@ define([
     	  					else{
     	  						console.log("object has flows");
     	  						console.log(stringed);
-    	  						for(var key in sf.attributes[flowDpid]){
+    	  						for(var key in sf.attributes[flowDPID]){
     	  							console.log("FLOW NAME: " + key);
-    	  							console.log(sf.attributes[flowDpid][key]);
+    	  							console.log(sf.attributes[flowDPID][key]);
     	  						}	
     	  					}
     	  				}
@@ -255,20 +255,20 @@ define([
 					
 					//console.log(JSON.stringify(sf));
 					
-        			var x = document.getElementById("my" + dpid);    	
+        			var x = document.getElementById("my" + DPID);    	
 					$(x).append(self.template8(oneSwitch.toJSON())).trigger('create');
-        			var z = document.getElementById("flowCount" + dpid);
+        			var z = document.getElementById("flowCount" + DPID);
 				_.forEach(flows.models, function(item) {
 					if (item != null){
 						$(z).remove();
 						oneSwitch.set("flowLength", flows.length);
 						
-						if (document.getElementById("flowTable" + dpid) === null) {
-							var x = document.getElementById("my" + dpid);    	
+						if (document.getElementById("flowTable" + DPID) === null) {
+							var x = document.getElementById("my" + DPID);    	
 							$(x).append(self.template6(oneSwitch.toJSON())).trigger('create');
 						}
 
-						var y = document.getElementById("flowTable" + dpid);
+						var y = document.getElementById("flowTable" + DPID);
 						$(y).append(self.template7(item.toJSON())).trigger('create');
 					}
 				}, this);

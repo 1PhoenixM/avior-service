@@ -6,9 +6,9 @@ define([
 	
 	Features.prototype.parse = function(resp) {
 		function compare(a,b) {
-  			if (a.portNumber < b.portNumber)
+  			if (a.PortNum < b.PortNum)
      			return -1;
-  			if (a.portNumber > b.portNumber)
+  			if (a.PortNum > b.PortNum)
    		 		return 1;
   			return 0;
 		}

@@ -3,14 +3,14 @@
 module.export = {
 	identity: 'match',
 
-	connection: 'opendaylight',
+	connection: 'floodlight',
     
-    //types: {
-        //
-        //openflow_match_1_0_0: function(MatchType){
-        //return MatchType === ''
-        //}
-    //},
+    types: {
+        openflow_match_1_0_0: function(MatchType){
+            return MatchType === 'DataLayerDestination' || MatchType === 'DataLayerSource' || MatchType === 'DataLayerType' || MatchType === 'DataLayerVLAN' || MatchType === 'DataLayerVLAN_PCP' || MatchType === 'InputPortNum' 
+            || MatchType === 'NetworkDestination' || MatchType === 'NetworkDestionationMaskLen' || MatchType === 'NetworkProtocol' || MatchType === 'NetworkSource' || MatchType === 'NetworkSourceMaskLen' || MatchType === 'NetworkTOS'  || MatchType === 'TransportDestination' || MatchType === 'TransportSource' || MatchType === 'Wildcards'
+        },
+    },
     //TODO: normalize match fields between controllers, too.
     //nwSrc(ODL) = src-ip(FL) = NetworkSource(Avior)
     //This logic works as a validation of valid match fields. This might make it easier
@@ -23,7 +23,7 @@ module.export = {
 		},
         MatchType: {
 			type: 'string',
-            //openflow_match_1_0_0: true,
+            openflow_match_1_0_0: true,
 			required: true
 		},
         MatchValue: {

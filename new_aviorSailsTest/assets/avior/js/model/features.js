@@ -7,7 +7,7 @@ define([
 	var Features = Backbone.Model.extend({
 		
 		comparator: function(model){
-    		return(model.get("portNumber"));
+    		return(model.get("PortNum"));
   		}
 		
 	});

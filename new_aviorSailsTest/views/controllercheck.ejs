@@ -19,16 +19,7 @@
             ).fail(function(res){
                 alert("Error: " + res.getResponseHeader("error"));
         });
-        /*var opts = {method:'POST',hostname:'localhost',port:1337,path:'/sdncontroller'};
-        var req = http.request(opts, function(res) {
-          res.setEncoding('utf8');
-          res.on('data', function (chunk) {
-            console.log('BODY: ' + chunk);
-          });
-        });
-        req.write('{connection:conn, hostname:host}');
-        req.end();*/
-        alert("Sent.");
+        alert("Sent");
         window.location = "/avior";
         }
         else{

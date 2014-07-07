@@ -3,7 +3,7 @@
 module.export = {
 	identity: 'action',
 
-	connection: 'opendaylight',
+	connection: 'util',
 
 	attributes: {
         ActionType: {

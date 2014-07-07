@@ -21,7 +21,7 @@ define([
 			"change #nodeList": "nodeSelect",
 		},
 		
-		// accepts an array of switch dpids and hosts
+		// accepts an array of switch DPIDs and hosts
 		// connected to the controller
 		initialize: function(s, h) {
 			console.log("init");
@@ -34,7 +34,7 @@ define([
 			hostcolor = "grey";
       		switchcolor = "blue";
 			_.forEach(s.models, function(item) {
-				//item.set("id", item.dpid);
+				//item.set("id", item.DPID);
 			}, this);
 			_.forEach(this.hosts.models, function(item) {
 				var MAC_Address = item.get("MAC_Address")[0];
@@ -155,7 +155,7 @@ define([
 			
 			var edges = [];
 				
-			// Create source and target links based on dpid instead of index
+			// Create source and target links based on DPID instead of index
 			_.forEach(switchLinks.models, function(e) { 
     			console.log(e);
     			console.log(JSON.stringify(e));
@@ -163,10 +163,10 @@ define([
     			if (e.attributes['SourceDPID'] !== e.attributes['DestinationDPID']){
     			//console.log(JSON.stringify(e));
     			var sourceNode = self.switches.filter(function(n) {
-    												  	return n.attributes.dpid === e.attributes['SourceDPID']; 
+    												  	return n.attributes.DPID === e.attributes['SourceDPID']; 
     												  })[0],
         		targetNode = self.switches.filter(function(n) {
-    											  		return n.attributes.dpid === e.attributes['DestinationDPID']; 
+    											  		return n.attributes.DPID === e.attributes['DestinationDPID']; 
     											 })[0];
 	
     			// Add the edge to the array
@@ -175,7 +175,7 @@ define([
    		 		
 			}, this);
 			
-			// Create source and target links based on dpid instead of index
+			// Create source and target links based on DPID instead of index
 			// WHEN WORKING ON MINI UNCOMMENT IF STATEMENT!!
 			// THIS IS BECAUSE MININET RETURNS HOSTS THAT DO NOT HAVE AN IP 
 			// ADDRESS WHICH THEN ALSO DO NOT HAVE ATTACHMENT POINTS
@@ -187,11 +187,11 @@ define([
     			//if (e.attributes.IP_Address.length > 0 && e.attributes.IP_Address !== "ip not found") {
     				var sourceNode = self.switches.filter(function(n) {
     														if (e.attributes.Attached_To[0] != undefined)
-    															return e.attributes.Attached_To[0].DPID ===  n.attributes.dpid; 
+    															return e.attributes.Attached_To[0].DPID ===  n.attributes.DPID; 
     												  	  })[0],
         			targetNode = self.switches.filter(function(n) { 
         													if (e.attributes.Attached_To[0] != undefined)
-    											  				return n.attributes.dpid === e.attributes.Attached_To[0].DPID; 
+    											  				return n.attributes.DPID === e.attributes.Attached_To[0].DPID; 
     											  	 	  })[0];
 
     			// Add the edge to the array
@@ -232,12 +232,12 @@ define([
    			node = node.data(this.switches.models)
    					   .enter().append("g")
    					   .attr("class", "node")
-   					   .attr("id", function(d) { if (d.attributes.dpid === undefined) return d.attributes['MAC_Address'][0]; else return d.attributes.dpid; })
+   					   .attr("id", function(d) { if (d.attributes.DPID === undefined) return d.attributes['MAC_Address'][0]; else return d.attributes.DPID; })
       				   .call(drag);
       		//console.log("after nodes");
       		node.append("circle")
       				   .attr("r", 12)
-      				   .style("fill", function(d) { if (d.attributes.dpid === undefined) return ""+hostcolor+""; else return ""+switchcolor+""; });
+      				   .style("fill", function(d) { if (d.attributes.DPID === undefined) return ""+hostcolor+""; else return ""+switchcolor+""; });
 
 
 			var self = this;

@@ -114,8 +114,15 @@ module.exports.connections = {
    port: '8080',
    user: 'admin',
    password: 'admin'
-  } //TODO: mask auth
+  }, //TODO: mask auth
 
+  util: {
+   adapter: 'util',   
+   hostname: '10.11.17.40',
+   port: '8080',
+   //user: 'admin',
+   //password: 'admin',
+  },
   // More adapters:
   // https://github.com/balderdashy/sails
 

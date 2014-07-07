@@ -5,7 +5,7 @@
 	/* Structure to hold port models */
 	var PortCollection = Backbone.Collection.extend({
 		comparator: function(collection){
-    		return(collection.get("portNumber"));
+    		return(collection.get("PortNum"));
   		}
 	});
 	return PortCollection;
