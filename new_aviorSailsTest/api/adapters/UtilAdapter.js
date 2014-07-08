@@ -4,7 +4,7 @@ var OpenDaylight = require('./OpenDaylightAdapter');
 module.exports = {
 	identity: 'util',
 
-    sdncontroller: 'test',
+    //sdncontroller: 'test',
     
         registerConnection: function (conn, coll, cb) {
                 if (!conn.hostname) { conn.hostname = '10.11.17.40'; }
@@ -31,11 +31,13 @@ module.exports = {
         },*/
 
         find: function (conn, coll, options, cb) {
-            switch(this.sdncontroller){
+            switch(sails.controllers.main.sdncontroller){
              case 'floodlight': 
+                    //console.log(sails.controllers.main.sdncontroller);
                     Floodlight.find(conn, coll, options, cb);
                     break;
              case 'opendaylight':
+                    //console.log(sails.controllers.main.sdncontroller);
                     OpenDaylight.find(conn, coll, options, cb);
                     break;
             default:

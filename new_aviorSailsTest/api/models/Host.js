@@ -3,7 +3,7 @@
 module.export = {
 	identity: 'host',
 
-	connection: 'floodlight',
+	connection: 'util',
   
 	attributes: {
 		MAC_Address: {
