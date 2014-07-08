@@ -13,7 +13,7 @@ module.exports = {
                 cb();
         },
     
-        setController: function() {
+        /*setController: function() {
             var self = this;
              switch(this.sdncontroller){
              case 'floodlight': 
@@ -28,7 +28,7 @@ module.exports = {
                     console.log("Error: No valid controller was provided.");
                     break;
             } 
-        },
+        },*/
 
         find: function (conn, coll, options, cb) {
             switch(this.sdncontroller){

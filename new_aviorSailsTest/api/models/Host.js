@@ -4,7 +4,7 @@ module.export = {
 	identity: 'host',
 
 	connection: 'floodlight',
-
+  
 	attributes: {
 		MAC_Address: {
 			type: 'array',

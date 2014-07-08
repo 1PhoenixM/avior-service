@@ -20,9 +20,11 @@ module.exports = function (ctlr,call,cb) {
             
                         else{
                         var normalizedObject = ctlr.normalize(responseObject);
+                        normalizedObject = normalizedObject.Stats; //ODL only
                         }
                         //console.log(normalizedObject);
                         //ctlr.response.send(normalizedObject);
+                        
                         cb(null,normalizedObject);
 		});
 	}

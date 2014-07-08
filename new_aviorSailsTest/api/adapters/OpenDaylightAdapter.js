@@ -39,7 +39,7 @@ var TO_OFP = {
 	nodeId: 'DPID',
 	nodeConnectorId: 'Port',
     //ODL includes many object/array labels that FL doesn't, such as the below.
-    hostConfig: 'Hosts',
+    hostConfig: 'Stats',
     flowStatistics: '',
     node: 'AttachedTo',
     flowStatistic: '',
@@ -352,9 +352,9 @@ module.exports = {
 				}
 			}*/
                 }
-                normalizedObj = normalizedObj.Hosts; //parse out unnessecary fields
+                //parse out unnessecary fields? Make all hostConfig, flowStatistic etc. equal to "Stats", then parse that in toClient.
                 return normalizedObj;
         },
-
+    
 }
 
