@@ -3,13 +3,13 @@
 	<label for="ingressPortLabel">Ingress Port:</label>
 	<select name="ingressPort" id="ingressPort" selected="">
 	<option></option>
-	<% _.each(ports, function(i) { %>  <option><%= i.portNumber %></option> <% }); %>
+	<% _.each(Ports, function(i) { %>  <option><%= i.PortNum %></option> <% }); %>
 	 </select> 
 	
 	<label for="egressPortLabel">Egress Port:</label>
 	<select name="egressPort" id="egressport" selected="">
 	<option></option>
-	<% _.each(ports, function(i) { %>  <option><%= i.portNumber %></option> <% }); %>
+	<% _.each(Ports, function(i) { %>  <option><%= i.PortNum %></option> <% }); %>
 	 </select> 
 	
 	<label for="flowName">Flow Name:</label>

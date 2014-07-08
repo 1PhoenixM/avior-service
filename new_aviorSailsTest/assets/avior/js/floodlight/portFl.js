@@ -3,6 +3,6 @@ define([
 ], function(PortStatistics){
 	/* Floodlight specific URL for ports on a switch */
 	PortStatistics.prototype.urlRoot = function() {return "/switchports/find/" + this.dpid + "";};
-	PortStatistics.prototype.initialize = function(dpid) {this.dpid = dpid;};
+	PortStatistics.prototype.initialize = function(DPID) {this.DPID = DPID;};
 	return PortStatistics;
 });

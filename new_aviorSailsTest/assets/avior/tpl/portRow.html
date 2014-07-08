@@ -1,11 +1,11 @@
 <tr id="portStats">
-	<td> <% var s = [state]; if (s == 0 || s == 512) { %> UP <% }else{%> DOWN <% } %>  </td>
+	<td> <% var s = [State]; if (s == 0 || s == 512) { %> UP <% }else{%> DOWN <% } %>  </td>
 	<td> <%= name  %> </td>
-	<td> <%= portNumber %> </td>
-	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.receivePackets %><% } %> </td>
-	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.transmitPackets %><%} %> </td>
-	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.receiveBytes %><%} %> </td>
-	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.transmitBytes %><%} %> </td>
-	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.receiveDropped + portStatistics.transmitDropped %><%} %> </td>
-	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.receiveErrors + portStatistics.transmitErrors + portStatistics.receiveFrameErrors + portStatistics.receiveOverrunErrors + portStatistics.receiveCRCErrors %><%} %> </td>
+	<td> <%= PortNum %> </td>
+	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.RXPackets %><% } %> </td>
+	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.TXPackets %><%} %> </td>
+	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.RXBytes %><%} %> </td>
+	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.TXBytes %><%} %> </td>
+	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.RXDrops + portStatistics.TXDrops %><%} %> </td>
+	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.RXErrors + portStatistics.TXErrors + portStatistics.RXFrameErr + portStatistics.RXOverrunErr + portStatistics.RXCrcErr %><%} %> </td>
 </tr>

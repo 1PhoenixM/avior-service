@@ -66,6 +66,7 @@ var TO_OFP = {
     durationNanoseconds:'DurationNanoSeconds',
     packetCount:'PacketCount',
     byteCount:'ByteCount',
+    flowCount:'FlowCount',
 	lastSeen: 'Last_Seen',
     //Uptime Information
     systemUptimeMsec: 'Uptime_msec',
@@ -117,6 +118,7 @@ var TO_OFP = {
     healthy: "Health",
     type: "Type",
     //SwitchFeatures
+    connectedSince: "Connected_Since",
     actions: "Actions",
     buffers: "Buffers",
     capabilities: "Capabilities",

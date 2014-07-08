@@ -3,19 +3,19 @@ define([
 ], function(FlowMod){
 	/* Floodlight specific URL for pushing and deleting flows */
 	FlowMod.prototype.urlRoot = function () {
-		if (this.dpid === "one"){
-			this.unset(this.dpid);
+		if (this.DPID === "one"){
+			this.unset(this.DPID);
 			return "/wm/staticflowentrypusher/json";
 		}
-		else if (this.dpid === "listAll"){
-			this.unset(this.dpid);
+		else if (this.DPID === "listAll"){
+			this.unset(this.DPID);
 			return "/wm/staticflowentrypusher/list/all/json";
 		}
 		else
-			return "/wm/staticflowentrypusher/clear/" + this.dpid + "/json";
+			return "/wm/staticflowentrypusher/clear/" + this.DPID + "/json";
 	};
 	 
-	FlowMod.prototype.initialize = function(dpid) {this.dpid = dpid;};
+	FlowMod.prototype.initialize = function(DPID) {this.DPID = DPID;};
     
     
     //overriding the pre-existing destroy method

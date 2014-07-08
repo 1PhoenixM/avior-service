@@ -404,7 +404,7 @@ define([
 			var self = this;
 			_.forEach(switchDetail.collection.models, function(item) {
 				console.log("hello");
-				var dp = item.get("dpid");
+				var dp = item.get("DPID");
 				this.interval = setInterval(function(){switchDetail.displayFlow(dp, item);}, 2000);
 			}, this);
         },
