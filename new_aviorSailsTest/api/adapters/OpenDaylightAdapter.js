@@ -40,10 +40,10 @@ var TO_OFP = {
 	nodeConnectorId: 'Port',
     //ODL includes many object/array labels that FL doesn't, such as the below.
     hostConfig: 'Stats',
-    flowStatistics: '',
+    flowStatistics: 'Stats',
     node: 'AttachedTo',
-    flowStatistic: '',
-    flow: '',
+    flowStatistic: 'Stats',
+    flow: 'Stats',
     match: 'Match',
     matchField: 'MatchField',
     type: 'Type', //switch type or match type?
@@ -61,8 +61,8 @@ var TO_OFP = {
     packetCount: 'PacketCount',
     byteCount: 'ByteCount',
     
-    portStatistics: '',
-    portStatistic: '',
+    portStatistics: 'Stats',
+    portStatistic: 'Stats',
     nodeConnector: 'Port',
     receivePackets: 'RXPackets',
     transmitPackets: 'TXPackets',
@@ -77,15 +77,15 @@ var TO_OFP = {
     receiveCrcError: 'RXCrcErr',
     collisionCount: 'Collisions',
     
-    properties: '',
+    properties: 'Stats',
     tables: 'Tables',
     actions: 'Actions',
     macAddress: 'MAC_Address',
     capabilities: 'Capabilities',
     buffers: 'Buffers',
     
-    tableStatistics: '',
-    tableStatistic: '',
+    tableStatistics: 'Stats',
+    tableStatistic: 'Stats',
     activeCount: 'ActiveCount',
     lookupCount: 'LookupCount',
     matchedCount: 'MatchedCount',

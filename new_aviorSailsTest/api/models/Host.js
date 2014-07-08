@@ -7,15 +7,15 @@ module.export = {
   
 	attributes: {
 		MAC_Address: {
-			type: 'array',
+			type: 'string',
 			required: true
 		},
 		IP_Address: {
-			type: 'array',
+			type: 'string',
 			required: false
 		},
 		VLAN_ID: {
-			type: 'array',
+			type: 'integer',
 			required: false
 		},
 		Attached_To: {

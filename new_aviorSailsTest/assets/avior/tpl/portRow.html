@@ -1,6 +1,6 @@
 <tr id="portStats">
-	<td> <% var s = [State]; if (s == 0 || s == 512) { %> UP <% }else{%> DOWN <% } %>  </td>
-	<td> <%= name  %> </td>
+	<td> <% var s = [PortState]; if (s == 0 || s == 512) { %> UP <% }else{%> DOWN <% } %>  </td>
+	<td> <%= PortName  %> </td>
 	<td> <%= PortNum %> </td>
 	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.RXPackets %><% } %> </td>
 	<td> <% if (portStatistics === null){ %> no data <% }else{ %><%= portStatistics.TXPackets %><%} %> </td>

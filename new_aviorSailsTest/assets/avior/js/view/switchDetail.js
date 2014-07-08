@@ -144,12 +144,12 @@ define([
 		//attach switch description info to page
 		displayDesc: function(DPID, oneSwitch){
 			var x = document.getElementById("my" + DPID);
-			var desc = this.description.get(DPID);
-			this.manufacturer = desc[0]["Manufacturer"];
-			desc[0]["DPID"] = DPID;
-			desc[0]["connectedSince"] = oneSwitch.get("connectedSince");
+			var desc = this.description.get(0); //for one switch
+			this.manufacturer = desc["Manufacturer"];
+			desc["DPID"] = DPID;
+			desc["connectedSince"] = oneSwitch.get("connectedSince");
 			//console.log(JSON.stringify(desc));	
-			$(x).append(this.template3(desc[0])).trigger('create');
+			$(x).append(this.template3(desc)).trigger('create');
 		},
 		
 		//attach port info to page
@@ -158,8 +158,9 @@ define([
 			var x = document.getElementById("my" + DPID);
 			var y = document.getElementById("container" + DPID);
 			$(y).append(this.template4(oneSwitch.toJSON())).trigger('create');
-			var ports = new PortCollection();
-			var portArray = oneSwitch.get("features").ports;
+			var Ports = new PortCollection();
+			//var portArray = oneSwitch.get("features").Ports;
+            var portArray = this.features.get(0); //for one switch
 			//console.log("PORT ARRAY");
 			//console.log(JSON.stringify(oneSwitch.get("features")));
 			var portStatArray = new PortStatistics(DPID);
@@ -189,17 +190,17 @@ define([
 					p.set("portStatistics", portStatArray.get(DPID)[numPorts]);
 					     //console.log(JSON.stringify(oneSwitch));
 					     //console.log(JSON.stringify(p));
-        			ports.add(p);
+        			Ports.add(p);
         			numPorts += 1;
         		}, this);
      					
      					
-        		_.forEach(ports.models, function(item) {
+        		_.forEach(Ports.models, function(item) {
         			     console.log(JSON.stringify(item));
         			var z = document.getElementById("portTable" + DPID);
 					$(z).append(self.template5(item.toJSON())).trigger('create');
         		}, this);
-        		oneSwitch.set("portModel", ports);
+        		oneSwitch.set("portModel", Ports);
         		//console.log(JSON.stringify(item));
         		//console.log(JSON.stringify(oneSwitch));
         		//console.log(JSON.stringify(oneSwitch.get("features").ports));
@@ -209,8 +210,8 @@ define([
         	
         	else{
         		//console.log(JSON.stringify(oneSwitch));
-        		console.log(JSON.stringify(oneSwitch.get("features").ports));
-				_.forEach(oneSwitch.get("features").ports, function(item) {
+        		console.log(JSON.stringify(oneSwitch.get("features").Ports));
+				_.forEach(oneSwitch.get("features").Ports, function(item) {
 					//console.log(item);
 					item["portStatistics"] = null;
         			var z = document.getElementById("portTable" + DPID);
