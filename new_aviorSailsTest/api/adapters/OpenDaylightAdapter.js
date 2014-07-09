@@ -107,6 +107,12 @@ var TO_OFP = {
     //bandwidth
     name: 'PortName',
     
+    // topology modified by nodeparse, not odl
+    SourceDPID: 'SourceDPID',
+    SourcePortNum: 'SourcePortNum',
+    DestionationDPID: 'DestionationDPID',
+    DestionationPortNum: 'DestionationPortNum',
+    
     
     
 };
@@ -374,11 +380,19 @@ module.exports = {
         },
     
     nodeParse: function(current, obj) {
-    MACarr = [];  
-    IParr = [];
     switch(current){
-              case 'host': 
-                return obj;
+              case 'topology':
+                arr = [];
+                newObj = {};
+                for (var i=0; i<obj.edgeProperties; i++){
+                    newObj.SourceDPID = obj.edgeProperties[i].edge.tailNodeConnector.node.id;
+                    newObj.SourcePortNum = obj.edgeProperties[i].edge.tailNodeConnector.id;
+                    newObj.DestionationDPID = obj.edgeProperties[i].edge.headNodeConnector.node.id;
+                    newObj.DestionationPortNum = obj.edgeProperties[i].edge.headNodeConnector.id;
+                    arr.push(newObj);
+                }
+                console.log(arr);
+                return arr;
                 break;
       }  
     },
