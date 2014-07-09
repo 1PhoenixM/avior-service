@@ -1,6 +1,5 @@
 <script>
     function sdn_info_send(){
-        //var http = require('http');
         var rads=document.getElementsByName('sdn_controller');
         for (var i=0; i < rads.length; i++){
             if (rads[i].checked){
@@ -14,12 +13,12 @@
                 '/sdncontroller',
                 {connection:conn, hostname:host},
                 function () {
-                   alert("Sent");
+                   //alert("Sent");
                 }
             ).fail(function(res){
                 alert("Error: " + res.getResponseHeader("error"));
         });
-        alert("Sent");
+        alert("Success - Avior will start.");
         window.location = "/avior/index.html#login";
         }
         else{

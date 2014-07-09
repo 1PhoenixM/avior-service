@@ -19,7 +19,8 @@ module.exports = function (ctlr,call,cb) {
                         }
             
                         else{
-                        var normalizedObject = ctlr.normalize(responseObject);
+                        var newObject = ctlr.normalize(responseObject);
+                        var normalizedObject = ctlr.nodeParse(call, newObject);
                         normalizedObject = normalizedObject.Stats; //ODL only
                         }
                         //console.log(normalizedObject);

@@ -41,7 +41,7 @@ var TO_OFP = {
     //ODL includes many object/array labels that FL doesn't, such as the below.
     hostConfig: 'Stats',
     flowStatistics: 'Stats',
-    node: 'AttachedTo',
+    //node: 'AttachedTo',
     flowStatistic: 'Stats',
     flow: 'Stats',
     match: 'Match',
@@ -54,7 +54,7 @@ var TO_OFP = {
     priority: 'Priority',
     idleTimeout: 'IdleTimeout',
     hardTimeout: 'HardTimeout',
-    id: 'ID', //flow id and dpid are both id.
+    //id: 'ID', //flow id and dpid are both id.
     tableId: 'TableID',
     durationSeconds: 'DurationSeconds',
     durationNanoseconds: 'DurationNanoSeconds',
@@ -92,6 +92,23 @@ var TO_OFP = {
     maximumEntries: 'MaxEntries', 
     
     nodeProperties: '',
+    
+    //topology
+    edgeProperties: 'Stats',
+    edge: 'Stats',
+    tailNodeConnector: 'Stats',
+    headNodeConnector: 'Stats',
+    node: 'Stats',
+    id: 'PortNum', //other ids?
+    properties: 'Port',
+    state: 'PortState', 
+    config: 'PortConfig',
+    //timestamp
+    //bandwidth
+    name: 'PortName',
+    
+    
+    
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -104,7 +121,7 @@ var restCall = function(apiMethod,apiPath){
                         }
                 }
                 opts = {method:apiMethod,hostname:'localhost',port:8080,path:apiPath,auth:'admin:admin'}; //TODO: mask auth
-                req = http.request(opts, toClient(this,null,cb));
+                req = http.request(opts, toClient(this,options.call,cb));
                 if (options.data) {
                         req.write(JSON.stringify(options.data));
                 }
@@ -125,35 +142,35 @@ module.exports = {
                 switch (coll){
                         
                 //core
-                case 'flow': return this.getFlowStats({args:['default']},cb);
+                case 'flow': return this.getFlowStats({args:['default'],call:coll},cb);
                         break;
-                case 'switchports': return this.getPortStats({args:['default']},cb);
+                case 'switchports': return this.getPortStats({args:['default'],call:coll},cb);
                          break;
-                case 'table': return this.getTableStats({args:['default']},cb);
+                case 'table': return this.getTableStats({args:['default'],call:coll},cb);
                          break;
-                case 'topology': return this.getTopology({args:['default']},cb);
+                case 'topology': return this.getTopology({args:['default'],call:coll},cb);
                          break;
-                case 'topologylinks': return this.getTopologyLinks({args:['default']},cb);
+                case 'topologylinks': return this.getTopologyLinks({args:['default'],call:coll},cb);
                          break;
-                case 'host': return this.getHosts({args:['default']},cb);
+                case 'host': return this.getHosts({args:['default'],call:coll},cb);
                          break;
-                case 'flows': return this.getFlows({args:['default']},cb);
+                case 'flows': return this.getFlows({args:['default'],call:coll},cb);
                          break;
-                case 'switchfeatures': return this.getNodes({args:['default']},cb);
+                case 'switchfeatures': return this.getNodes({args:['default'],call:coll},cb);
                          break;
-                case 'flowspec': return this.getFlowSpecs({args:['default']},cb);
+                case 'flowspec': return this.getFlowSpecs({args:['default'],call:coll},cb);
                          break;
                         
                 //odl only        
-                case 'staticroute': return this.getStaticRoutes({args:['default']},cb);
+                case 'staticroute': return this.getStaticRoutes({args:['default'],call:coll},cb);
                          break;
-                case 'subnet': return this.getSubnets({args:['default']},cb);
+                case 'subnet': return this.getSubnets({args:['default'],call:coll},cb);
                          break;
-                case 'flowspec': return this.getFlowSpecs({args:['default']},cb);
+                case 'flowspec': return this.getFlowSpecs({args:['default'],call:coll},cb);
                          break;
-                case 'container': return this.getContainers({args:['default']},cb);
+                case 'container': return this.getContainers({args:['default'],call:coll},cb);
                          break;
-                case 'nodecluster': return this.getNodeCluster({args:['default']},cb);
+                case 'nodecluster': return this.getNodeCluster({args:['default'],call:coll},cb);
                          break;
 		        default: return cb();
                         break;
@@ -355,6 +372,16 @@ module.exports = {
                 //parse out unnessecary fields? Make all hostConfig, flowStatistic etc. equal to "Stats", then parse that in toClient.
                 return normalizedObj;
         },
+    
+    nodeParse: function(current, obj) {
+    MACarr = [];  
+    IParr = [];
+    switch(current){
+              case 'host': 
+                return obj;
+                break;
+      }  
+    },
     
 }
 
