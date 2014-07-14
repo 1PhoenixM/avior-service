@@ -164,12 +164,13 @@ define([
             //for(i=0;i<this.features.length;i++){
             
             var Ports = new PortCollection();
-			var portArray = oneSwitch.get(0).Ports;
+			var portArray = oneSwitch.get("Ports");
 			//console.log("PORT ARRAY");
 			//console.log(JSON.stringify(oneSwitch.get("features")));
-			var portStatArray = new PortStatistics(0);
-					
-			
+			var portStatArray = new PortStatistics(0); //to do: get dpid args working in api
+            //console.log("Port Stat Array");
+            //console.log(portStatArray);
+            
 			//get port statistics, append as a submodel to port model
 			//and append port model to port collection
 			var optical = false;
@@ -187,11 +188,13 @@ define([
 			
 			portStatArray.fetch().complete(function () {
 				var numPorts = 0;
+                
 				_.forEach(portArray, function(item) {
 					//console.log("PORT STAT ARRAY");
-					     //console.log(JSON.stringify(portStatArray));
+				    //console.log(JSON.stringify(portStatArray));
 					var p = new Port(item);
-					p.set("portStatistics", portStatArray.get(0)[numPorts]);
+                    
+					p.set("PortStatistics", portStatArray.get("Ports")[numPorts]);
 					     //console.log(JSON.stringify(oneSwitch));
 					     //console.log(JSON.stringify(p));
         			Ports.add(p);
@@ -214,8 +217,8 @@ define([
         	
         	else{
         		//console.log(JSON.stringify(oneSwitch));
-        		console.log(JSON.stringify(oneSwitch.get(i).ports));
-				_.forEach(oneSwitch.get(i).ports, function(item) {
+        		console.log(JSON.stringify(oneSwitch.get(0).Ports));
+				_.forEach(oneSwitch.get(0).Ports, function(item) {
 					//console.log(item);
 					item["PortStatistics"] = null;
         			var z = document.getElementById("portTable" + DPID);
@@ -224,7 +227,6 @@ define([
         	
         	}
             
-            //}
 		},
 		
 		//attach flow info to page
