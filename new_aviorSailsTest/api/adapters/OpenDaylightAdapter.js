@@ -146,7 +146,14 @@ module.exports = {
 
         find: function (conn, coll, options, cb) {
                 switch (coll){
-                        
+                
+                //fake calls for front-end
+                case 'uptime': return 'uptime';
+                        break;    
+                case 'health': return 'health';
+                        break;    
+                case 'memory': return 'memory'
+                        break;    
                 //core
                 case 'flow': return this.getFlowStats({args:['default'],call:coll},cb);
                         break;
@@ -384,16 +391,19 @@ module.exports = {
               case 'topology':
                 arr = [];
                 newObj = {};
-                for (var i=0; i<obj.edgeProperties; i++){
+                for (var i=0; i<obj.edgeProperties.length; i++){
                     newObj.SourceDPID = obj.edgeProperties[i].edge.tailNodeConnector.node.id;
                     newObj.SourcePortNum = obj.edgeProperties[i].edge.tailNodeConnector.id;
                     newObj.DestionationDPID = obj.edgeProperties[i].edge.headNodeConnector.node.id;
                     newObj.DestionationPortNum = obj.edgeProperties[i].edge.headNodeConnector.id;
                     arr.push(newObj);
                 }
-                console.log(arr);
-                return arr;
+                normalizerObj = {};
+                normalizerObj.Stats = arr;
+                return normalizerObj;
                 break;
+            default:
+                return obj;
       }  
     },
     

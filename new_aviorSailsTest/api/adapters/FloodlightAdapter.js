@@ -147,6 +147,9 @@ var TO_OFP = {
     transportDestination: "TransportDestination",
     transportSource: "TransportSource",
     wildcards: "Wildcards",
+    
+    //Ports
+    Ports: 'Ports',
 
 };
 
@@ -300,31 +303,67 @@ module.exports = {
         },
     
         dpidParse: function (current, obj) {
-            if(current === 'switchports' || current === 'queue' || current === 'flowstats' || current === 'aggregate' || current === 'switchdesc' || current ===                            'tablestats' || current === 'switchfeatures' || current === 'flow'){
-                    arr = [];
+            /*if(current === 'switchports' || current === 'queue' || current === 'flowstats' || current === 'aggregate' || current === 'switchdesc' || current === 'tablestats'                 || current === 'switchfeatures' || current === 'flow')*/
+                arr = [];
+                    
+                if(current === 'switchports'){   
+                for (dpid in obj){
+                        innerObj = {};
+                        Ports = [];
+                        innerObj.DPID = dpid;
+                        //innerObj.Ports = Ports;
+                        //arr.push(innerObj);
+                        innerArr = obj[dpid];
+                    
+                        if(innerArr.constructor === Array && innerArr.length > 1){
+                            for (i=0;i<innerArr.length;i++){
+                            ob = innerArr[i]; //TODO: Iterate
+                            portObj = {};
+                            for (key in ob){
+                                portObj[key] = ob[key];
+                                }
+                            Ports.push(portObj);
+                            innerObj.Ports = Ports;
+                            }
+                        }
+                    
+                        arr.push(innerObj);
+                    }
+                      return arr;
+                }
+            
+                else if(current === 'switchdesc' || current === 'aggregate'){
                     for (dpid in obj){
                         innerObj = {};
                         innerObj.DPID = dpid;
-                        ob = obj[dpid];
-                        if(ob.constructor === Array){
-                            ob = ob[0]; //TODO: Iterate
-                        }
-                        for (key in ob){
-                             /*if(current === 'flow'){
-                             for (flow in ob){
-                                ob = ob[""+flow+""];
-                                }
-                            }*/ //flow/find has hypenated (5-10) props it can't read
-                            innerObj[key] = ob[key];
+                        Desc = obj[dpid];
+                        Desc = Desc[0];
+                        for (key in Desc){
+                            innerObj[key] = Desc[key];
                         }
                         arr.push(innerObj);
                     }
                     return arr;
-            }
+                }
+            
+             else if(current === 'switchfeatures'){
+                 for (dpid in obj){
+                        innerObj = {};
+                        innerObj.DPID = dpid;
+                        Features = obj[dpid];
+                        for (key in Features){
+                            innerObj[key] = Features[key];
+                        }
+                        arr.push(innerObj);
+                    }
+                    return arr;
+             }
+            
             
             else{
-                return obj;    
+                return obj;
             }
+        
         },
   
     getSwitchDesc: restCall('GET','/wm/core/switch/:arg:/desc/json'),    //"all" returns switch dpid objects

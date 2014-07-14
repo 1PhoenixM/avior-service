@@ -21,7 +21,12 @@ module.exports = function (ctlr,call,cb) {
                         else{
                         var newObject = ctlr.nodeParse(call, responseObject);
                         var normalizedObject = ctlr.normalize(newObject);
-                        normalizedObject = normalizedObject.Stats; //ODL only
+                        if(normalizedObject.Stats){
+                            normalizedObject = normalizedObject.Stats; //ODL only
+                        }
+                        else{
+                            normalizedObject = normalizedObject;
+                        }
                         }
                         //console.log(normalizedObject);
                         //ctlr.response.send(normalizedObject);

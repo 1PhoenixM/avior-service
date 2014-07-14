@@ -6,6 +6,11 @@ module.export = {
 	connection: 'floodlight',
 
 	attributes: {
+         DPID: {
+            type: 'string',
+            required: true,
+            primaryKey: true
+        },
 		Manufacturer: {
             type:'string',
             required:'true'

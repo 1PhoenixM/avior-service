@@ -6,11 +6,7 @@ module.export = {
 	connection: 'floodlight',
 
 	attributes: {
-		DPID: {
-			type: 'string',
-			required: true
-		},
-        ID: {
+        PortNum: {
 			type: 'string',
 			required: true
 		},

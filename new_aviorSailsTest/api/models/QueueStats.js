@@ -6,6 +6,11 @@ module.export = {
 	connection: 'opendaylight',
 
 	attributes: {
+        DPID: {
+            type: 'string',
+            required: true,
+            primaryKey: true
+        },
 		QueueID: {
 			type: 'string',
 			required: true
