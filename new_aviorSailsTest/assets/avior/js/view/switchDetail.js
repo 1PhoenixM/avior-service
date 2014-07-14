@@ -203,7 +203,7 @@ define([
      					
      					
         		_.forEach(Ports.models, function(item) {
-        			     console.log(JSON.stringify(item));
+        			    // console.log(JSON.stringify(item));
         			var z = document.getElementById("portTable" + DPID);
 					$(z).append(self.template5(item.toJSON())).trigger('create');
         		}, this);
