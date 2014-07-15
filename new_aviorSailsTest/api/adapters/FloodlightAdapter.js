@@ -165,6 +165,7 @@ var TO_OFP = {
     flags: 'Flags',
 
     Flow: "Flow",
+    
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -389,7 +390,7 @@ module.exports = {
                      for (flow in Features){
                         flowObj = {};
                         flowObj.Flow = flow;
-                        Features = obj[flow];
+                        Features = obj[dpid][flow];
                          
                         for (key in Features){
                             flowObj[key] = Features[key];

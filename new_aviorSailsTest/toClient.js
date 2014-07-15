@@ -29,7 +29,7 @@ module.exports = function (ctlr,call,cb) {
                                 normalizedObject = normalizedObject;
                             }
                         }
-                        console.log(normalizedObject);
+                        //console.log(normalizedObject);
                         //ctlr.response.send(normalizedObject);
                         
                         cb(null,normalizedObject);
