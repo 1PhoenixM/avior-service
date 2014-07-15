@@ -231,7 +231,7 @@ define([
 		
 		//attach flow info to page
 		displayFlows: function(DPID, oneSwitch){
-			var self = this;
+            var self = this;
 			var flows = new FlowCollection(DPID);
 			var flowDPID = DPID;
 			
@@ -243,7 +243,7 @@ define([
 					//static flows listed at the top or bottom of flow table grouped together
 					var sf = new FlowMod("listAll");
 					sf.fetch().complete(function () {
-    	  				console.log(sf.attributes[flowDPID]);
+    	  				//console.log(sf.attributes[flowDPID]);
     	  				if (sf.attributes[flowDPID] != undefined){
     	  					var stringed = JSON.stringify(sf.attributes[flowDPID]);
     	  					if (stringed == "{}"){

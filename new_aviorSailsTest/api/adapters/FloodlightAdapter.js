@@ -1,7 +1,7 @@
 var toClient = require('../../toClient.js');
 var http = require('http');
 
-var FROM_OFP = {
+/*var FROM_OFP = {
 	// name-in-models: name-in-floodlight
 	//Hosts Information    
     MAC_Address: 'mac',
@@ -46,7 +46,7 @@ var FROM_OFP = {
     FreeMemory: "free",
     Health: "healthy"
     
-};
+};*/
 
 var TO_OFP = {
 	// name-in-floodlight: name-in-models
@@ -150,6 +150,7 @@ var TO_OFP = {
     
     //Ports
     Ports: 'Ports',
+    Flow: "Flow"
 
 };
 
@@ -355,6 +356,29 @@ module.exports = {
                             innerObj[key] = Features[key];
                         }
                         arr.push(innerObj);
+                    }
+                    return arr;
+             }
+            
+            else if(current === 'flow'){
+                 for (dpid in obj){
+                     innerObj = {};
+                     Flows = [];
+                     innerObj.DPID = dpid;
+                     Features = obj[dpid];
+                     
+                     for (flow in Features){
+                        flowObj = {};
+                        flowObj.Flow = flow;
+                        Features = obj[flow];
+                         
+                        for (key in Features){
+                            flowObj[key] = Features[key];
+                        }
+                        Flows.push(flowObj);
+                     }
+                     innerObj.Flow = Flows;
+                     arr.push(innerObj);
                     }
                     return arr;
              }

@@ -9,7 +9,7 @@ define([
 		}
 		else if (this.DPID === "listAll"){
 			this.unset(this.DPID);
-			return "/wm/staticflowentrypusher/list/all/json";
+			return "/flow/find";
 		}
 		else
 			return "/wm/staticflowentrypusher/clear/" + this.DPID + "/json";
