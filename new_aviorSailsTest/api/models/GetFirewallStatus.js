@@ -9,11 +9,10 @@
 module.exports = {
 
   attributes: {
-  	
-  	/* e.g.
-  	nickname: 'string'
-  	*/
-    
+  	Status: {
+    type: 'string',
+    required: true
+    },
   }
 
 };

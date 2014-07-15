@@ -150,7 +150,23 @@ var TO_OFP = {
     
     //Ports
     Ports: 'Ports',
-
+    
+    //Flows
+    Link: 'Link',
+    bufferId: 'BufferID',
+    cookie: 'Cookie',
+    idleTimeout: 'IdleTimeout',
+    hardTimeout: 'HardTimeout',
+    //command: 
+    outPort: 'OutPort',
+    actions: 'Actions',
+    port: 'PortNum',
+    
+    priority: 'Priority',
+    flags: 'Flags',
+    
+    result: 'Status',
+    
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -220,19 +236,8 @@ module.exports = {
                         break;
                 case 'topologyexternallinks':return this.getTopologyExternalLinks({args:['all'],call:coll},cb);
                         break;
-                
-                 //firewall and not used in find   
-               /* case 'postflow':return this.postFlow({args:['all'],call:coll},cb);
-                        break;
-                case 'delflow': return this.delFlow({args:['all'],call:coll},cb);
-                        break;
-                case 'clearflows':return this.clearFlows({args:['all'],call:coll},cb);
-                        break;
-                case 'getFirewallStatus':return this.getFirewallStatus({args:['all'],call:coll},cb); 
-                         break;
-                case 'enableFirewall':return this.enableFirewall({args:['all'],call:coll},cb); 
-                         break;
-                case 'disableFirewall':return this.disableFirewall({args:['all'],call:coll},cb); 
+               
+                case 'getFirewallStatus':return this.getFirewallStatus({args:[],call:coll},cb); 
                          break;
                 case 'getFirewallStorageRules':return this.getFirewallStorageRules({args:['all'],call:coll},cb);
                          break;
@@ -240,9 +245,7 @@ module.exports = {
                          break;
                 case 'getFirewallRules':return this.getFirewallRules({args:['all'],call:coll},cb); 
                          break;
-                case 'postFirewallRule':return this.postFirewallRule({args:['all'],call:coll},cb); 
-                         break;
-                case 'deleteFirewallRule':return this.deleteFirewallRule({args:['all'],call:coll},cb);*/
+               
 		        default: return cb();
                         break;
                 }
@@ -359,7 +362,26 @@ module.exports = {
                     return arr;
              }
             
-            
+            /*else if(current === 'flow'){
+                for (dpid in obj){
+                innerObj = {};
+                innerObj.DPID = dpid;
+                Flows = [];
+                flows = obj[dpid];
+                  for (link in flows){
+                    flowObj = {};
+                    flowObj.Link = link;
+                      for(key in flows[link]){
+                        flowObj[key] = flows[link][key];
+                      }
+                    Flows.push(flowObj);
+                  }
+                 arr.push(innerObj);    
+                }
+                return arr;
+            }*/
+                
+                
             else{
                 return obj;
             }

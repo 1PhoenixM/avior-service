@@ -110,10 +110,10 @@ var TO_OFP = {
     // topology modified by nodeparse, not odl
     SourceDPID: 'SourceDPID',
     SourcePortNum: 'SourcePortNum',
-    DestionationDPID: 'DestionationDPID',
-    DestionationPortNum: 'DestionationPortNum',
+    DestinationDPID: 'DestinationDPID',
+    DestinationPortNum: 'DestinationPortNum',
     
-    
+    Stats: 'Stats',
     
 };
 
@@ -155,6 +155,8 @@ module.exports = {
                 case 'memory': return 'memory'
                         break;    
                 //core
+                case 'port': return this.getNodeConnectors({args:['default'],call:coll},cb);
+                        break;
                 case 'flow': return this.getFlowStats({args:['default'],call:coll},cb);
                         break;
                 case 'switchports': return this.getPortStats({args:['default'],call:coll},cb);
@@ -355,7 +357,7 @@ module.exports = {
     //Neutron: https://jenkins.opendaylight.org/controller/job/controller-merge/lastSuccessfulBuild/artifact/opendaylight/northbound/networkconfiguration/neutron/target/site/wsdocs/index.html
 	// etc.
 
-        normalize: function (obj) {
+    normalize: function (obj) {
                 var normalizedField;
                 var normalizedObj;
         if (!obj){ return 0; }
@@ -394,14 +396,19 @@ module.exports = {
                 for (var i=0; i<obj.edgeProperties.length; i++){
                     newObj.SourceDPID = obj.edgeProperties[i].edge.tailNodeConnector.node.id;
                     newObj.SourcePortNum = obj.edgeProperties[i].edge.tailNodeConnector.id;
-                    newObj.DestionationDPID = obj.edgeProperties[i].edge.headNodeConnector.node.id;
-                    newObj.DestionationPortNum = obj.edgeProperties[i].edge.headNodeConnector.id;
+                    newObj.DestinationDPID = obj.edgeProperties[i].edge.headNodeConnector.node.id;
+                    newObj.DestinationPortNum = obj.edgeProperties[i].edge.headNodeConnector.id;
+                    //srcPortObj = this.getNodeConnectors({args:['default', 'OF', newObj.SourceDPID],call:'port'},null);
+                    //newObj.SourcePortState = srcPortObj.nodeConnectorProperties.properties.state.value;
+                    //dstPortObj = this.getNodeConnectors({args:['default', 'OF', newObj.DestinationDPID],call:'port'},null);
+                    //newObj.DestinationPortState =  dstPortObj.nodeConnectorProperties.properties.state.value;
                     arr.push(newObj);
                 }
                 normalizerObj = {};
                 normalizerObj.Stats = arr;
                 return normalizerObj;
                 break;
+            
             default:
                 return obj;
       }  
