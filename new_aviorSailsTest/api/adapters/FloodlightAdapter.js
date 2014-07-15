@@ -360,7 +360,6 @@ module.exports = {
                     return arr;
              }
             
-<<<<<<< HEAD
             /*else if(current === 'flow'){
                 for (dpid in obj){
                 innerObj = {};
@@ -379,9 +378,7 @@ module.exports = {
                 }
                 return arr;
             }*/
-                
-                
-=======
+
             else if(current === 'flow'){
                  for (dpid in obj){
                      innerObj = {};
@@ -405,8 +402,6 @@ module.exports = {
                     return arr;
              }
             
-            
->>>>>>> 6621757427a189c22566fe6d919bad74f265280a
             else{
                 return obj;
             }
