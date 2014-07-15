@@ -6,16 +6,9 @@ module.export = {
 	connection: 'opendaylight',
 
 	attributes: {
-		DPID: {
-			type: 'string',
-			required: true
-		},
-        Match: {
-            model: 'match',
-            required: true
-        },
+		
         Action: {
-			model: 'action',
+			model: 'array',
 			required: true
 		},
         HardTimeout: {

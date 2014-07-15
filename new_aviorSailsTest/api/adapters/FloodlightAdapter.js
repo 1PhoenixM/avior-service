@@ -1,7 +1,7 @@
 var toClient = require('../../toClient.js');
 var http = require('http');
 
-var FROM_OFP = {
+/*var FROM_OFP = {
 	// name-in-models: name-in-floodlight
 	//Hosts Information    
     MAC_Address: 'mac',
@@ -46,7 +46,7 @@ var FROM_OFP = {
     FreeMemory: "free",
     Health: "healthy"
     
-};
+};*/
 
 var TO_OFP = {
 	// name-in-floodlight: name-in-models
@@ -150,7 +150,6 @@ var TO_OFP = {
     
     //Ports
     Ports: 'Ports',
-    
     //Flows
     Link: 'Link',
     bufferId: 'BufferID',
@@ -164,9 +163,8 @@ var TO_OFP = {
     
     priority: 'Priority',
     flags: 'Flags',
-    
-    result: 'Status',
-    
+
+    Flow: "Flow",
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -362,6 +360,7 @@ module.exports = {
                     return arr;
              }
             
+<<<<<<< HEAD
             /*else if(current === 'flow'){
                 for (dpid in obj){
                 innerObj = {};
@@ -382,6 +381,32 @@ module.exports = {
             }*/
                 
                 
+=======
+            else if(current === 'flow'){
+                 for (dpid in obj){
+                     innerObj = {};
+                     Flows = [];
+                     innerObj.DPID = dpid;
+                     Features = obj[dpid];
+                     
+                     for (flow in Features){
+                        flowObj = {};
+                        flowObj.Flow = flow;
+                        Features = obj[flow];
+                         
+                        for (key in Features){
+                            flowObj[key] = Features[key];
+                        }
+                        Flows.push(flowObj);
+                     }
+                     innerObj.Flow = Flows;
+                     arr.push(innerObj);
+                    }
+                    return arr;
+             }
+            
+            
+>>>>>>> 6621757427a189c22566fe6d919bad74f265280a
             else{
                 return obj;
             }
