@@ -56,7 +56,7 @@ define([
 			this.subnets = new Array;
 			this.collection = new SwitchCollection();
 			this.collection.fetch();
-			this.description = new Description();
+			this.description = new Description("");
 			this.description.fetch();
 			this.features = new Features();
 			this.features.fetch();
@@ -121,6 +121,8 @@ define([
 			_.forEach(this.collection.models, function(item) {
 						//console.log(self.features);
 						var dp = item.get("DPID");
+                        self.description = new Description(dp);
+			            self.description.fetch();
 						item.set("description", self.description.get(dp));
 						item.set("features", self.features.get(dp));
 						item.set("switchStatistics", self.switchStats.get(dp));
@@ -143,15 +145,13 @@ define([
 		
 		//attach switch description info to page
 		displayDesc: function(DPID, oneSwitch){
-			var x = document.getElementById("my" + DPID);
-            //for(i=0;i<this.description.length;i++){
+				var x = document.getElementById("my" + DPID);
                 var desc = this.description.get(0); //for one switch
                 this.manufacturer = desc["Manufacturer"];
                 desc["DPID"] = DPID;
                 desc["connectedSince"] = oneSwitch.get("connectedSince");
-                //console.log(JSON.stringify(desc));	
+                //console.log(JSON.stringify(desc));
                 $(x).append(this.template3(desc)).trigger('create');
-            //}
 		},
 		
 		//attach port info to page
@@ -167,7 +167,7 @@ define([
 			var portArray = oneSwitch.get("Ports");
 			//console.log("PORT ARRAY");
 			//console.log(JSON.stringify(oneSwitch.get("features")));
-			var portStatArray = new PortStatistics(0); //to do: get dpid args working in api
+			var portStatArray = new PortStatistics(DPID); 
             //console.log("Port Stat Array");
             //console.log(portStatArray);
             
