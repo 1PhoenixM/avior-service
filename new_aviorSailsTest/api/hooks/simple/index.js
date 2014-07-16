@@ -4,6 +4,8 @@ module.exports = function pluginHook(sails) {
         checkForPlugins: function(){
             //TODO: Better searching / validations. Naming scheme or other validation?
             //Verbose output?
+            //Rather than moving the file, make sails look in that location for models/controllers.
+            //I.e. if folder name = models, sails.models...
             
             /*console.log('Plugin checker loaded.');
             var fs = require('fs');

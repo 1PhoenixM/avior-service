@@ -8,7 +8,7 @@ module.exports = function (ctlr,call,cb) {
 		});
  
 		res.on('end', function() {
-                        console.log(responseString);
+                        //console.log(responseString);
                         var responseObject = JSON.parse(responseString);
             
                         if(ctlr.dpidParse){

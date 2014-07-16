@@ -253,9 +253,9 @@ define([
     	  					else{
     	  						console.log("object has flows");
     	  						console.log(stringed);
-    	  						for(var key in sf.attributes[flowDPID]){
+    	  						for(var key in sf.attributes[0]){
     	  							console.log("FLOW NAME: " + key);
-    	  							console.log(sf.attributes[flowDPID][key]);
+    	  							console.log(sf.attributes[0][Flows][key]);
     	  						}	
     	  					}
     	  				}

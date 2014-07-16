@@ -12,7 +12,7 @@ define([
 			return "/flow/find";
 		}
 		else
-			return "/wm/staticflowentrypusher/clear/" + this.DPID + "/json";
+			return "/wm/staticflowentrypusher/clear/" + this.DPID + "/json"; //clear flows by default. risky?
 	};
 	 
 	FlowMod.prototype.initialize = function(DPID) {this.DPID = DPID;};

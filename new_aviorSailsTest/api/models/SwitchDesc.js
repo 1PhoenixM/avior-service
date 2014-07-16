@@ -9,7 +9,9 @@ module.export = {
          DPID: {
             type: 'string',
             required: true,
-            primaryKey: true
+            primaryKey: true,
+            unique: true,
+             //index: true
         },
 		Manufacturer: {
             type:'string',
@@ -27,9 +29,9 @@ module.export = {
             type:'string',
             required:'true'
         },
-        Datapath:{
+        /*Datapath:{
             type:'string',
             required:'true'
-        },
+        },*/
 	}
 }

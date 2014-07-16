@@ -165,6 +165,7 @@ var TO_OFP = {
     flags: 'Flags',
 
     Flow: "Flow",
+    Flows: "Flows",
     
 };
 
@@ -397,11 +398,36 @@ module.exports = {
                         }
                         Flows.push(flowObj);
                      }
-                     innerObj.Flow = Flows;
+                     innerObj.Flows = Flows;
                      arr.push(innerObj);
                     }
                     return arr;
              }
+            
+             else if(current === 'flowstats'){   
+                for (dpid in obj){
+                        innerObj = {};
+                        Flows = [];
+                        innerObj.DPID = dpid;
+                        //innerObj.Ports = Ports;
+                        //arr.push(innerObj);
+                        innerArr = obj[dpid];
+                    
+                        if(innerArr.constructor === Array && innerArr.length >= 1){
+                            for (i=0;i<innerArr.length;i++){
+                            ob = innerArr[i]; //TODO: Iterate
+                            flowObj = {};
+                            for (key in ob){
+                                flowObj[key] = ob[key];
+                                }
+                            Flows.push(flowObj);
+                            innerObj.Flows = Flows;
+                            }
+                        }
+                        arr.push(innerObj);
+                    }
+                      return arr;
+                }
             
             else{
                 return obj;
