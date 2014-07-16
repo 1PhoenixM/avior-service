@@ -5,8 +5,8 @@
 	"collection/flowCollection",
 ], function(Backbone,_,Util,FlowCollection){
 		/* Avior 2.0 URL for flows on a switch */
-		FlowCollection.prototype.url = function() {return "/flowstats/find/";};
-        //FlowCollection.prototype.url = function() {return "/flowstats/find/" + this.DPID + "";};
+		//FlowCollection.prototype.url = function() {return "/flowstats/find/";};
+        FlowCollection.prototype.url = function() {return "/flowstats/find/" + this.DPID + "";};
 		FlowCollection.prototype.initialize = function(DPID) { 
 			this.DPID = DPID; 
 		};

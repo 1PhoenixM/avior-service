@@ -121,9 +121,7 @@ define([
 			_.forEach(this.collection.models, function(item) {
 						//console.log(self.features);
 						var dp = item.get("DPID");
-                        self.description = new Description(dp);
-			            self.description.fetch();
-						item.set("description", self.description.get(dp));
+						item.set("description", this.description);
 						item.set("features", self.features.get(dp));
 						item.set("switchStatistics", self.switchStats.get(dp));
 						item.set("id", item.get("DPID"));
