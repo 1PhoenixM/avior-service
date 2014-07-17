@@ -1,3 +1,33 @@
+<style>
+    
+.aviorHeader {
+  position:relative;
+}
+
+.headerIMG {
+  margin:auto;
+  position:absolute;
+  top:0;bottom:0;
+  left:0;right:0;
+}
+
+.headerIMG {
+  max-height:100%;
+  max-width: 100%;
+}
+
+.innerPageLoader{
+  position:absolute;
+  vertical-align:center;
+  margin:auto;
+  top:40.5%; 
+  left:0;right:0;
+  //left:47.40%;
+  //top:45.35%;
+}
+</style>
+
+
 <script>
     function sdn_info_send(){
         var rads=document.getElementsByName('sdn_controller');
@@ -24,25 +54,33 @@
         else{
          alert("Please provide an IP address.");   
         }
-}
+    }
 </script>
-<div id="check" style="align:center;"> 
+
+<header>
+    <div class="aviorHeader" data-role="header" data-theme="a" style="max-height: 60px;">
+	<h1><img class="headerIMG" src="/images/avior_logo_alt_trans.png"  height="40" width="120" style="vertical-align: top;"> </h1>
+	</div>
+</header>
+
+<div id="check" style="text-align:center;"> 
 <h2> Welcome to Avior </h2>
 <h4> Please choose your controller below. </h4>
 <form>
-	<input type="radio" name="sdn_controller" value="floodlight" checked/>Floodlight<br />
-	<input type="radio" name="sdn_controller" value="opendaylight" />OpenDaylight<br />
-	<input type="radio" name="sdn_controller" value="pox" disabled/>POX<br />
-	<input type="radio" name="sdn_controller" value="nox" disabled/>NOX<br />
-	<input type="radio" name="sdn_controller" value="jaxon" disabled/>Jaxon<br />
-	<input type="radio" name="sdn_controller" value="beacon" disabled/>Beacon<br />
-	<input type="radio" name="sdn_controller" value="nodeflow" disabled/>Nodeflow<br />
-	<input type="radio" name="sdn_controller" value="openiris" disabled/>OpenIris<br />
-	<input type="radio" name="sdn_controller" value="mul" disabled/>Mul<br />
-	<input type="radio" name="sdn_controller" value="juniper" disabled/>Juniper<br />
-	<input type="radio" name="sdn_controller" value="maestro" disabled/>Maestro<br />
-	<input type="radio" name="sdn_controller" value="ryu" disabled/>Ryu
+	<input type="radio" name="sdn_controller" value="floodlight" id="floodlight" checked/><label for="floodlight">Floodlight</label>
+	<input type="radio" name="sdn_controller" value="opendaylight" id="opendaylight" /><label for="opendaylight">OpenDaylight</label>
+	<input type="radio" name="sdn_controller" value="pox" id="pox" disabled/><label for="pox">POX</label>
+	<input type="radio" name="sdn_controller" value="nox" id="nox" disabled/><label for="nox">NOX</label>
+	<input type="radio" name="sdn_controller" value="jaxon" id="jaxon" disabled/><label for="jaxon">Jaxon</label>
+	<input type="radio" name="sdn_controller" value="beacon" id="beacon" disabled/><label for="beacon">Beacon</label>
+	<input type="radio" name="sdn_controller" value="nodeflow" id="nodeflow" disabled/><label for="nodeflow">Nodeflow</label>
+	<input type="radio" name="sdn_controller" value="openiris" id="openiris" disabled/><label for="openiris">OpenIris</label>
+	<input type="radio" name="sdn_controller" value="mul" id="mul" disabled/><label for="mul">Mul</label>
+	<input type="radio" name="sdn_controller" value="juniper" id="juniper" disabled/><label for="juniper">Juniper</label>
+	<input type="radio" name="sdn_controller" value="maestro" id="maestro" disabled/><label for="maestro">Maestro</label>
+	<input type="radio" name="sdn_controller" value="ryu" id="ryu" disabled/><label for="ryu">Ryu</label>
 </form>
 <h4> Please enter the IP address at which the controller is located. </h4>
-<input type="text" name="sdn_controller_host" id="sdn_controller_host" style="width:200px;" value=""><button name="sdn_info_send" onclick="sdn_info_send();">Start Avior</button>
+<input type="text" name="sdn_controller_host" id="sdn_controller_host" style="width:800px;position:relative;" value="">
+<button name="sdn_info_send" onclick="sdn_info_send();">Start Avior</button>
 </div>

@@ -9,10 +9,13 @@
 module.exports = {
   identity: "flowstats",
     
+  connection: "floodlight",
+    
   attributes: {
   	DPID: {
         type: 'string',
-        required: true
+        required: true,
+        primaryKey: true,
     },
     Name: {
         type:"String",

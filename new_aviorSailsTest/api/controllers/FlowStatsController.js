@@ -14,7 +14,6 @@ module.exports = {
         }
         });
     },
-    
     create: function(req, res) {
 
     },
@@ -30,5 +29,5 @@ module.exports = {
     like: function(req, res) {
 
     }
-}
+};
 

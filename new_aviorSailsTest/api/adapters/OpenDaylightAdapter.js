@@ -121,6 +121,12 @@ var TO_OFP = {
     Attached_To: 'Attached_To',
     DPID: 'DPID',
     PortNum: 'PortNum',
+    
+    Actions: 'Actions',
+    Buffers: 'Buffers',
+    Capabilities: 'Capabilities',
+    Connected_Since: 'Connected_Since',
+
      
 };
 
@@ -178,7 +184,7 @@ module.exports = {
                          break;
                 case 'flows': return this.getFlows({args:['default'],call:coll},cb);
                          break;
-                case 'switchfeatures': return this.getNodes({args:['default'],call:coll},cb);
+                case 'switch': return this.getNodes({args:['default'],call:coll},cb);
                          break;
                 case 'flowspec': return this.getFlowSpecs({args:['default'],call:coll},cb);
                          break;
@@ -402,8 +408,8 @@ module.exports = {
     switch(current){
               case 'topology':
                 arr = [];
-                newObj = {};
                 for (var i=0; i<obj.edgeProperties.length; i++){
+                    newObj = {};
                     newObj.SourceDPID = obj.edgeProperties[i].edge.tailNodeConnector.node.id;
                     newObj.SourcePortNum = obj.edgeProperties[i].edge.tailNodeConnector.id;
                     newObj.DestinationDPID = obj.edgeProperties[i].edge.headNodeConnector.node.id;
@@ -421,7 +427,7 @@ module.exports = {
             
             case 'host':
                 arr = [];
-                newObj = {};
+                //newObj = {};
                 for (var i=0; i<obj.hostConfig.length; i++){
                     newObj = {};
                     var MACarr = [];
@@ -441,6 +447,24 @@ module.exports = {
                     arr.push(newObj);
                     //Missing: LastSeen
                 }
+                normalizerObj = {};
+                normalizerObj.Stats = arr;
+                return normalizerObj;
+                break;
+            
+            case 'switch':
+                arr = [];
+                for (var i=0; i<obj.nodeProperties.length; i++){
+                    newObj = {}; //newObj has to be defined within the for loop
+                    console.log(obj.nodeProperties);
+                    newObj.Actions = parseInt(obj.nodeProperties[i].properties.supportedFlowActions.value.length); //Correct value?
+                    newObj.Buffers = obj.nodeProperties[i].properties.buffers.value;
+                    newObj.Capabilities = obj.nodeProperties[i].properties.capabilities.value;
+                    newObj.Connected_Since = obj.nodeProperties[i].properties.timeStamp.value;
+                    newObj.DPID = obj.nodeProperties[i].node.id;
+                    arr.push(newObj);
+                }
+                //needs Port list
                 normalizerObj = {};
                 normalizerObj.Stats = arr;
                 return normalizerObj;
