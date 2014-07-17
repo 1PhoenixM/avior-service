@@ -10,7 +10,7 @@ module.exports = {
     
     identity: 'switch',
 
-	connection: 'opendaylight',
+	connection: 'floodlight',
 
 
   attributes: {
