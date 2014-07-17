@@ -197,9 +197,7 @@ module.exports = {
         },
 
         find: function (conn, coll, options, cb) {
-            
-                switch (coll){
-                    
+            switch (coll){   
                 //core        
                 case 'flow': return this.getFlows({args:['all'],call:coll},cb);
                         break;
@@ -236,7 +234,6 @@ module.exports = {
                         break;
                 case 'topologyexternallinks':return this.getTopologyExternalLinks({args:['all'],call:coll},cb);
                         break;
-               
                 case 'getFirewallStatus':return this.getFirewallStatus({args:[],call:coll},cb); 
                          break;
                 case 'getFirewallStorageRules':return this.getFirewallStorageRules({args:['all'],call:coll},cb);
@@ -245,6 +242,8 @@ module.exports = {
                          break;
                 case 'getFirewallRules':return this.getFirewallRules({args:['all'],call:coll},cb); 
                          break;
+                //case 'clearflows':return this.clearFlows({args:['all'],call:coll},cb);
+                         //break;
                
 		        default: return cb();
                         break;
@@ -269,8 +268,8 @@ module.exports = {
                 switch (coll){
                 case 'flow': return this.delFlow({data:{}},cb);
                         break;
-                case 'clearflows':return this.clearFlows({args:['all']},cb);
-                        break;
+                //case 'clearflows':return this.clearFlows({args:['all']},cb);
+                        //break;
 		        default: return cb();
                 }
         },
