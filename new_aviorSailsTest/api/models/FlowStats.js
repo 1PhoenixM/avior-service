@@ -7,7 +7,8 @@
  */
 
 module.exports = {
-
+  identity: "flowstats",
+    
   attributes: {
   	DPID: {
         type: 'string',
