@@ -292,7 +292,7 @@ define([
 			console.log(JSON.stringify(this.collection));
 			var v = $(e.currentTarget).val();
 			var c = this.collection.get(v);
-			var d = c.get("ports");
+			var d = c.get("Ports");
 			$('#portBody').remove();
 			$('#flowEdTable').append(this.template2(c.toJSON())).trigger('create');
 		},

@@ -168,7 +168,11 @@ var TO_OFP = {
     Flows: "Flows",
     result: "Result",
     status: "Status",
-    details: "Details"
+    details: "Details",
+    Name: "Name",
+    loaded: "Loaded",
+    provides: "Provides",
+    depends: "Depends"
     
 };
 
@@ -250,6 +254,8 @@ module.exports = {
                 case 'firewallrules':return this.getFirewallRules({args:['all'],call:coll},cb); 
                          break;
                 case 'clearflows':return this.clearFlows({args:['all'],call:coll},cb);
+                         break;
+                case 'modules':return this.getModules({args:[],call:coll},cb);
                          break;
                
 		        default: return cb();
@@ -434,7 +440,18 @@ module.exports = {
                     }
                       return arr;
                 }
-            
+            else if(current === 'modules'){
+                for (Name in obj){
+                    innerObj = {};
+                    innerObj.Name = Name;
+                    Features = obj[Name];
+                        for (key in Features){
+                            innerObj[key] = Features[key];
+                        }
+                        arr.push(innerObj);
+                    }
+                    return arr;
+                }
             else{
                 return obj;
             }
@@ -479,6 +496,7 @@ module.exports = {
     //Firewall is unused for now
     
     getFirewallSubnetMask: restCall('GET','/wm/firewall/module/subnet-mask/json'), //not an object, just a subnet.
+    getModules: restCall('GET','/wm/core/module/loaded/json'),
 
 }
 

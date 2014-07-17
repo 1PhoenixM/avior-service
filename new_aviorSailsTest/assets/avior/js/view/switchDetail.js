@@ -189,7 +189,7 @@ define([
                 
 				_.forEach(portArray, function(item) {
 					//console.log("PORT STAT ARRAY");
-				    //console.log(JSON.stringify(portStatArray));
+				    console.log(JSON.stringify(portStatArray));
 					var p = new Port(item);
                     
 					p.set("PortStatistics", portStatArray.get("Ports")[numPorts]);

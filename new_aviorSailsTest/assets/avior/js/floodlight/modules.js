@@ -2,7 +2,7 @@ define([
 	"model/modulesmodel"
 ], function(Modules){
 	/* Floodlight specific URL for modules loaded by controller */
-	Modules.prototype.urlRoot = "/wm/core/module/loaded/json";
+	Modules.prototype.urlRoot = "/modules";
 	
 	/* Floodlight specific parse method */
 	Modules.prototype.parse = function(resp){

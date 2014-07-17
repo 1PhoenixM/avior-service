@@ -257,7 +257,7 @@ define([
 		buttonUpdating: function () {
 			fm = new FirewallMod("status");
 			fm.fetch().complete(function () {
-			firewallStatus = fm.get("result");
+			firewallStatus = fm.get("Result");
 			str = JSON.stringify(firewallStatus);
 			//alert(firewallStatus);
 				if(firewallStatus === "firewall enabled"){
@@ -282,7 +282,7 @@ define([
 			console.log(JSON.stringify(this.collection));
 			var v = $(e.currentTarget).val();
 			var c = this.collection.get(v);
-			var d = c.get("ports");
+			var d = c.get("Ports");
 			$('#actionBody').remove();
 			$('#firewallEdTable').append(this.template2(c.toJSON())).trigger('create');
 		},	
