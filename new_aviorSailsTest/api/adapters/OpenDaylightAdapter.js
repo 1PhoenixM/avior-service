@@ -115,6 +115,13 @@ var TO_OFP = {
     
     Stats: 'Stats',
     
+    MAC_Address: 'MAC_Address', 
+    IP_Address: 'IP_Address',
+    VLAN_ID: 'VLAN_ID',
+    Attached_To: 'Attached_To',
+    DPID: 'DPID',
+    PortNum: 'PortNum',
+     
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -388,7 +395,10 @@ module.exports = {
                 return normalizedObj;
         },
     
+    
+    //This function parses ODL data into the format of the Avior API
     nodeParse: function(current, obj) {
+    
     switch(current){
               case 'topology':
                 arr = [];
@@ -403,6 +413,33 @@ module.exports = {
                     //dstPortObj = this.getNodeConnectors({args:['default', 'OF', newObj.DestinationDPID],call:'port'},null);
                     //newObj.DestinationPortState =  dstPortObj.nodeConnectorProperties.properties.state.value;
                     arr.push(newObj);
+                }
+                normalizerObj = {};
+                normalizerObj.Stats = arr;
+                return normalizerObj;
+                break;
+            
+            case 'host':
+                arr = [];
+                newObj = {};
+                for (var i=0; i<obj.hostConfig.length; i++){
+                    newObj = {};
+                    var MACarr = [];
+                    MACarr.push(obj.hostConfig[i].dataLayerAddress);
+                    newObj.MAC_Address = MACarr;
+                    var IParr = [];
+                    IParr.push(obj.hostConfig[i].networkAddress); 
+                    newObj.IP_Address = IParr;
+                    var VLANarr = [];
+                    VLANarr.push(obj.hostConfig[i].vlan);
+                    newObj.VLAN_ID = VLANarr;
+                    newObj.Attached_To = [];
+                    var Attached_To_Obj = {};
+                    Attached_To_Obj.DPID = obj.hostConfig[i].nodeId;
+                    Attached_To_Obj.PortNum = parseInt(obj.hostConfig[i].nodeConnectorId);
+                    newObj.Attached_To.push(Attached_To_Obj);
+                    arr.push(newObj);
+                    //Missing: LastSeen
                 }
                 normalizerObj = {};
                 normalizerObj.Stats = arr;

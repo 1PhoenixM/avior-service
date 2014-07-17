@@ -6,9 +6,14 @@ module.exports = function (ctlr,call,cb) {
 		res.on('data', function(data) {
 			responseString += data;
 		});
+        
+        res.on('error', function(err){
+          console.log('Error occurred in toClient: ' + err.message);  
+        });
  
 		res.on('end', function() {
                         //console.log(responseString);
+            
                         var responseObject = JSON.parse(responseString);
             
                         if(ctlr.dpidParse){

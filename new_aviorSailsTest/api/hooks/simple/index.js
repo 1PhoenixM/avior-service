@@ -14,18 +14,21 @@ module.exports = function pluginHook(sails) {
                 files.forEach(function(file){
                     console.log(file + ' found.');
                     if(file.search("Model.js") > 0){
-                        fs.renameSync('./api/plugins/'+file+'', './api/models/'+file+'')
+                        //fs.renameSync('./api/plugins/'+file+'', './api/models/'+file+'')
+                        sails.models.file = './api/plugins/'+file+''; //How to do this?
+                        console.log(sails.models);
                         console.log(file + " was successfully loaded as a new Model.")
                     }
                     else if(file.search("Controller.js") > 0){
-                        fs.renameSync('./api/plugins/'+file+'', './api/controllers/'+file+'')
+                        //fs.renameSync('./api/plugins/'+file+'', './api/controllers/'+file+'')
+                        sails.controllers.file = './api/plugins/'+file+'';
                         console.log(file + " was successfully loaded as a new Controller.")
                     }
                     else{
                         console.log('Plugin check warning: File named: ' + file + ' was dropped because filename doesn\'t match Avior\'s naming scheme.');
                     }
                 });
-            });*/  
+            });*/
         },
 
         // Runs automatically when the hook initializes
