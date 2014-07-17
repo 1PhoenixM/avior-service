@@ -5,12 +5,19 @@ define([
 	FirewallMod.prototype.urlRoot = function () {
 		if (this.op != undefined){
 			console.log("if");
-			return "/wm/firewall/module/" + this.op + "/json";
+            console.log(this.op)
+            if (this.op === "status"){
+			    return "/firewallstatus";
+            } else if (this.op === "disable"){
+                return "/disablefirewall";
+            }  else if (this.op === "enable"){
+                return "/enablefirewall";
+            }   
 		}
 		else {
 			console.log("else");
 			this.unset(this.op);
-			return "/wm/firewall/rules/json";
+			return "/firewallrules/";
 		}
 	};
 	 

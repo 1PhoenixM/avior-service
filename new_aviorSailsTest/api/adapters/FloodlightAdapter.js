@@ -166,6 +166,9 @@ var TO_OFP = {
 
     Flow: "Flow",
     Flows: "Flows",
+    result: "Result",
+    status: "Status",
+    details: "Details"
     
 };
 
@@ -234,16 +237,20 @@ module.exports = {
                         break;
                 case 'topologyexternallinks':return this.getTopologyExternalLinks({args:['all'],call:coll},cb);
                         break;
-                case 'getFirewallStatus':return this.getFirewallStatus({args:[],call:coll},cb); 
+                case 'firewallstatus':return this.getFirewallStatus({args:[],call:coll},cb);
+                        break;
+                case 'disablefirewall':return this.disableFirewall({args:[],call:coll},cb);
+                         break;
+                case 'enablefirewall':return this.enableFirewall({args:[],call:coll},cb);
                          break;
                 case 'getFirewallStorageRules':return this.getFirewallStorageRules({args:['all'],call:coll},cb);
                          break;
                 case 'getFirewallSubnetMask':return this.getFirewallSubnetMask({args:['all'],call:coll},cb);
                          break;
-                case 'getFirewallRules':return this.getFirewallRules({args:['all'],call:coll},cb); 
+                case 'firewallrules':return this.getFirewallRules({args:['all'],call:coll},cb); 
                          break;
-                //case 'clearflows':return this.clearFlows({args:['all'],call:coll},cb);
-                         //break;
+                case 'clearflows':return this.clearFlows({args:['all'],call:coll},cb);
+                         break;
                
 		        default: return cb();
                         break;
@@ -466,6 +473,7 @@ module.exports = {
     delFlow: restCall('DELETE','/wm/staticflowentrypusher/json'),
     postFirewallRule: restCall('POST','/wm/firewall/rules/json'),
     deleteFirewallRule: restCall('DELETE','/wm/firewall/rules/json'),
+    
     
 	//////////////// PLACEHOLDER FOR VIRTUAL NETWORK CALLS
     //Firewall is unused for now

@@ -5,14 +5,14 @@ define([
 	FlowMod.prototype.urlRoot = function () {
 		if (this.DPID === "one"){
 			this.unset(this.DPID);
-			return "/alterflow";
+			return "/alterflow/";
 		}
 		else if (this.DPID === "listAll"){
 			this.unset(this.DPID);
-			return "/flow/find";
+			return "/flow/find/";
 		}
 		else
-			return "/clearflows/" + this.DPID ; //clear flows by default. risky?
+			return "/clearflows/" + this.DPID + "" ; //clear flows by default. risky?
 	};
 	 
 	FlowMod.prototype.initialize = function(DPID) {this.DPID = DPID;};
