@@ -1,5 +1,5 @@
 module.exports = {
-    find: function(req, res){
+    /*find: function(req, res){
          FlowStats.find({}, function(err, flows) {
           if(err) {return console.log(err);}
           else { 
@@ -13,7 +13,7 @@ module.exports = {
             else {return res.json(flows)}
         }
         });
-    },
+    },*/
     create: function(req, res) {
 
     },

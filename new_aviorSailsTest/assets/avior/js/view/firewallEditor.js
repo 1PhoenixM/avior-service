@@ -257,10 +257,9 @@ define([
 		buttonUpdating: function () {
 			fm = new FirewallMod("status");
 			fm.fetch().complete(function () {
-			firewallStatus = fm.get("Result");
-			str = JSON.stringify(firewallStatus);
-			//alert(firewallStatus);
-				if(firewallStatus === "firewall enabled"){
+			firewallStatus = fm.get("0");
+            console.log(firewallStatus.Result);
+				if(firewallStatus.Result === "firewall enabled"){
 				$( "#radio-choice-c" ).prop( "checked", true );
 				$( "#radio-choice-d" ).prop( "checked", false );
 				//$("#radio-choice-c").prop("disabled", true);
