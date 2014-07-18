@@ -9,7 +9,7 @@ define([
 		var newResp = new Array;
 		/* For each element in the JSON, push a new entry to newResp */
 		for (x in resp){
-			newResp.push(x);
+            newResp.push(JSON.stringify(resp[x].Name));
 		}
 		/* Return parsed elements */
 		return newResp;

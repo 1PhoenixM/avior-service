@@ -7,12 +7,25 @@
  */
 
 module.exports = {
-
+  identity: "modules",
+  
   attributes: {
-  	
-  	/* e.g.
-  	nickname: 'string'
-  	*/
+    Name: {
+        type: "string",
+        required: true
+    },
+    Loaded: {
+        type: "string",
+        required: true
+    },
+    Provides: {
+        type: "string",
+        required: true
+    },
+    Depends: {
+        type: "string",
+        required: true
+    },
     
   }
 

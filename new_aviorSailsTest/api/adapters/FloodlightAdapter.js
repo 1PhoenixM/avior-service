@@ -170,9 +170,9 @@ var TO_OFP = {
     status: "Status",
     details: "Details",
     Name: "Name",
-    loaded: "Loaded",
+    /*loaded: "Loaded",
     provides: "Provides",
-    depends: "Depends"
+    depends: "Depends"*/
     
 };
 
