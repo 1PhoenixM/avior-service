@@ -147,7 +147,7 @@ define([
                 var desc = this.description.get(0); //for one switch
                 this.manufacturer = desc["Manufacturer"];
                 desc["DPID"] = DPID;
-                desc["connectedSince"] = oneSwitch.get("connectedSince");
+                desc["Connected_Since"] = oneSwitch.get("Connected_Since");
                 //console.log(JSON.stringify(desc));
                 $(x).append(this.template3(desc)).trigger('create');
 		},
