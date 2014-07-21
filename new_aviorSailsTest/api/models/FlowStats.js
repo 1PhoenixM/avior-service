@@ -6,7 +6,7 @@
  * @docs		:: http://sailsjs.org/#!documentation/models
  */
 
-module.exports = {
+module.export = {
   identity: "flowstats",
     
   connection: "floodlight",
@@ -17,7 +17,11 @@ module.exports = {
         required: true,
         primaryKey: true,
     },
-    Name: {
+    Flows:{ 
+        type: 'array',
+        required: true,
+    },
+    /*Name: {
         type:"String",
         required: true
     },
@@ -76,6 +80,6 @@ module.exports = {
 	IdleTimeout: {
         type:"Integer",
         required: true
-    },
+    },*/
   }
-};
+}

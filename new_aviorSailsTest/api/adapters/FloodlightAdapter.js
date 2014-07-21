@@ -319,6 +319,7 @@ module.exports = {
     
         dpidParse: function (current, obj) {
             /*if(current === 'switchports' || current === 'queue' || current === 'flowstats' || current === 'aggregate' || current === 'switchdesc' || current === 'tablestats'                 || current === 'switchfeatures' || current === 'flow')*/
+                
                 arr = [];
                     
                 if(current === 'switchports'){   
