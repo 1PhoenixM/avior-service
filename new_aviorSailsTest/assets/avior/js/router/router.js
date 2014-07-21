@@ -7,6 +7,7 @@ define([
 	"floodlight/firewallModFl",
 	"floodlight/switch",
 	"view/switchDetail",
+    "floodlight/controllerFl",
 	"floodlight/memory",
 	"floodlight/modules",
 	"floodlight/status",
@@ -28,7 +29,7 @@ define([
 	"text!template/login.html",
 	"text!template/controller.html",
 	"text!template/content.html",
-], function($, _, Backbone, Marionette, TopologyCollection, FirewallMod, Switch, SwitchDetail, Memory, Modules, Status, Uptime, Host, Test, Topo, FrontPage, MemoryView, ModulesView, StatusView, UptimeView, FlowEditor, FirewallEditor, HostView, TopologyView, TestView, ControllerView, loginTpl, controllerTpl, contentTpl){
+], function($, _, Backbone, Marionette, TopologyCollection, FirewallMod, Switch, SwitchDetail, Controller, Memory, Modules, Status, Uptime, Host, Test, Topo, FrontPage, MemoryView, ModulesView, StatusView, UptimeView, FlowEditor, FirewallEditor, HostView, TopologyView, TestView, ControllerView, loginTpl, controllerTpl, contentTpl){
 	/* Structure used to navigate through views */
 	var Router = Marionette.AppRouter.extend({
 		template: _.template(controllerTpl),
@@ -83,7 +84,7 @@ define([
 			this.uptimeview = new UptimeView({model: new Uptime});
 			this.memoryview = new MemoryView({model: new Memory});
 			this.modulesview = new ModulesView({model: new Modules});
-			
+			//this.controllerview = new ControllerView({model: new Controller});
 		
 			// Delegate events for controller views
 			this.statusview.delegateEvents(this.statusview.events);
@@ -96,6 +97,7 @@ define([
 			$('#statusview').append(this.statusview.render().el);
 			$('#memoryview').append(this.memoryview.render().el);
 			$('#modulesview').append(this.modulesview.render().el);
+           // $('sdn_controller').append(this.controllerview.render().el);
 			
 			var self = this;
 	

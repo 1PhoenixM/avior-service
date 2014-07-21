@@ -21,5 +21,18 @@ module.exports = {
         //var currentconn = sails.config.models.connection;
         //sails.config.connections.floodlight.hostname = req.param('hostname'); //hardcoded for now
         //console.log('\nSet.');
-  }
+    },
+    
+    fetchController: function (req, res){
+        //Necessary for Avior to get the controller being used
+        if(sails.controllers.main.sdncontroller){
+        res.json(sails.controllers.main.sdncontroller);
+        }
+        else if(sails.config.models.connection !== 'util'){
+        res.json(sails.config.models.connection);    
+        }
+        else{
+        res.json("Not set at localhost:1337.");    
+        }
+    },
 };
