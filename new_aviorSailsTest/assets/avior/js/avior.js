@@ -48,18 +48,32 @@ define([
 				}
   				
   				if (localStorage.loggedIn == "true") {
-  					$(document).bind('pageinit');
-					$(function() { $("#some-div").show(); });
-					$.mobile.linkBindingEnabled = false;
-    				$.mobile.hashListeningEnabled = false;
-    			
-    				var self = this;
-				
-					document.getElementById("leftpanel3").style.display='block';
-					document.getElementById("logout").style.display='block';
-					var router = new Router();
-					Backbone.history.start();
+  					if (window.location.href == "/avior/index.html"){
+                        $(document).bind('pageinit');
+                        $(function() { $("#some-div").show(); });
+                        $.mobile.linkBindingEnabled = false;
+                        $.mobile.hashListeningEnabled = false;
 
+                        window.location.href = "/avior/index.html#controllers";
+                        var self = this;
+
+                        document.getElementById("leftpanel3").style.display='block';
+                        document.getElementById("logout").style.display='block';
+                        var router = new Router();
+                        Backbone.history.start();
+                        } else {
+                            $(document).bind('pageinit');
+                            $(function() { $("#some-div").show(); });
+                            $.mobile.linkBindingEnabled = false;
+                            $.mobile.hashListeningEnabled = false;
+                            
+                            var self = this;
+
+                            document.getElementById("leftpanel3").style.display='block';
+                            document.getElementById("logout").style.display='block';
+                            var router = new Router();
+                            Backbone.history.start();
+                        }
   				}
   				
   				else {
