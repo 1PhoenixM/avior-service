@@ -240,6 +240,7 @@ define([
 					//flows that do not match to be typed as dynamic
 					//static flows listed at the top or bottom of flow table grouped together
 					var sf = new FlowMod("listAll");
+                    
 					sf.fetch().complete(function () {
     	  				//console.log(sf.attributes[flowDPID]);
                         for (var i=0;i<sf.length;i++){
