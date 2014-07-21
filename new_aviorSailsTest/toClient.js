@@ -21,7 +21,6 @@ module.exports = function (ctlr,call,cb) {
                             var newObject = ctlr.dpidParse(call, responseObject);
                             console.log('\n\n\n\n\n\n\n\n\n\n\n' + newObject);
                             var normalizedObject = ctlr.normalize(newObject);
-
                         }
             
                         else{
@@ -33,11 +32,14 @@ module.exports = function (ctlr,call,cb) {
                             else{
                                 normalizedObject = normalizedObject;
                             }
+                            
                         }
                         console.log(normalizedObject);
+            
                         //ctlr.response.send(normalizedObject);
-                        
+                       
                         cb(null,normalizedObject);
+                        
 		});
 	}
 }

@@ -63,7 +63,7 @@ var TO_OFP = {
     
     portStatistics: 'Stats',
     portStatistic: 'Stats',
-    nodeConnector: 'Port',
+    //nodeConnector: 'Port',
     receivePackets: 'RXPackets',
     transmitPackets: 'TXPackets',
     receiveBytes: 'RXBytes',
@@ -126,7 +126,9 @@ var TO_OFP = {
     Buffers: 'Buffers',
     Capabilities: 'Capabilities',
     Connected_Since: 'Connected_Since',
-
+    
+    Ports: 'Ports',
+    Flows: 'Flows',
      
 };
 
@@ -406,6 +408,7 @@ module.exports = {
     nodeParse: function(current, obj) {
     
     switch(current){
+            
               case 'topology':
                 arr = [];
                 for (var i=0; i<obj.edgeProperties.length; i++){
@@ -417,7 +420,7 @@ module.exports = {
                     //srcPortObj = this.getNodeConnectors({args:['default', 'OF', newObj.SourceDPID],call:'port'},null);
                     //newObj.SourcePortState = srcPortObj.nodeConnectorProperties.properties.state.value;
                     //dstPortObj = this.getNodeConnectors({args:['default', 'OF', newObj.DestinationDPID],call:'port'},null);
-                    //newObj.DestinationPortState =  dstPortObj.nodeConnectorProperties.properties.state.value;
+                    //newObj.DestinationPortState = dstPortObj.nodeConnectorProperties.properties.state.value;
                     arr.push(newObj);
                 }
                 normalizerObj = {};
@@ -456,7 +459,7 @@ module.exports = {
                 arr = [];
                 for (var i=0; i<obj.nodeProperties.length; i++){
                     newObj = {}; //newObj has to be defined within the for loop
-                    console.log(obj.nodeProperties);
+                    //console.log(obj.nodeProperties);
                     newObj.Actions = parseInt(obj.nodeProperties[i].properties.supportedFlowActions.value.length); //Correct value?
                     newObj.Buffers = obj.nodeProperties[i].properties.buffers.value;
                     newObj.Capabilities = obj.nodeProperties[i].properties.capabilities.value;
@@ -468,6 +471,43 @@ module.exports = {
                 normalizerObj = {};
                 normalizerObj.Stats = arr;
                 return normalizerObj;
+                break;
+            
+            case 'switchports':
+                arr = [];
+                for(var i=0; i<obj.portStatistics.length; i++){
+                    newObj = {};
+                    newObj.DPID = obj.portStatistics[i].node.id;
+                    newObj.Ports = [];
+                    for(var j=0; j<obj.portStatistics[i].portStatistic.length; j++){
+                        portObj = {};
+                        portObj.PortNum = parseInt(obj.portStatistics[i].portStatistic[j].nodeConnector.id);
+                        for(key in obj.portStatistics[i].portStatistic[j]){
+                            portObj[key] = obj.portStatistics[i].portStatistic[j][key];
+                        }
+                        newObj.Ports.push(portObj);
+                    }
+                    arr.push(newObj);    
+                }
+                return arr;
+                break;
+            
+            case 'flow':
+                arr = [];
+                for(var i=0; i<obj.flowStatistics.length; i++){
+                    newObj = {};
+                    newObj.DPID = obj.flowStatistics[i].node.id;
+                    newObj.Flows = [];
+                    for(var j=0; j<obj.flowStatistics[i].flowStatistic.length; j++){
+                        flowObj = {};
+                        for(key in obj.flowStatistics[i].flowStatistic[j]){
+                            flowObj[key] = obj.flowStatistics[i].flowStatistic[j][key];
+                        }
+                        newObj.Flows.push(flowObj);
+                    }
+                    arr.push(newObj);    
+                }
+                return arr;
                 break;
             
             default:
