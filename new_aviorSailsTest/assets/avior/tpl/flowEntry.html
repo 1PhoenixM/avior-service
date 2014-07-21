@@ -2,8 +2,8 @@
 	<td> <%= Name %> </td>
 	<td> <%= Priority %> </td>
 	<td> <%= match.InputPort %> </td>
-	<td> <% _.each(actions, function(action) {
-				 var temp = (action.type).toString();
+	<td> <% _.each(Actions, function(Action) {
+				 var temp = (Action.Type).toString();
 				 switch (temp) {
                             case "OUTPUT":
                                 %> Type= output, port= <%= action.port %> <% 

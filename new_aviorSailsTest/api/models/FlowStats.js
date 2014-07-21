@@ -21,6 +21,7 @@ module.export = {
         type: 'array',
         required: true,
     },
+      //Leave commented.
     /*Name: {
         type:"String",
         required: true

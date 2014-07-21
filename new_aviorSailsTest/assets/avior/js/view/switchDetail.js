@@ -242,8 +242,13 @@ define([
 					var sf = new FlowMod("listAll");
 					sf.fetch().complete(function () {
     	  				//console.log(sf.attributes[flowDPID]);
-    	  				if (sf.attributes[flowDPID] != undefined){
-    	  					var stringed = JSON.stringify(sf.attributes[flowDPID]);
+                        for (var i=0;i<sf.length;i++){
+                            if(sf[i].DPID === flowDPID){    
+                                var Flows = sf[i].Flows;
+                            }
+                        }
+    	  				if (Flows != undefined){
+    	  					var stringed = JSON.stringify(Flows);
     	  					if (stringed == "{}"){
     	  						console.log("empty object");
     	  						console.log(stringed);
@@ -251,7 +256,7 @@ define([
     	  					else{
     	  						console.log("object has flows");
     	  						console.log(stringed);
-    	  						for(var key in sf.attributes[0]){
+    	  						for(var key in Flows){
     	  							console.log("FLOW NAME: " + key);
     	  							console.log(sf.attributes[0][Flows][key]);
     	  						}	
