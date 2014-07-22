@@ -3,7 +3,7 @@
 module.export = {
 	identity: 'flow',
 
-	connection: 'opendaylight',
+	connection: 'util',
 
 	attributes: {
 		

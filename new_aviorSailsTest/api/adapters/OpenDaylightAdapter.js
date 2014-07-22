@@ -101,8 +101,8 @@ var TO_OFP = {
     node: 'Stats',
     id: 'PortNum', //other ids?
     properties: 'Port',
-    state: 'PortState', 
-    config: 'PortConfig',
+    state: 'State', 
+    config: 'Config',
     //timestamp
     //bandwidth
     name: 'PortName',
@@ -129,6 +129,11 @@ var TO_OFP = {
     
     Ports: 'Ports',
     Flows: 'Flows',
+    
+    Manufacturer: 'Manufacturer',
+    Software: 'Software',
+    Hardware: 'Hardware',
+    SerialNum: 'SerialNum',
      
 };
 
@@ -170,7 +175,7 @@ module.exports = {
                 case 'memory': return 'memory'
                         break;    
                 //core
-                case 'port': return this.getNodeConnectors({args:['default'],call:coll},cb);
+                case 'port': return this.getNodeConnectors({args:['default', 'OF', '00:00:00:00:00:00:00:01'],call:coll},cb); //for now
                         break;
                 case 'flow': return this.getFlowStats({args:['default'],call:coll},cb);
                         break;
@@ -190,6 +195,10 @@ module.exports = {
                          break;
                 case 'flowspec': return this.getFlowSpecs({args:['default'],call:coll},cb);
                          break;
+                        
+                //no calls in opendaylight
+                case 'switchdesc': return this.getNodes({args:['default'],call:coll},cb);
+                        break;
                         
                 //odl only        
                 case 'staticroute': return this.getStaticRoutes({args:['default'],call:coll},cb);
@@ -414,9 +423,9 @@ module.exports = {
                 for (var i=0; i<obj.edgeProperties.length; i++){
                     newObj = {};
                     newObj.SourceDPID = obj.edgeProperties[i].edge.tailNodeConnector.node.id;
-                    newObj.SourcePortNum = obj.edgeProperties[i].edge.tailNodeConnector.id;
+                    newObj.SourcePortNum = parseInt(obj.edgeProperties[i].edge.tailNodeConnector.id);
                     newObj.DestinationDPID = obj.edgeProperties[i].edge.headNodeConnector.node.id;
-                    newObj.DestinationPortNum = obj.edgeProperties[i].edge.headNodeConnector.id;
+                    newObj.DestinationPortNum = parseInt(obj.edgeProperties[i].edge.headNodeConnector.id);
                     //srcPortObj = this.getNodeConnectors({args:['default', 'OF', newObj.SourceDPID],call:'port'},null);
                     //newObj.SourcePortState = srcPortObj.nodeConnectorProperties.properties.state.value;
                     //dstPortObj = this.getNodeConnectors({args:['default', 'OF', newObj.DestinationDPID],call:'port'},null);
@@ -507,6 +516,20 @@ module.exports = {
                     }
                     arr.push(newObj);    
                 }
+                return arr;
+                break;
+            
+            case 'switchdesc':
+                arr = [];
+                 for (var i=0; i<obj.nodeProperties.length; i++){
+                 newObj = {};
+                 newObj.DPID = obj.nodeProperties[i].node.id;
+                 newObj.Manufacturer = "Not found"; 
+                 newObj.Hardware = "Not found";
+                 newObj.Software = "Not found";
+                 newObj.SerialNum = "Not found";
+                 arr.push(newObj);  
+                 }
                 return arr;
                 break;
             

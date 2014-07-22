@@ -4,7 +4,7 @@
 module.export = {
 	identity: 'port',
 
-	connection: 'opendaylight',
+	connection: 'util',
 
 	attributes: {
 		PortNumber: {

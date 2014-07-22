@@ -3,7 +3,7 @@
 module.export = {
 	identity: 'switchports',
 
-	connection: 'floodlight',
+	connection: 'util',
 
 	attributes: {
 	   DPID:{

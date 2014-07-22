@@ -3,7 +3,7 @@
 module.export = {
 	identity: 'portstats',
 
-	connection: 'floodlight',
+	connection: 'util',
 
 	attributes: {
         PortNum: {

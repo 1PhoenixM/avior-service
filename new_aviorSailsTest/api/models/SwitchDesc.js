@@ -3,7 +3,7 @@
 module.export = {
 	identity: 'switchdesc',
 
-	connection: 'floodlight',
+	connection: 'util',
 
 	attributes: {
          DPID: {

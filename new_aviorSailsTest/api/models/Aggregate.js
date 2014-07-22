@@ -3,7 +3,7 @@
 module.export = {
 	identity: 'aggregate',
 
-	connection: 'floodlight',
+	connection: 'util',
 
 	attributes: {
         DPID: {

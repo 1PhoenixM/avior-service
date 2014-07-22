@@ -9,7 +9,7 @@
 module.export = {
   identity: "flowstats",
     
-  connection: "floodlight",
+  connection: "util",
     
   attributes: {
   	DPID: {

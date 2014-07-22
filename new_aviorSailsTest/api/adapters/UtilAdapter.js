@@ -30,7 +30,10 @@ module.exports = {
             } 
         },*/
 
-        find: function (conn, coll, options, cb) {
+        find: function (conn, coll, options, cb) {  
+            if(!sails.controllers.main.sdncontroller && sails.config.models.connection === 'util'){
+                sails.controllers.main.sdncontroller = 'floodlight';
+            }
             switch(sails.controllers.main.sdncontroller){
              case 'floodlight': 
                     //console.log(sails.controllers.main.sdncontroller);
