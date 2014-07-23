@@ -1,7 +1,7 @@
 var toClient = require('../../toClient.js');
 var http = require('http');
 
-var FROM_OFP = {
+/*var FROM_OFP = {
 	// name-in-models: name-in-opendaylight
 	MAC_Address: 'dataLayerAddress',
 	IP_Address: 'networkAddress',
@@ -29,7 +29,7 @@ var FROM_OFP = {
     RXOverrunErr:'receiveOverRunError',
     RXCrcErr:'receiveCrcError',
     Collisions:'collisionCount', 
-};
+};*/
 
 var TO_OFP = {
 	// name-in-opendaylight: name-in-models
@@ -50,7 +50,6 @@ var TO_OFP = {
     value: 'Value', //this is used a lot
     actions: 'Actions',
     port: 'Port',
-    
     priority: 'Priority',
     idleTimeout: 'IdleTimeout',
     hardTimeout: 'HardTimeout',
@@ -60,7 +59,6 @@ var TO_OFP = {
     durationNanoseconds: 'DurationNanoSeconds',
     packetCount: 'PacketCount',
     byteCount: 'ByteCount',
-    
     portStatistics: 'Stats',
     portStatistic: 'Stats',
     //nodeConnector: 'Port',
@@ -76,23 +74,19 @@ var TO_OFP = {
     receiveOverRunError: 'RXOverrunErr',
     receiveCrcError: 'RXCrcErr',
     collisionCount: 'Collisions',
-    
     properties: 'Stats',
     tables: 'Tables',
     actions: 'Actions',
     macAddress: 'MAC_Address',
     capabilities: 'Capabilities',
     buffers: 'Buffers',
-    
     tableStatistics: 'Stats',
     tableStatistic: 'Stats',
     activeCount: 'ActiveCount',
     lookupCount: 'LookupCount',
     matchedCount: 'MatchedCount',
     maximumEntries: 'MaxEntries', 
-    
     nodeProperties: '',
-    
     //topology
     edgeProperties: 'Stats',
     edge: 'Stats',
@@ -106,35 +100,36 @@ var TO_OFP = {
     //timestamp
     //bandwidth
     name: 'PortName',
-    
     // topology modified by nodeparse, not odl
     SourceDPID: 'SourceDPID',
     SourcePortNum: 'SourcePortNum',
     DestinationDPID: 'DestinationDPID',
     DestinationPortNum: 'DestinationPortNum',
-    
     Stats: 'Stats',
-    
     MAC_Address: 'MAC_Address', 
     IP_Address: 'IP_Address',
     VLAN_ID: 'VLAN_ID',
     Attached_To: 'Attached_To',
     DPID: 'DPID',
     PortNum: 'PortNum',
-    
     Actions: 'Actions',
     Buffers: 'Buffers',
     Capabilities: 'Capabilities',
     Connected_Since: 'Connected_Since',
-    
     Ports: 'Ports',
     Flows: 'Flows',
-    
     Manufacturer: 'Manufacturer',
     Software: 'Software',
     Hardware: 'Hardware',
     SerialNum: 'SerialNum',
-     
+    PortName: 'PortName',
+    PortState: 'PortState',
+    CurrentFeatures: 'CurrentFeatures',
+    AdvertisedFeatures: 'AdvertisedFeatures',
+    SupportedFeatures: 'SupportedFeatures',
+    PeerFeatures: 'PeerFeatures',
+    Config: 'Config',
+    HardwareAddress: 'HardwareAddress',
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -474,6 +469,34 @@ module.exports = {
                     newObj.Capabilities = obj.nodeProperties[i].properties.capabilities.value;
                     newObj.Connected_Since = obj.nodeProperties[i].properties.timeStamp.value;
                     newObj.DPID = obj.nodeProperties[i].node.id;
+                    /*opts = {method:'GET',hostname:'localhost',port:8080,path:'/controller/nb/v2/switchmanager/default/node/OF/'+newObj.DPID+'',auth:'admin:admin'};
+                    req = http.request(opts, function(req, res){
+                            var responseString = '';
+                            res.setEncoding('utf-8');
+
+                            res.on('data', function(data) {
+                            responseString += data;
+                                console.log(responseString);
+                            });
+                        
+                            res.on('end', function() {
+                            var portsObj = JSON.parse(responseString);
+                                newObj.Ports = [];
+                            for(var j=0; j<portsObj.nodeConnectorProperties.length; j++){
+                            portObj = {};
+                            portObj.PortNum = portsObj.nodeConnectorProperties[j].nodeconnector.id;
+                            portObj.PortName = portsObj.nodeConnectorProperties[j].properties.name.value;
+                            portObj.PortState = portsObj.nodeConnectorProperties[j].properties.state.value;
+                            portObj.CurrentFeatures = "N/A";
+                            portObj.AdvertisedFeatures = "N/A";
+                            portObj.SupportedFeatures = "N/A";
+                            portObj.PeerFeatures = "N/A";
+                            portObj.Config = portsObj.nodeConnectorProperties[j].properties.config.value;
+                            portObj.HardwareAddress = "N/A";
+                            newObj.Ports.push(portObj);
+                            }
+                            });
+                    });*/
                     arr.push(newObj);
                 }
                 //needs Port list
@@ -539,4 +562,3 @@ module.exports = {
     },
     
 }
-

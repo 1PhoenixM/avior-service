@@ -147,7 +147,6 @@ var TO_OFP = {
     transportDestination: "TransportDestination",
     transportSource: "TransportSource",
     wildcards: "Wildcards",
-    
     //Ports
     Ports: 'Ports',
     //Flows
@@ -160,10 +159,8 @@ var TO_OFP = {
     outPort: 'OutPort',
     actions: 'Actions',
     port: 'PortNum',
-    
     priority: 'Priority',
     flags: 'Flags',
-
     Flow: "Flow",
     Flows: "Flows",
     result: "Result",
@@ -172,8 +169,7 @@ var TO_OFP = {
     Name: "Name",
     /*loaded: "Loaded",
     provides: "Provides",
-    depends: "Depends"*/
-    
+    depends: "Depends"*/ 
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -189,6 +185,7 @@ var restCall = function(apiMethod,apiPath){
                 req = http.request(opts, toClient(this,options.call,cb));
                 if (options.data) {
                         req.write(JSON.stringify(options.data));
+                        console.log(req.body);
                 }
                 req.end();
         }
@@ -500,4 +497,3 @@ module.exports = {
     getModules: restCall('GET','/wm/core/module/loaded/json'),
 
 }
-

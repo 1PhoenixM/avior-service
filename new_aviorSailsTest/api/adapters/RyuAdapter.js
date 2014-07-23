@@ -3,8 +3,6 @@ var http = require('http');
 
 var TO_OFP = {
 	// name-in-ryu: name-in-models
-
-    
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -101,4 +99,3 @@ module.exports = {
 
 
 }
-
