@@ -158,6 +158,12 @@ module.exports = {
                 if (!conn.method) { conn.method = 'GET'; }
                 cb();
         },
+    
+        teardown: function(connectionName, cb) {
+          if(!sails.config.connections[connectionName]) return cb();
+          delete sails.config.connections[connectionName];
+          cb();
+        },
 
         find: function (conn, coll, options, cb) {
                 switch (coll){

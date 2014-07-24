@@ -13,6 +13,12 @@ module.exports = {
                 cb();
         },
     
+        teardown: function(connectionName, cb) {
+          if(!sails.config.connections[connectionName]) return cb();
+          delete sails.config.connections[connectionName];
+          cb();
+        },
+    
         /*setController: function() {
             var self = this;
              switch(this.sdncontroller){
