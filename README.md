@@ -1,7 +1,7 @@
 # Avior 2.0
 
 ![Avior Logo]
-(http://imgur.com/S3FAoyz)
+(https://raw.githubusercontent.com/1PhoenixM/avior-service/master/assets/images/avior_logo_alt_trans.png)
 
 Avior is a network management GUI designed for OpenFlow networks, focusing on versatility and usability
 with a variety of dynamic network statistics and useful management tools.
