@@ -15,12 +15,9 @@ Dependencies: node.js, sails.js (via npm)
 5. Navigate to localhost:1337 in your browser. 
 
 6. Select your SDN controller. Currently supported: 
-
-	* Floodlight (full support)
-    
-	* OpenDaylight (in development, full support coming soon)
-    
-    * And more...
+  * Floodlight (full support)
+  * OpenDaylight (in development, full support coming soon)
+  * And more...
     
 7. Enter the IP address of your controller and click "Start Avior". 
 
