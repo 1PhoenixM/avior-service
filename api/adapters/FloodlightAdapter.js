@@ -277,7 +277,8 @@ module.exports = {
         
         create: function (conn, coll, options, cb) {
                 switch (coll){
-                case 'flow': return this.postFlow({data:{}},cb);
+                //case 'flow': return cb(); //this.postFlow({data:{}},cb);
+                case 'alterflow': return cb();
 		        default: return cb();
                 }
         },
