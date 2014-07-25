@@ -37,6 +37,6 @@ Dependencies: node.js, sails.js (via npm)
 
 9. The Avior API and GUI is now available! Use it to monitor a real network or a Mininet-generated network.
 
-10. Visit sdn.marist.edu for more on Avior and other SDN projects.
+10. Visit [sdn.marist.edu](http://sdn.marist.edu) for more on Avior and other SDN projects.
 
 a [Sails](http://sailsjs.org) application
