@@ -1,6 +1,18 @@
 # Avior 2.0
 
-To use:
+![Avior Logo]
+(http://imgur.com/S3FAoyz)
+
+Avior is a network management GUI designed for OpenFlow networks, focusing on versatility and usability
+with a variety of dynamic network statistics and useful management tools.
+
+Features include:
+  * Dynamic stats about the controller, hosts, and switches on the network
+  * Network topology rendered with d3.js
+  * Static Flow Pusher
+  * Firewall
+
+To install and use:
 
 Dependencies: node.js, sails.js (via npm)
 
@@ -24,5 +36,7 @@ Dependencies: node.js, sails.js (via npm)
 8. Log in with admin/admin. 
 
 9. The Avior API and GUI is now available! Use it to monitor a real network or a Mininet-generated network.
+
+10. Visit sdn.marist.edu for more on Avior and other SDN projects.
 
 a [Sails](http://sailsjs.org) application
