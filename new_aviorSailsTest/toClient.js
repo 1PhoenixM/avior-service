@@ -1,4 +1,4 @@
-module.exports = function (ctlr,call,cb) {
+module.exports = function (ctlr,call,postData,cb) {
 	return function (res) {
 		//console.log(res);
         var responseString = '';
@@ -34,6 +34,7 @@ module.exports = function (ctlr,call,cb) {
                             }
                             
                         }
+            
                         console.log(normalizedObject);
             
                         //ctlr.response.send(normalizedObject);

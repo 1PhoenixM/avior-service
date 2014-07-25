@@ -142,7 +142,7 @@ var restCall = function(apiMethod,apiPath){
                         }
                 }
                 opts = {method:apiMethod,hostname:'localhost',port:8080,path:apiPath,auth:'admin:admin'}; //TODO: mask auth
-                req = http.request(opts, toClient(this,options.call,cb));
+                req = http.request(opts, toClient(this,options.call,null,cb));
                 if (options.data) {
                         req.write(JSON.stringify(options.data));
                 }

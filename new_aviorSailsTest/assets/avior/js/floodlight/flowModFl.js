@@ -5,7 +5,7 @@ define([
 	FlowMod.prototype.urlRoot = function () {
 		if (this.DPID === "one"){
 			this.unset(this.DPID);
-			return "/alterflow/";
+			return "/alterflow/find/";
 		}
 		else if (this.DPID === "listAll"){
 			this.unset(this.DPID);

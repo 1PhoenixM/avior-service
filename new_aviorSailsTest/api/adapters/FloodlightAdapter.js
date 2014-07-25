@@ -182,16 +182,23 @@ var restCall = function(apiMethod,apiPath){
                         }
                 }
                 opts = {method:apiMethod,hostname:'10.11.17.40',port:8080,path:apiPath};
-                req = http.request(opts, toClient(this,options.call,cb));
+                
+                req = http.request(opts, toClient(this,options.call,options.data,cb));
                 if (options.data) {
                         req.write(JSON.stringify(options.data));
-                        console.log(req.body);
+                        console.log("DATA: " + options);
+                        console.log("Got here");
                 }
                 req.end();
+                
         }
 };
 
+ 
 module.exports = {
+    
+    postData: {},
+    
 	identity: 'floodlight',
 
         registerConnection: function (conn, coll, cb) {
@@ -260,7 +267,8 @@ module.exports = {
                          break;
                 case 'modules':return this.getModules({args:[],call:coll},cb);
                          break;
-               
+               case 'alterflow':return this.postFlow({data:{},call:coll},cb);
+                        break;
 		        default: return cb();
                         break;
                 }
