@@ -1,0 +1,299 @@
+<div class="large-12 columns">
+	<div id="container2">
+		<h3> Static Flow Manager </h3>
+		<div id="flowEdTable">
+			<label for="flowEdTableLabel">Select DPID:</label>
+			<select name="dpid" id="dpid">
+			<option value="dpidOption"></option>
+			<% _.each(coll, function(i) { %>  <option><%= i.DPID %></option> <% }); %>
+			</select>
+		</div>
+	</div>
+
+	<!--This is the HTML that will render if the device is a mobile device--> 
+	<div class="show-for-medium-down">
+		<button id="getFlows">Push Flow</button>
+
+		<button id="removeFlows">Delete All Flows</button>
+
+		<button id="removeSwFlows">Clear A Flow</button>
+
+		<button id="removeFlow">Delete Flow</button>
+
+
+
+		<p>
+			<details id="advancedDetails">
+	  		<summary id="advanced">Advanced Flow Editor</summary>
+	  		
+			<h4>Match:</h4>
+			<input type="text" name="textinput-6" 
+			id="dst-mac" placeholder="Data Layer Destination" value=""
+			data-mini="true" class="">
+		
+			<input type="text" name="textinput-6" 
+			id="src-mac" placeholder="Data Layer Source" value=""
+			data-mini="true" class="">
+
+			<input type="text" name="textinput-6" 
+			id="ether-type" placeholder="Data Layer Type" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="vlan-id" placeholder="Data layer Virtual Lan" value=""
+			data-mini="true" class="">
+		
+			<input type="text" name="textinput-6" 
+			id="vlan-priority" placeholder="Data Layer Virtual Lan Priority Code Point" value=""
+			data-mini="true" class="">
+
+			<input type="text" name="textinput-6" 
+			id="dst-ip" placeholder="Network Destination" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="src-ip" placeholder="Network Source" value=""
+			data-mini="true" class="">
+		
+			<input type="text" name="textinput-6" 
+			id="protocol" placeholder="Network Protocol" value=""
+			data-mini="true" class="">
+
+			<input type="text" name="textinput-6" 
+			id="tos-bits" placeholder="Network Type of Service" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="dst-port" placeholder="Transport Destination" value=""
+			data-mini="true" class="">
+		
+			<input type="text" name="textinput-6" 
+			id="src-port" placeholder="Transport Source" value=""
+			data-mini="true" class="">
+
+			<input type="text" name="textinput-6" 
+			id="wildcards" placeholder="Wildcards" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="priority" placeholder="Priority" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="active" placeholder="Active" value=""
+			data-mini="true" class="">
+
+			<h4>Actions:</h4>
+		
+			<select name="advanced-output" id="moreOutput">
+						<option value=""></option>
+	                    <option value="all">all</option>
+	                    <option value="controller">controller</option>
+	                    <option value="local">local</option>
+						<option value="ingress-port">ingress port</option>
+	                    <option value="normal">normal</option>
+	                    <option value="flood">flood</option>
+						
+	        </select>
+
+			<input type="text" name="textinput-6" 
+			id="enqueue" placeholder="Enqueue" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="strip-vlan" placeholder="Strip Virtual Lan" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="set-vlan" placeholder="Set Virtual Lan" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="set-vlan-priority" placeholder="Strip Virtual Lan Priority" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="set-src-mac" placeholder="Set Data Layer Source" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="set-dst-mac" placeholder="Set Data Layer Destination" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="set-tos-bits" placeholder="Set Network Type of Service" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="set-dst-ip" placeholder="Set Network Destination" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="set-src-ip" placeholder="Set Network Source" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="set-src-port" placeholder="Set Transport Source" value=""
+			data-mini="true" class="">
+			
+			<input type="text" name="textinput-6" 
+			id="set-dst-port" placeholder="Set Transport Destination" value=""
+			data-mini="true" class="">
+		</details>
+		</p>
+	</div>
+
+	<!--This is the HTML that will render if the device is a desktop--> 
+	<div class="show-for-large-up">
+		<div class="large-12 columns">
+			<div class="large-3 medium-3 columns">
+				<button id="getFlows">Push Flow</button>
+			</div>
+
+			<div class="large-3 medium-3 columns">
+				<button id="removeFlows">Delete All Flows</button>
+			</div>
+
+			<div class="large-3 medium-3 columns">
+				<button id="removeSwFlows">Clear A Flow</button>
+			</div>
+
+			<div class="large-3 medium-3 columns">
+				<button id="removeFlow">Delete Flow</button>
+			</div>
+		</div>
+
+	
+
+
+		<div class="large-12 columns">
+			<p>
+				<details id="advancedDetails">
+		  		<summary id="advanced">Advanced Flow Editor</summary>
+		  		
+		  		<div class="large-6 medium-6 columns">
+				<h4>Match:</h4>
+				<input type="text" name="textinput-6" 
+				id="dst-mac" placeholder="Data Layer Destination" value=""
+				data-mini="true" class="">
+			
+				<input type="text" name="textinput-6" 
+				id="src-mac" placeholder="Data Layer Source" value=""
+				data-mini="true" class="">
+
+				<input type="text" name="textinput-6" 
+				id="ether-type" placeholder="Data Layer Type" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="vlan-id" placeholder="Data layer Virtual Lan" value=""
+				data-mini="true" class="">
+			
+				<input type="text" name="textinput-6" 
+				id="vlan-priority" placeholder="Data Layer Virtual Lan Priority Code Point" value=""
+				data-mini="true" class="">
+
+				<input type="text" name="textinput-6" 
+				id="dst-ip" placeholder="Network Destination" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="src-ip" placeholder="Network Source" value=""
+				data-mini="true" class="">
+			
+				<input type="text" name="textinput-6" 
+				id="protocol" placeholder="Network Protocol" value=""
+				data-mini="true" class="">
+
+				<input type="text" name="textinput-6" 
+				id="tos-bits" placeholder="Network Type of Service" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="dst-port" placeholder="Transport Destination" value=""
+				data-mini="true" class="">
+			
+				<input type="text" name="textinput-6" 
+				id="src-port" placeholder="Transport Source" value=""
+				data-mini="true" class="">
+
+				<input type="text" name="textinput-6" 
+				id="wildcards" placeholder="Wildcards" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="priority" placeholder="Priority" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="active" placeholder="Active" value=""
+				data-mini="true" class="">
+				</div>
+		
+				<div class="large-6 medium-6 columns">
+				<h4>Actions:</h4>
+			
+				<select name="advanced-output" id="moreOutput">
+							<option value=""></option>
+		                    <option value="all">all</option>
+		                    <option value="controller">controller</option>
+		                    <option value="local">local</option>
+							<option value="ingress-port">ingress port</option>
+		                    <option value="normal">normal</option>
+		                    <option value="flood">flood</option>
+							
+		        </select>
+
+				<input type="text" name="textinput-6" 
+				id="enqueue" placeholder="Enqueue" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="strip-vlan" placeholder="Strip Virtual Lan" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="set-vlan" placeholder="Set Virtual Lan" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="set-vlan-priority" placeholder="Strip Virtual Lan Priority" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="set-src-mac" placeholder="Set Data Layer Source" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="set-dst-mac" placeholder="Set Data Layer Destination" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="set-tos-bits" placeholder="Set Network Type of Service" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="set-dst-ip" placeholder="Set Network Destination" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="set-src-ip" placeholder="Set Network Source" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="set-src-port" placeholder="Set Transport Source" value=""
+				data-mini="true" class="">
+				
+				<input type="text" name="textinput-6" 
+				id="set-dst-port" placeholder="Set Transport Destination" value=""
+				data-mini="true" class="">
+				</div>
+				</details>
+			</p>
+		</div>
+	</div>
+</div>	
+		
+
+	
+	<!--<a href="#" id="advanced"> advanced </a>-->

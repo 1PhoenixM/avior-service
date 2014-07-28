@@ -276,27 +276,15 @@ module.exports = {
     
         
         create: function (conn, coll, options, cb) {
-                switch (coll){
-                //case 'flow': return cb(); //this.postFlow({data:{}},cb);
-                case 'alterflow': return cb();
-		        default: return cb();
-                }
+                
         },
     
         update: function (conn, coll, options, cb) {
-                switch (coll){
-		        default: return cb();
-                }
+                
         },
     
         destroy: function (conn, coll, options, cb) {
-                switch (coll){
-                case 'flow': return this.delFlow({data:{}},cb);
-                        break;
-                //case 'clearflows':return this.clearFlows({args:['all']},cb);
-                        //break;
-		        default: return cb();
-                }
+                
         },
     
         normalize: function (obj) {

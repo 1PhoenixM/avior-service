@@ -1,0 +1,11 @@
+<tr id="portStats">
+	<td> <% var s = [PortState]; if (s == 0 || s == 512) { %> UP <% }else{%> DOWN <% } %>  </td>
+	<td> <%= PortName  %> </td>
+	<td> <%= PortNum %> </td>
+	<td> <% if (PortStatistics === null){ %> no data <% }else{ %><%= PortStatistics.RXPackets %><% } %> </td>
+	<td> <% if (PortStatistics === null){ %> no data <% }else{ %><%= PortStatistics.TXPackets %><%} %> </td>
+	<td> <% if (PortStatistics === null){ %> no data <% }else{ %><%= PortStatistics.RXBytes %><%} %> </td>
+	<td> <% if (PortStatistics === null){ %> no data <% }else{ %><%= PortStatistics.TXBytes %><%} %> </td>
+	<td> <% if (PortStatistics === null){ %> no data <% }else{ %><%= PortStatistics.RXDrops + PortStatistics.TXDrops %><%} %> </td>
+	<td> <% if (PortStatistics === null){ %> no data <% }else{ %><%= PortStatistics.RXErrors + PortStatistics.TXErrors + PortStatistics.RXFrameErr + PortStatistics.RXOverrunErr + PortStatistics.RXCrcErr %><%} %> </td>
+</tr>

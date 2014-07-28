@@ -1,0 +1,48 @@
+
+	<h3>Hosts on the network (<%= _.size(hosts) %>)</h3> 
+	<button id="refreshhosts" data-role="button" data-theme="b" data-inline="true" data-mini="true" data-icon="refresh">Refresh</button>
+
+<div data-role="collapsible-set" data-theme="c" data-content-theme="d">
+	<!-- Loop over hosts, display each one as own accordion -->
+	<% _.each(hosts, function(host) { %>
+	<div data-role="collapsible">
+		<h3><% if (host.get("IP_Address").length > 0) {
+				%><%= host.get("IP_Address")[0] %><% } 
+			else {
+				%>(no IP address found)<%;
+			}
+		%></h3>
+		<!-- Create table for IP addresses. 
+			Code in place to handle singular and plural in title
+			Table borders invisible -->
+		<p>
+			<table border="0"><tr><td>IP Address<% if (_.size(host.get("IP_Address")) > 1) { %>es<%}%>: </td>
+			<% _.each(host.get("IP_Address"), function(current) {
+				%><td><%= current %></td><%
+			}); %>
+		</tr>
+		
+		<!-- Use same table as IP addresses -->
+		<tr><td>Mac Address<% if (_.size(host.get("MAC_Address")) > 1) { %>es<%}%>: </td>
+			<% _.each(host.get("MAC_Address"), function(current) {
+				%><td><%= current %></td><%
+			 }); %>
+		
+		</tr>
+		
+		<!-- Same table still -->
+		<tr><td>Attached to switch<% if (_.size(host.get("Attached_To")) > 1) { %>es<%}%>: </td>
+		<% _.each(host.get("Attached_To"), function(current) {
+				%><td><%= current.DPID %>
+				, on port <%= current.PortNum %></td><%
+			 }); %>
+		</tr>
+		
+		<!-- TODO: Need to get .toLocalString() working -->
+		<tr><td>Last Seen: </td>
+			<td><%= new Date(host.get("Last_Seen")).toLocaleString() %> </td>
+		</tr></table>
+		</p>
+	</div>
+	<% }); %>
+</div>
