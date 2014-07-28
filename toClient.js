@@ -13,13 +13,13 @@ module.exports = function (ctlr,call,postData,cb) {
         });
  
         res.on('end', function() {
-                        console.log(responseString);
+                        //console.log(responseString);
                         var responseObject = JSON.parse(responseString);
             
                         if(ctlr.dpidParse){
-                            console.log('\n\n\n\n\n\n\n\n\n\n\n' + responseObject);
+                            //console.log('\n\n\n\n\n\n\n\n\n\n\n' + responseObject);
                             var newObject = ctlr.dpidParse(call, responseObject);
-                            console.log('\n\n\n\n\n\n\n\n\n\n\n' + newObject);
+                            //console.log('\n\n\n\n\n\n\n\n\n\n\n' + newObject);
                             var normalizedObject = ctlr.normalize(newObject);
                         }
             
@@ -35,7 +35,7 @@ module.exports = function (ctlr,call,postData,cb) {
                             
                         }
             
-                        console.log(normalizedObject);
+                        //console.log(normalizedObject);
             
                         //ctlr.response.send(normalizedObject);
                        
