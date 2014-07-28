@@ -193,7 +193,8 @@ define([
 		// 3. once a match has been found, save the id of the matched rule
 		// 4. send the saved id along to the server in a destroy request
 		deleteRule: function () {
-			var x = new FlowMod("one");
+			var noOp;
+            var x = new FirewallMod(noOp);
 			x.destroy({data: { name: this.name }});
 		},
 		
