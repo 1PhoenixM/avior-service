@@ -415,7 +415,7 @@ module.exports = {
     
     
     //This function parses ODL data into the format of the Avior API
-    nodeParse: function(current, obj) {
+    nodeParse: function(current, obj, innerArr) {
     
     switch(current){
             
@@ -475,19 +475,22 @@ module.exports = {
                     newObj.Capabilities = obj.nodeProperties[i].properties.capabilities.value;
                     newObj.Connected_Since = obj.nodeProperties[i].properties.timeStamp.value;
                     newObj.DPID = obj.nodeProperties[i].node.id;
-                    /*opts = {method:'GET',hostname:'localhost',port:8080,path:'/controller/nb/v2/switchmanager/default/node/OF/'+newObj.DPID+'',auth:'admin:admin'};
-                    req = http.request(opts, function(req, res){
-                            var responseString = '';
-                            res.setEncoding('utf-8');
-
-                            res.on('data', function(data) {
-                            responseString += data;
-                                console.log(responseString);
-                            });
-                        
-                            res.on('end', function() {
-                            var portsObj = JSON.parse(responseString);
-                                newObj.Ports = [];
+                    this.getNodeConnectors({args:['default', 'OF', newObj.DPID],call:'port'}, function(a, b){return b;});
+                    if (innerArr){
+                     newObj.Ports = innerArr;
+                     console.log(newObj.Ports);
+                    }
+                    arr.push(newObj);
+                }
+                //needs Port list
+                normalizerObj = {};
+                normalizerObj.Stats = arr;
+                return normalizerObj;
+                break;
+            
+            case 'port':
+                            portsObj = obj;
+                            Ports = [];
                             for(var j=0; j<portsObj.nodeConnectorProperties.length; j++){
                             portObj = {};
                             portObj.PortNum = portsObj.nodeConnectorProperties[j].nodeconnector.id;
@@ -499,16 +502,9 @@ module.exports = {
                             portObj.PeerFeatures = "N/A";
                             portObj.Config = portsObj.nodeConnectorProperties[j].properties.config.value;
                             portObj.HardwareAddress = "N/A";
-                            newObj.Ports.push(portObj);
+                            Ports.push(portObj);
                             }
-                            });
-                    });*/
-                    arr.push(newObj);
-                }
-                //needs Port list
-                normalizerObj = {};
-                normalizerObj.Stats = arr;
-                return normalizerObj;
+                this.nodeParse('switch', {nodeProperties:[]}, Ports);   
                 break;
             
             case 'switchports':
