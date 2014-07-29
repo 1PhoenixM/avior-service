@@ -26,7 +26,7 @@ module.exports = {
     create: function(req, res) {
         console.log("POSTED DATA: ")
         console.log(req.body);
-        flowData = req.body;
+        ruleData = req.body;
         resp = res;
         opts = {method:'POST',hostname:'10.11.17.40',port:8080,path:'/wm/firewall/rules/json'};
         req = http.request(opts,  function(res) {
@@ -38,14 +38,14 @@ module.exports = {
             resp.send(chunk);
           });
         });
-        req.write(JSON.stringify(flowData));
+        req.write(JSON.stringify(ruleData));
         req.end();
     },
 
     destroy: function(req, res) {
         console.log("DELETED DATA: ")
         console.log(req.body);
-        flowData = req.body;
+        ruleData = req.body;
         resp = res;
         opts = {method:'DELETE',hostname:'10.11.17.40',port:8080,path:'/wm/firewall/rules/json'};
         req = http.request(opts,  function(res) {
@@ -57,7 +57,7 @@ module.exports = {
             resp.send(chunk);
           });
         });
-        req.write(JSON.stringify(flowData));
+        req.write(JSON.stringify(ruleData));
         req.end();
     },
 
