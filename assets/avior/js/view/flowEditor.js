@@ -217,7 +217,7 @@ define([
 							 	this.vlanid, this.vlanpriority, this.tosbits, this.wildcards,
 							 	this.priority, this.active];
 
-				var addFlow = new FlowMod("one");
+				var addFlow = new FlowMod("add");
 				addFlow.save({
 					'switch':$('#dpid').val(),
 					'ingress-port':this.ingressport,
@@ -271,7 +271,7 @@ define([
 		},
 		
 		deleteFlow: function () {
-			var x = new FlowMod("one");
+			var x = new FlowMod("delete");
 			x.destroy({data: { name: this.name }});
 		},
 		
