@@ -3,7 +3,21 @@ define([
 ], function(FlowMod){
 	/* Floodlight specific URL for pushing and deleting flows */
 	FlowMod.prototype.urlRoot = function () {
-		if (this.DPID === "one"){
+		switch(this.DPID){
+            case 'add': this.unset(this.DPID);
+			            return "/alterflow/create/";
+                    break;
+            case 'delete': this.unset(this.DPID);
+			               return "/alterflow/destroy/";
+                    break;
+            case 'listAll': this.unset(this.DPID);
+			                return "/alterflow/find/";
+                    break;
+            default: return "/clearflows/"; //clear flows by default. risky?;
+                    break;
+        }
+        
+        /*if (this.DPID === "one"){
 			this.unset(this.DPID);
 			return "/alterflow/";
 		}
@@ -12,7 +26,7 @@ define([
 			return "/flow/find/";
 		}
 		else
-			return "/clearflows/" + this.DPID + "" ; //clear flows by default. risky?
+			return "/clearflows/" + this.DPID + "" ; //clear flows by default. risky?*/
 	};
 	 
 	FlowMod.prototype.initialize = function(DPID) {this.DPID = DPID;};
