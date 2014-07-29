@@ -15,7 +15,7 @@ module.exports = function (ctlr,call,postData,cb) {
         res.on('end', function() {
                         console.log(responseString);
                         var responseObject = JSON.parse(responseString);
-            
+                    
                         if(ctlr.dpidParse){
                             console.log('\n\n\n\n\n\n\n\n\n\n\n' + responseObject);
                             var newObject = ctlr.dpidParse(call, responseObject);
