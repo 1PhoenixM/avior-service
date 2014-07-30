@@ -141,7 +141,13 @@ var restCall = function(apiMethod,apiPath){
                                 apiPath = apiPath.replace(/:[A-Za-z]+:/, options.args[arg]);
                         }
                 }
-                opts = {method:apiMethod,hostname:'localhost',port:8080,path:apiPath,auth:'admin:admin'}; //TODO: mask auth
+                if(sails.controllers.main.hostname){
+                  var host = sails.controllers.main.hostname;
+                }
+                else{
+                  var host = 'localhost';
+                }
+                opts = {method:apiMethod,hostname:host,port:8080,path:apiPath,auth:'admin:admin'}; //TODO: mask auth
                 req = http.request(opts, toClient(this,options.call,null,cb));
                 if (options.data) {
                         req.write(JSON.stringify(options.data));
@@ -173,8 +179,10 @@ module.exports = {
                         break;    
                 case 'health': return 'health';
                         break;    
-                case 'memory': return 'memory'
-                        break;    
+                case 'memory': return 'memory';
+                        break;
+                case 'controller': return this.getControllerData({args:[],call:coll}, cb);
+                        break;
                 //core
                 case 'port': return this.getNodeConnectors({args:['default', 'OF', '00:00:00:00:00:00:00:01'],call:coll},cb); //for now
                         break;
@@ -378,6 +386,11 @@ module.exports = {
                     
     addPortAndVlanToBridge: restCall('POST', '/controller/nb/v2/networkconfig/bridgedomain/port/:nodeType:/:nodeId:/:bridgeName:/:portName:/:vlan:'), 
     
+    
+    //
+    
+    getControllerData: restCall('GET', '/controller/osgi/system/console/vmstat'),
+    
     //Left to add: 
     //Neutron: https://jenkins.opendaylight.org/controller/job/controller-merge/lastSuccessfulBuild/artifact/opendaylight/northbound/networkconfiguration/neutron/target/site/wsdocs/index.html
 	// etc.
@@ -476,16 +489,12 @@ module.exports = {
                     newObj.Connected_Since = obj.nodeProperties[i].properties.timeStamp.value;
                     newObj.DPID = obj.nodeProperties[i].node.id;
                     this.getNodeConnectors({args:['default', 'OF', newObj.DPID],call:'port'}, function(a, b){return b;});
-                    if (innerArr){
-                     newObj.Ports = innerArr;
-                     console.log(newObj.Ports);
-                    }
                     arr.push(newObj);
                 }
-                //needs Port list
+                console.log(innerArr);
                 normalizerObj = {};
                 normalizerObj.Stats = arr;
-                return normalizerObj;
+                return normalizerObj; //returns without port list, change function order
                 break;
             
             case 'port':

@@ -3,7 +3,7 @@
 module.export = {
 	identity: 'controller',
 
-	connection: 'floodlight',
+	connection: 'util',
 
 	attributes: {
         Uptime: {

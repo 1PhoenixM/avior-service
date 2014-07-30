@@ -7,6 +7,10 @@ module.exports = {
         //console.log(sails.adapters.util.sdncontroller);
 
         sails.controllers.main.sdncontroller = req.param('connection');
+        
+        sails.controllers.main.hostname = req.param('hostname');
+        
+        console.log(sails.controllers.main.hostname); //must enter a valid hostname, TODO: validation
 
         //console.log(sails.adapters.util.sdncontroller);
 

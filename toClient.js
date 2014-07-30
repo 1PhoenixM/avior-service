@@ -14,6 +14,15 @@ module.exports = function (ctlr,call,postData,cb) {
  
         res.on('end', function() {
                         //console.log(responseString);
+                        /*try{
+                            var responseObject = JSON.parse(responseString);
+                        }catch(e){
+                            console.log('Error occurred in toClient: ' + e);
+                        }
+                        //Error catching, parse expects a string of JSON. This
+                        //catch keeps Avior from crashing when it gets unexpected input
+                        */
+            
                         var responseObject = JSON.parse(responseString);
                     
                         if(ctlr.dpidParse){
