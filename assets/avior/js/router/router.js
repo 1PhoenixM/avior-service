@@ -26,10 +26,11 @@ define([
 	"view/topologyView",
 	"view/testView",
 	"view/controllerview",
+    "view/activeview",
 	"text!template/login.html",
 	"text!template/controller.html",
 	"text!template/content.html",
-], function($, _, Backbone, Marionette, TopologyCollection, FirewallMod, Switch, SwitchDetail, Controller, Memory, Modules, Status, Uptime, Host, Test, Topo, FrontPage, MemoryView, ModulesView, StatusView, UptimeView, FlowEditor, FirewallEditor, HostView, TopologyView, TestView, ControllerView, loginTpl, controllerTpl, contentTpl){
+], function($, _, Backbone, Marionette, TopologyCollection, FirewallMod, Switch, SwitchDetail, Controller, Memory, Modules, Status, Uptime, Host, Test, Topo, FrontPage, MemoryView, ModulesView, StatusView, UptimeView, FlowEditor, FirewallEditor, HostView, TopologyView, TestView, ControllerView, ActiveView, loginTpl, controllerTpl, contentTpl){
 	/* Structure used to navigate through views */
 	var Router = Marionette.AppRouter.extend({
 		template: _.template(controllerTpl),
@@ -134,8 +135,9 @@ define([
 			this.memoryview = new MemoryView({model: new Memory});
 			this.modulesview = new ModulesView({model: new Modules});
 			this.controllerview = new ControllerView({model: new Topo, collection: new TopologyCollection});
-			this.hostview = new HostView({model: new Host});
-					
+			this.hostview = new HostView({model: new Host});	
+            //this.activeview = new ActiveView({model: new Controller});	
+            
 			// Delegate events for controller views
 			this.statusview.delegateEvents(this.statusview.events);
 			this.uptimeview.delegateEvents(this.uptimeview.events);
@@ -143,14 +145,16 @@ define([
 			this.modulesview.delegateEvents(this.modulesview.events);
 			this.controllerview.delegateEvents(this.controllerview.events);
 			this.hostview.delegateEvents(this.hostview.events);
-			
+			//this.activeview.delegateEvents(this.activeview.events);
 				
 			// Link controller aspects to id tags
+            //$('#sdn_controller').append(this.activeview.render().el);
 			$('#uptimeview').append(this.uptimeview.render().el);
 			$('#statusview').append(this.statusview.render().el);
 			$('#memoryview').append(this.memoryview.render().el);
 			$('#modulesview').append(this.modulesview.render().el);
 			//$('#hostview').append(this.hostview.render().el);
+            
 	
 			//moved toggle button stuff back to firewallEditor.js.
 			//the third parameter here indicates whether or not the buttonUpdating function in firewallEditor should be called. check initialize
@@ -171,6 +175,7 @@ define([
 					self.statusview.model.fetch();
 					self.memoryview.model.fetch();
 					self.controllerview.model.fetch();
+                    //self.activeview.model.fetch();
 					//self.hostview.model.fetch();
 				}, 2000);	
 				

@@ -307,7 +307,7 @@ module.exports = {
 		        } else {
 			         normalizedObj = {};
 			         for (fromField in TO_OFP) {
-				        if (obj[fromField] || obj[fromField] === 0) { //added so that "0" responses are not discarded
+				        if (obj[fromField] || obj[fromField] === 0 || obj[fromField] === "") { //added so that "0" responses are not discarded
 		 	        	       toField = TO_OFP[fromField];
 	                           normalizedObj[toField] = this.normalize(obj[fromField]); //Nested structs? Probably handled recursively
 				        }

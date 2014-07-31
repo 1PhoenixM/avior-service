@@ -130,6 +130,10 @@ var TO_OFP = {
     PeerFeatures: 'PeerFeatures',
     Config: 'Config',
     HardwareAddress: 'HardwareAddress',
+    
+    upTime: 'Uptime_msec',
+    TotalMemory: 'TotalMemory', //total is mem_free + mem_used & note that this is JVM mem, not just the controller.
+    mem_free: 'FreeMemory',
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -179,9 +183,11 @@ module.exports = {
                         break;    
                 case 'health': return 'health';
                         break;    
-                case 'memory': return 'memory';
+                //case 'memory': return 'memory';
+                        //break;
+                case 'memory': return this.getControllerData({args:['default'],call:coll},cb);
                         break;
-                case 'controller': return this.getControllerData({args:[],call:coll}, cb);
+                case 'modules': return this.getModules({args:['default'],call:coll},cb);
                         break;
                 //core
                 case 'port': return this.getNodeConnectors({args:['default', 'OF', '00:00:00:00:00:00:00:01'],call:coll},cb); //for now
@@ -356,7 +362,7 @@ module.exports = {
                     
     deleteFlowSpec: restCall('DELETE', '/controller/nb/v2/containermanager/container/:container:/flowspec/:flowspec:'), 
                     
-    getFlowSpecs: restCall('GET', '/controller/nb/v2/containermanager/container/:container:/flowspecs'), 
+    getFlowSpecs: restCall('GET', '/controller/nb/v2/containermanager/container/:container:/flowspecs'),
     
     addNodeConnectors: restCall('PUT', '/controller/nb/v2/containermanager/container/:container:/nodeconnector'),
                     
@@ -390,6 +396,8 @@ module.exports = {
     //
     
     getControllerData: restCall('GET', '/controller/osgi/system/console/vmstat'),
+    
+    getModules: restCall('GET', '/controller/osgi/system/console/status-Bundlelist'),
     
     //Left to add: 
     //Neutron: https://jenkins.opendaylight.org/controller/job/controller-merge/lastSuccessfulBuild/artifact/opendaylight/northbound/networkconfiguration/neutron/target/site/wsdocs/index.html
@@ -431,6 +439,11 @@ module.exports = {
     nodeParse: function(current, obj, innerArr) {
     
     switch(current){
+            
+              case 'memory':
+                obj.TotalMemory = obj.mem_free + obj.mem_used;
+                return obj;    
+                break;
             
               case 'topology':
                 arr = [];
@@ -491,10 +504,9 @@ module.exports = {
                     this.getNodeConnectors({args:['default', 'OF', newObj.DPID],call:'port'}, function(a, b){return b;});
                     arr.push(newObj);
                 }
-                console.log(innerArr);
-                normalizerObj = {};
-                normalizerObj.Stats = arr;
-                return normalizerObj; //returns without port list, change function order
+                    normalizerObj = {};
+                    normalizerObj.Stats = arr;
+                    return normalizerObj; //returns without port list, change function order
                 break;
             
             case 'port':

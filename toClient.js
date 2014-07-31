@@ -23,6 +23,37 @@ module.exports = function (ctlr,call,postData,cb) {
                         //catch keeps Avior from crashing when it gets unexpected input
                         */
             
+                
+                        if(call === 'memory'){
+                            var start = responseString.search("var statData = ");
+                            var ctlrData = responseString.substr(start);
+                            var end = ctlrData.indexOf(";");
+                            var ctlrData = ctlrData.substr(0, end);
+                            var ctlrData = ctlrData.slice(15, ctlrData.length);
+                            ctlrData = JSON.parse(ctlrData);
+                            
+                            ctlrData = ctlr.nodeParse(call, ctlrData, null);
+                            
+                            var normalizedObject = ctlr.normalize(ctlrData);
+                            if(normalizedObject.Stats){
+                                normalizedObject = normalizedObject.Stats; //ODL only
+                            }
+                            else{
+                                normalizedObject = normalizedObject;
+                            } 
+                            cb(null,normalizedObject);
+                        }
+            
+                        else if(call === 'modules'){
+                            var start = responseString.search("<pre>"); 
+                            var end = responseString.search("</pre>"); //not working?
+                            var modules = responseString.substr(start, end);
+                            var modules = modules.replace("&nbsp;", " ");
+                            console.log(modules);
+                            cb(null,modules);
+                        }
+            
+                        else{
                         var responseObject = JSON.parse(responseString);
                     
                         if(ctlr.dpidParse){
@@ -34,14 +65,14 @@ module.exports = function (ctlr,call,postData,cb) {
             
                         else{
                             var newObject = ctlr.nodeParse(call, responseObject, null);
+                            
                             var normalizedObject = ctlr.normalize(newObject);
                             if(normalizedObject.Stats){
                                 normalizedObject = normalizedObject.Stats; //ODL only
                             }
                             else{
                                 normalizedObject = normalizedObject;
-                            }
-                            
+                            }   
                         }
             
                         //console.log(normalizedObject);
@@ -49,6 +80,7 @@ module.exports = function (ctlr,call,postData,cb) {
                         //ctlr.response.send(normalizedObject);
                        
                         cb(null,normalizedObject);
+                        }
                         
 		});
 	}

@@ -28,8 +28,14 @@ module.exports = {
         console.log(req.body);
         ruleData = req.body;
         resp = res;
-        opts = {method:'POST',hostname:'10.11.17.40',port:8080,path:'/wm/firewall/rules/json'};
-        req = http.request(opts,  function(res) {
+        if(sails.controllers.main.hostname){
+                  var host = sails.controllers.main.hostname;
+                }
+                else{
+                  var host = '10.11.17.40';
+                }
+        opts = {method:'POST',hostname:host,port:8080,path:'/wm/firewall/rules/json'};
+        requ = http.request(opts,  function(res) {
           console.log('STATUS: ' + res.statusCode);
           console.log('HEADERS: ' + JSON.stringify(res.headers));
           res.setEncoding('utf8');
@@ -38,8 +44,8 @@ module.exports = {
             resp.send(chunk);
           });
         });
-        req.write(JSON.stringify(ruleData));
-        req.end();
+        requ.write(JSON.stringify(ruleData));
+        requ.end();
     },
 
     destroy: function(req, res) {
@@ -47,8 +53,14 @@ module.exports = {
         console.log(req.body);
         ruleData = req.body;
         resp = res;
-        opts = {method:'DELETE',hostname:'10.11.17.40',port:8080,path:'/wm/firewall/rules/json'};
-        req = http.request(opts,  function(res) {
+        if(sails.controllers.main.hostname){
+                  var host = sails.controllers.main.hostname;
+                }
+                else{
+                  var host = '10.11.17.40';
+                }
+        opts = {method:'DELETE',hostname:host,port:8080,path:'/wm/firewall/rules/json'};
+        requ = http.request(opts,  function(res) {
           console.log('STATUS: ' + res.statusCode);
           console.log('HEADERS: ' + JSON.stringify(res.headers));
           res.setEncoding('utf8');
@@ -57,8 +69,8 @@ module.exports = {
             resp.send(chunk);
           });
         });
-        req.write(JSON.stringify(ruleData));
-        req.end();
+        requ.write(JSON.stringify(ruleData));
+        requ.end();
     },
 
     tag: function(req, res) {

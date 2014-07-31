@@ -13,6 +13,7 @@ define([
 	"floodlight/portFl",
 	"model/port",
 	"model/portStatistics",
+    "model/description",
 	"floodlight/flowModFl",
 	"view/flowEditor",
 	"floodlight/flowCollectionFl",
@@ -25,7 +26,7 @@ define([
 	"text!template/flowEntry.html",
 	"text!template/flowCount.html",
 	"text!template/content.html",
-], function($, _, Backbone, Marionette, Features, SwitchStats, SwitchSummary, SwitchCollection, Description, PortCollection, PortFL, Port, PortStatistics, FlowMod, FlowEditor, FlowCollection, swtchContainer, header, descrip, portFrame, portRow, flowFrame, flowRow, flowCount, contentTpl){
+], function($, _, Backbone, Marionette, Features, SwitchStats, SwitchSummary, SwitchCollection, Description, PortCollection, PortFL, Port, PortStatistics, Desc, FlowMod, FlowEditor, FlowCollection, swtchContainer, header, descrip, portFrame, portRow, flowFrame, flowRow, flowCount, contentTpl){
 	var SwitchesSumView = Backbone.View.extend({
 		itemView: SwitchSummary,
 		
@@ -121,7 +122,12 @@ define([
 			_.forEach(this.collection.models, function(item) {
 						//console.log(self.features);
 						var dp = item.get("DPID");
-						item.set("description", this.description);
+                        for (var key in this.description.attributes){
+                            if(this.description.get(key).DPID === dp){
+                                var theSwitch = key;
+                            }
+                        } //Ideally this should work with /switchdesc/find/00:00:00:00:00:00:00:00.
+						item.set("description", this.description.get(theSwitch));
 						item.set("features", self.features.get(dp));
 						item.set("switchStatistics", self.switchStats.get(dp));
 						item.set("id", item.get("DPID"));
@@ -143,8 +149,16 @@ define([
 		
 		//attach switch description info to page
 		displayDesc: function(DPID, oneSwitch){
-				var x = document.getElementById("my" + DPID);
-                var desc = this.description.get(0); //for one switch
+				var self = this;
+                var x = document.getElementById("my" + DPID);
+            
+                for (var key in this.description.attributes){
+                    if(this.description.get(key).DPID === DPID){
+                        var theSwitch = key;
+                    }
+                } //Ideally this should work with /switchdesc/find/00:00:00:00:00:00:00:00.
+            
+                var desc = this.description.get(theSwitch); //for one switch
                 this.manufacturer = desc["Manufacturer"];
                 desc["DPID"] = DPID;
                 desc["Connected_Since"] = oneSwitch.get("Connected_Since");
@@ -174,7 +188,7 @@ define([
 			var optical = false;
 			//console.log(this.manufacturer);
 			_.forEach(this.opticalVendors, function(item) {
-				if (item === self.Manufacturer)
+                if (item === oneSwitch.get("description").Manufacturer)
 					optical = true;
         		}, this);
 			
@@ -215,8 +229,8 @@ define([
         	
         	else{
         		//console.log(JSON.stringify(oneSwitch));
-        		console.log(JSON.stringify(oneSwitch.get(0).Ports));
-				_.forEach(oneSwitch.get(0).Ports, function(item) {
+        		console.log(JSON.stringify(oneSwitch.get("Ports")));
+				_.forEach(oneSwitch.get("Ports"), function(item) {
 					//console.log(item);
 					item["PortStatistics"] = null;
         			var z = document.getElementById("portTable" + DPID);

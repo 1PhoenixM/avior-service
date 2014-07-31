@@ -10,7 +10,7 @@ module.exports = {
         
         sails.controllers.main.hostname = req.param('hostname');
         
-        console.log(sails.controllers.main.hostname); //must enter a valid hostname, TODO: validation
+        //must enter a valid hostname, TODO: validation
 
         //console.log(sails.adapters.util.sdncontroller);
 
@@ -30,13 +30,19 @@ module.exports = {
     fetchController: function (req, res){
         //Necessary for Avior to get the controller being used
         if(sails.controllers.main.sdncontroller){
-        res.json(sails.controllers.main.sdncontroller);
+        jsonObj = {};
+        jsonObj.sdncontroller = sails.controllers.main.sdncontroller;
+        res.json(jsonObj);
         }
         else if(sails.config.models.connection !== 'util'){
-        res.json(sails.config.models.connection);    
+        jsonObj = {};
+        jsonObj.sdncontroller = sails.config.models.connection;
+        res.json(jsonObj);    
         }
         else{
-        res.json("Not set at localhost:1337.");    
+        jsonObj = {};
+        jsonObj.sdncontroller = "Not set at localhost:1337.";
+        res.json(jsonObj);    
         }
     },
 };
