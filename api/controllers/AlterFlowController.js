@@ -80,7 +80,13 @@ module.exports = {
         req = http.request(opts,  function(res) {
           console.log('STATUS: ' + res.statusCode);
           console.log('HEADERS: ' + JSON.stringify(res.headers));
-        
+          res.setEncoding('utf8');
+          res.on('data', function (chunk) {
+          console.log('BODY: ' + chunk);
+          resp.send(chunk);
+          });
+        });
+        console.log(JSON.stringify(flowData));
         req.write(JSON.stringify(flowData));
         req.end();
     },
@@ -111,7 +117,7 @@ module.exports = {
         
         req.write(flowData);
         req.end();
-    },
+    },*/
 
     tag: function(req, res) {
 
@@ -119,5 +125,5 @@ module.exports = {
 
     like: function(req, res) {
 
-    }
+    },
 }
