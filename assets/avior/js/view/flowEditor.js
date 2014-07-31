@@ -271,8 +271,8 @@ define([
 		},
 		
 		deleteFlow: function () {
-			var x = new FlowMod("delete");
-			x.destroy({data: { name: this.name }});
+			var delFlow = new FlowMod("delete");
+			delFlow.destroy({data: {name: this.name}});
 		},
 		
 		deleteFlows: function () {

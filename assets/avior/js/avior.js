@@ -36,7 +36,8 @@ define([
 			//localStorage.timeout = new Date().getTime() + 60*60*1000;
 			
 			if(typeof(Storage)!=="undefined") {
-				//console.log(localStorage.loggedIn);
+				console.log(window.location.href)
+                console.log(localStorage.loggedIn);
 				if (localStorage.timeout == undefined){
 					localStorage.timeout = new Date().getTime() + 60*60*1000;
 				}
@@ -48,7 +49,7 @@ define([
 				}
   				
   				if (localStorage.loggedIn == "true") {
-  					if (window.location.href == "/avior/index.html"){
+  					if (window.location.href == "http://localhost:1337/avior/index.html"){
                         $(document).bind('pageinit');
                         $(function() { $("#some-div").show(); });
                         $.mobile.linkBindingEnabled = false;

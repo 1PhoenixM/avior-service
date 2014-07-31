@@ -38,8 +38,8 @@ module.exports = {
     },
     
     create: function(req, res) {
-        console.log("POSTED DATA: ")
-        console.log(req.body);
+        console.log("POSTED DATA: " + JSON.stringify(req.body) + '\n')
+
         flowData = req.body;
         resp = res;
         if(sails.controllers.main.hostname){
@@ -49,7 +49,8 @@ module.exports = {
                   var host = '10.11.17.40';
                 }
         opts = {method:'POST',hostname:host,port:8080,path:'/wm/staticflowentrypusher/json'};
-        requ = http.request(opts,  function(res) {
+        var opts = {method:'POST',hostname:'10.11.17.40',port:8080,path:'/wm/staticflowentrypusher/json'};
+        var requ = http.request(opts,  function(res) {
           console.log('STATUS: ' + res.statusCode);
           console.log('HEADERS: ' + JSON.stringify(res.headers));
           res.setEncoding('utf8');
@@ -79,14 +80,39 @@ module.exports = {
         req = http.request(opts,  function(res) {
           console.log('STATUS: ' + res.statusCode);
           console.log('HEADERS: ' + JSON.stringify(res.headers));
+=======
+        
+        req.write(JSON.stringify(flowData));
+        req.end();
+    },
+
+    destroy: function(req, res) {
+        console.log("DELETED DATA: " + JSON.stringify(req.body) + '\n');
+        var flowData = req.body;
+        
+        var res = res;
+        var options = {
+            hostname:'10.11.17.40', 
+            port:8080, 
+            path:'/wm/staticflowentrypusher/json',
+            method:'DELETE'};
+        
+        var req = http.request(options, function(res) {
+          console.log('STATUS: ' + res.statusCode + '\n');
+          console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
+>>>>>>> 30493b2f7887c44f4f8c64837c205f4644010b47
           res.setEncoding('utf8');
           res.on('data', function (chunk) {
-            console.log('BODY: ' + chunk);
-            
+            console.log('BODY: ' + chunk + '\n');
           });
         });
-        console.log(req);
-        req.end();*/
+        
+        req.on('error', function(e) {
+          console.log('problem with request: ' + e.message + '\n');
+        });
+        
+        req.write(flowData);
+        req.end();
     },
 
     tag: function(req, res) {

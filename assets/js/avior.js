@@ -25,18 +25,19 @@ define([
 			});*/
 			
 			$('#logout').click(function() {
-								 localStorage.loggedIn = false;
-								 window.location.href = "/avior/index.html#login";
-								 document.getElementById("leftpanel3").style.display='none';
-								 document.getElementById("logout").style.display='none';
-								 $('#content').empty();
-								 $('#content').append(this.template).trigger('create');
-							  });
-			
+                 localStorage.loggedIn = false;
+                 window.location.href = "/avior/index.html#login";
+                 document.getElementById("leftpanel3").style.display='none';
+                 document.getElementById("logout").style.display='none';
+                 $('#content').empty();
+                 $('#content').append(this.template).trigger('create');
+              });
+
 			//localStorage.timeout = new Date().getTime() + 60*60*1000;
 			
 			if(typeof(Storage)!=="undefined") {
-				//console.log(localStorage.loggedIn);
+                console.log(window.location.href);
+				console.log(localStorage.loggedIn);
 				if (localStorage.timeout == undefined){
 					localStorage.timeout = new Date().getTime() + 60*60*1000;
 				}
@@ -48,7 +49,11 @@ define([
 				}
   				
   				if (localStorage.loggedIn == "true") {
-  					$(document).bind('pageinit');
+                    console.log(window.location.href);
+  					if (window.location.href == 'localhost:1337/avior/index.html'){
+                        window.location.href = '/avior/index.html#controllers';
+                    } else {
+                    $(document).bind('pageinit');
 					$(function() { $("#some-div").show(); });
 					$.mobile.linkBindingEnabled = false;
     				$.mobile.hashListeningEnabled = false;
@@ -59,7 +64,7 @@ define([
 					document.getElementById("logout").style.display='block';
 					var router = new Router();
 					Backbone.history.start();
-
+                    }
   				}
   				
   				else {
