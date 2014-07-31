@@ -24,7 +24,7 @@ module.exports = function (ctlr,call,postData,cb) {
                         */
             
                 
-                        if(call === 'memory'){
+                        if(call === 'memory' && ctlr.nodeParse){
                             var start = responseString.search("var statData = ");
                             var ctlrData = responseString.substr(start);
                             var end = ctlrData.indexOf(";");
@@ -44,7 +44,7 @@ module.exports = function (ctlr,call,postData,cb) {
                             cb(null,normalizedObject);
                         }
             
-                        else if(call === 'modules'){
+                        else if(call === 'modules' && ctlr.nodeParse){
                             var start = responseString.search("<pre>"); 
                             var end = responseString.search("</pre>"); //not working?
                             var modules = responseString.substr(start, end);
