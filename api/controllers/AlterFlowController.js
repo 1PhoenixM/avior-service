@@ -66,7 +66,7 @@ module.exports = {
 
     destroy: function(req, res) {
         restCall('DELETE','/wm/staticflowentrypusher/json');
-        /*console.log("DELETED DATA: ")
+        clearIntervalonsole.log("DELETED DATA: ")
         console.log(req.body);
         flowData = req.body;
         resp = res;
@@ -80,13 +80,12 @@ module.exports = {
         req = http.request(opts,  function(res) {
           console.log('STATUS: ' + res.statusCode);
           console.log('HEADERS: ' + JSON.stringify(res.headers));
-=======
         
         req.write(JSON.stringify(flowData));
         req.end();
     },
 
-    destroy: function(req, res) {
+    /*destroy: function(req, res) {
         console.log("DELETED DATA: " + JSON.stringify(req.body) + '\n');
         var flowData = req.body;
         
@@ -100,7 +99,6 @@ module.exports = {
         var req = http.request(options, function(res) {
           console.log('STATUS: ' + res.statusCode + '\n');
           console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
->>>>>>> 30493b2f7887c44f4f8c64837c205f4644010b47
           res.setEncoding('utf8');
           res.on('data', function (chunk) {
             console.log('BODY: ' + chunk + '\n');
