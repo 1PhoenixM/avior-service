@@ -32,12 +32,12 @@ module.exports = {
     },
     
     create: function(req, res) {
-        console.log("POSTED DATA: ")
-        console.log(req.body);
+        console.log("POSTED DATA: " + JSON.stringify(req.body) + '\n')
+
         flowData = req.body;
         resp = res;
-        opts = {method:'POST',hostname:'10.11.17.40',port:8080,path:'/wm/staticflowentrypusher/json'};
-        req = http.request(opts,  function(res) {
+        var opts = {method:'POST',hostname:'10.11.17.40',port:8080,path:'/wm/staticflowentrypusher/json'};
+        var req = http.request(opts,  function(res) {
           console.log('STATUS: ' + res.statusCode);
           console.log('HEADERS: ' + JSON.stringify(res.headers));
           res.setEncoding('utf8');
@@ -46,29 +46,37 @@ module.exports = {
             resp.send(chunk);
           });
         });
-        console.log(JSON.stringify(flowData));
+        
         req.write(JSON.stringify(flowData));
         req.end();
     },
 
     destroy: function(req, res) {
-        restCall('DELETE','/wm/staticflowentrypusher/json');
-        /*console.log("DELETED DATA: ")
-        console.log(req.body);
-        flowData = req.body;
-        resp = res;
-        opts = {method:'DELETE',hostname:'10.11.17.40',port:8080,path:'/wm/staticflowentrypusher/json'};
-        req = http.request(opts,  function(res) {
-          console.log('STATUS: ' + res.statusCode);
-          console.log('HEADERS: ' + JSON.stringify(res.headers));
+        console.log("DELETED DATA: " + JSON.stringify(req.body) + '\n');
+        var flowData = req.body;
+        
+        var res = res;
+        var options = {
+            hostname:'10.11.17.40', 
+            port:8080, 
+            path:'/wm/staticflowentrypusher/json',
+            method:'DELETE'};
+        
+        var req = http.request(options, function(res) {
+          console.log('STATUS: ' + res.statusCode + '\n');
+          console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
           res.setEncoding('utf8');
           res.on('data', function (chunk) {
-            console.log('BODY: ' + chunk);
-            
+            console.log('BODY: ' + chunk + '\n');
           });
         });
-        console.log(req);
-        req.end();*/
+        
+        req.on('error', function(e) {
+          console.log('problem with request: ' + e.message + '\n');
+        });
+        
+        req.write(flowData);
+        req.end();
     },
 
     tag: function(req, res) {
