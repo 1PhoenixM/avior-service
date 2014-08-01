@@ -53,6 +53,11 @@ module.exports = function (ctlr,call,postData,cb) {
                             cb(null,modules);
                         }
             
+            
+                        else if (responseString.charAt(0) == '<'){
+                            
+                        }
+            
                         else{
                         var responseObject = JSON.parse(responseString);
                     
