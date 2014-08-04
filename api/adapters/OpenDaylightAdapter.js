@@ -146,6 +146,11 @@ var TO_OFP = {
     Buffers: "Buffers",
     Capabilities: "Capabilities",
     Connected_Since: "Connected_Since",
+    
+    DurationSeconds: 'DurationSeconds',
+    DurationNanoSeconds: 'DurationNanoSeconds',
+    PacketCount: 'PacketCount',
+    ByteCount: 'ByteCount',
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -225,7 +230,8 @@ module.exports = {
                         
                 case 'switchfeatures': this.find(conn, 'switch', options, cb); //close to the same call, but fix later. //this recursion may be causing socket issues?
                          break;
-                        
+                case 'flowstats': this.find(conn, 'flow', options, cb);
+                         break;
                 //case 'flows': return this.find(conn, 'flow', options, cb);
                          //break;
                         
@@ -616,9 +622,19 @@ module.exports = {
                     newObj.Flows = [];
                     for(var j=0; j<obj.flowStatistics[i].flowStatistic.length; j++){
                         flowObj = {};
-                        for(key in obj.flowStatistics[i].flowStatistic[j]){
+                        flowObj.DurationSeconds = obj.flowStatistics[i].flowStatistic[j].durationSeconds;
+                        flowObj.DurationNanoSeconds = obj.flowStatistics[i].flowStatistic[j].durationNanoseconds;
+                        flowObj.PacketCount = obj.flowStatistics[i].flowStatistic[j].packetCount;
+                        flowObj.ByteCount = obj.flowStatistics[i].flowStatistic[j].byteCount;
+                        flowObj.Match = {};
+                        flowObj.Actions = []; //todo: add match and actions
+                        flowObj.Priority = obj.flowStatistics[i].flowStatistic[j].flow.priority;
+                        flowObj.IdleTimeout = obj.flowStatistics[i].flowStatistic[j].flow.idleTimeout;
+                        flowObj.HardTimeout = obj.flowStatistics[i].flowStatistic[j].flow.hardTimeout;
+                        flowObj.Cookie = obj.flowStatistics[i].flowStatistic[j].flow.id;
+                        /*for(key in obj.flowStatistics[i].flowStatistic[j]){
                             flowObj[key] = obj.flowStatistics[i].flowStatistic[j][key];
-                        }
+                        }*/
                         newObj.Flows.push(flowObj);
                     }
                     arr.push(newObj);    
@@ -636,7 +652,7 @@ module.exports = {
                     flowObj.IdleTimeout = obj.flowConfig[i].idleTimeout;
                     flowObj.HardTimeout = obj.flowConfig[i].hardTimeout;
                     flowObj.Actions = [];
-                    flowObj.Match = {};
+                    flowObj.Match = {};  //todo: add match and actions
                     flowObj.Cookie = obj.flowConfig[i].cookie;
                     flowObj.Priority =obj.flowConfig[i].priority;
                     flowObj.Flow = obj.flowConfig[i].name;
