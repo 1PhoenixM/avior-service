@@ -273,7 +273,8 @@ module.exports = {
                          break;
                 case 'modules':return this.getModules({args:[],call:coll},cb);
                          break;
-               case 'alterflow':return this.postFlow({data:{},call:coll},cb);
+               //case 'alterflow':return this.postFlow({data:{},call:coll},cb);
+                case 'alterflow':return this.getFlows({args:['all'],call:coll},cb);
                         break;
 		        default: return cb();
                         break;
@@ -282,7 +283,35 @@ module.exports = {
     
         
         create: function (conn, coll, options, cb) {
-                
+                switch (coll){
+                case 'flow': 
+                        console.log("POSTED DATA: " + JSON.stringify(options.data) + '\n')
+
+                        flowData = options.data;
+                        resp = options.response;
+                        if(sails.controllers.main.hostname){
+                                  var host = sails.controllers.main.hostname;
+                                }
+                                else{
+                                  var host = '10.11.17.40';
+                                }
+                        var opts = {method:'POST',hostname:host,port:8080,path:'/wm/staticflowentrypusher/json'};
+                        //var opts = {method:'POST',hostname:'10.11.17.40',port:8080,path:'/wm/staticflowentrypusher/json'};
+                        var requ = http.request(opts,  function(res) {
+                          console.log('STATUS: ' + res.statusCode);
+                          console.log('HEADERS: ' + JSON.stringify(res.headers));
+                          res.setEncoding('utf8');
+                          res.on('data', function (chunk) {
+                            console.log('BODY: ' + chunk);
+                            resp.send(chunk);
+                          });
+                        });
+                        console.log(JSON.stringify(flowData));
+                        requ.write(JSON.stringify(flowData));
+                        requ.end();
+                        break;
+		        default: return cb();
+                }
         },
     
         update: function (conn, coll, options, cb) {
@@ -404,7 +433,7 @@ module.exports = {
                 return arr;
             }*/
 
-            else if(current === 'flow'){
+            else if(current === 'flow' || current === 'alterflow'){
                  for (dpid in obj){
                      innerObj = {};
                      Flows = [];

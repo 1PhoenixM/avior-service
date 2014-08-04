@@ -134,6 +134,18 @@ var TO_OFP = {
     upTime: 'Uptime_msec',
     TotalMemory: 'TotalMemory', //total is mem_free + mem_used & note that this is JVM mem, not just the controller.
     mem_free: 'FreeMemory',
+    
+    IdleTimeout: 'IdleTimeout', 
+    HardTimeout: 'HardTimeout',
+    Actions: 'Actions',
+    Match: 'Match',
+    Cookie: 'Cookie',
+    Priority: 'Priority',
+    Flow: "Flow",
+    Actions: "Actions",
+    Buffers: "Buffers",
+    Capabilities: "Capabilities",
+    Connected_Since: "Connected_Since",
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -204,12 +216,18 @@ module.exports = {
                          break;
                 case 'host': return this.getHosts({args:['default'],call:coll},cb);
                          break;
-                case 'flows': return this.getFlows({args:['default'],call:coll},cb);
+                case 'alterflow': return this.getFlows({args:['default'],call:coll},cb);
                          break;
                 case 'switch': return this.getNodes({args:['default'],call:coll},cb);
                          break;
                 case 'flowspec': return this.getFlowSpecs({args:['default'],call:coll},cb);
                          break;
+                        
+                case 'switchfeatures': this.find(conn, 'switch', options, cb); //close to the same call, but fix later. //this recursion may be causing socket issues?
+                         break;
+                        
+                //case 'flows': return this.find(conn, 'flow', options, cb);
+                         //break;
                         
                 //no calls in opendaylight
                 case 'switchdesc': return this.getNodes({args:['default'],call:coll},cb);
@@ -233,7 +251,42 @@ module.exports = {
     
         create: function (conn, coll, options, cb) {
                 switch (coll){
-                case 'flow': return this.addFlow();
+                case 'flow': 
+                        console.log("POSTED DATA: " + JSON.stringify(options.data) + '\n')
+                        
+                        //Todo: parse/normalize the flow data
+                        /*unparsed = options.data;
+                        flowData = {};
+                        flowData.node = {};
+                        flowData.node.id = unparsed.switch;
+                        flowData.node.type = 'OF';
+                        flowData.name = unparsed.name;
+                        flowData.ingressPort = unparsed.ingress_port;
+                        flowData.actions = [];
+                        flowData.actions.push(unparsed.actions);*/
+                        flowData = options.data;
+        
+                        resp = options.response;
+                        if(sails.controllers.main.hostname){
+                                  var host = sails.controllers.main.hostname;
+                                }
+                                else{
+                                  var host = 'localhost';
+                                }
+                        var opts = {method:'PUT',hostname:host,port:8080,path:'http://localhost:8080/controller/nb/v2/flowprogrammer/default/node/OF/' + flowData.node.id +  '/staticFlow/' + flowData.name +'',auth:'admin:admin'};
+                        var requ = http.request(opts,  function(res) {
+                          console.log('STATUS: ' + res.statusCode);
+                          console.log('HEADERS: ' + JSON.stringify(res.headers));
+                          res.setEncoding('utf8');
+                          res.on('data', function (chunk) {
+                            console.log('BODY: ' + chunk);
+                            resp.send(chunk);
+                          });
+                        });
+                        console.log(JSON.stringify(flowData));
+                        requ.write(JSON.stringify(flowData));
+                        requ.end();
+                        break;
 		        default: return cb();
                 }
         },
@@ -514,7 +567,7 @@ module.exports = {
                             Ports = [];
                             for(var j=0; j<portsObj.nodeConnectorProperties.length; j++){
                             portObj = {};
-                            portObj.PortNum = portsObj.nodeConnectorProperties[j].nodeconnector.id;
+                            portObj.PortNum = parseInt(portsObj.nodeConnectorProperties[j].nodeconnector.id);
                             portObj.PortName = portsObj.nodeConnectorProperties[j].properties.name.value;
                             portObj.PortState = portsObj.nodeConnectorProperties[j].properties.state.value;
                             portObj.CurrentFeatures = "N/A";
@@ -525,7 +578,15 @@ module.exports = {
                             portObj.HardwareAddress = "N/A";
                             Ports.push(portObj);
                             }
-                this.nodeParse('switch', {nodeProperties:[]}, Ports);   
+                //this.nodeParse('switch', {nodeProperties:[]}, Ports);
+                if(innerArr){
+                    for(var k=0; k<innerArr.length; k++){
+                        innerArr[k].Ports = Ports;
+                    }
+                }
+                else{
+                 return Ports;   
+                }
                 break;
             
             case 'switchports':
@@ -564,6 +625,27 @@ module.exports = {
                 }
                 return arr;
                 break;
+            
+            case 'alterflow':
+                arr = [];
+                for(var i=0; i<obj.flowConfig.length; i++){
+                    newObj = {};
+                    newObj.DPID = obj.flowConfig[i].node.id;
+                    newObj.Flows = [];
+                    flowObj = {}; //soon: multiple flows
+                    flowObj.IdleTimeout = obj.flowConfig[i].idleTimeout;
+                    flowObj.HardTimeout = obj.flowConfig[i].hardTimeout;
+                    flowObj.Actions = [];
+                    flowObj.Match = {};
+                    flowObj.Cookie = obj.flowConfig[i].cookie;
+                    flowObj.Priority =obj.flowConfig[i].priority;
+                    flowObj.Flow = obj.flowConfig[i].name;
+                    newObj.Flows.push(flowObj);
+                    arr.push(newObj);    
+                }
+                return arr;
+                break;
+                
             
             case 'switchdesc':
                 arr = [];

@@ -33,12 +33,26 @@ var restCall = function(apiMethod,apiPath){
 module.exports = {
     identity: 'alterflow',
     
-    find: function(req, res){
+    /*find: function(req, res){
         restCall('GET','/wm/staticflowentrypusher/list/:arg:/json');
-    },
+    },*/
     
     create: function(req, res) {
-        console.log("POSTED DATA: " + JSON.stringify(req.body) + '\n')
+        var floodlight = require('../adapters/FloodlightAdapter');
+        var opendaylight = require('../adapters/OpenDaylightAdapter');
+        if(sails.controllers.main.sdncontroller === 'floodlight'){
+            var Adapter = floodlight;    
+        }
+        else if(sails.controllers.main.sdncontroller === 'opendaylight'){
+            var Adapter = opendaylight;
+        }
+        else{
+            console.log("Flow push error: No controller specified at localhost:1337");
+            return;
+        }
+        Adapter.create(sails.controllers.main.sdncontroller, 'flow', {data: req.body, response: res}, null);
+        
+        /*console.log("POSTED DATA: " + JSON.stringify(req.body) + '\n')
 
         flowData = req.body;
         resp = res;
@@ -61,12 +75,12 @@ module.exports = {
         });
         console.log(JSON.stringify(flowData));
         requ.write(JSON.stringify(flowData));
-        requ.end();
+        requ.end();*/
     },
 
     destroy: function(req, res) {
         restCall('DELETE','/wm/staticflowentrypusher/json');
-        clearIntervalonsole.log("DELETED DATA: ")
+        /*console.log("DELETED DATA: ")
         console.log(req.body);
         flowData = req.body;
         resp = res;
@@ -89,6 +103,7 @@ module.exports = {
         console.log(JSON.stringify(flowData));
         req.write(JSON.stringify(flowData));
         req.end();
+        */
     },
 
     /*destroy: function(req, res) {

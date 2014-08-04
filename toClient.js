@@ -24,8 +24,9 @@ module.exports = function (ctlr,call,postData,cb) {
                         */
             
                 
-                        /*if(call === 'memory' && ctlr.nodeParse){
-                            var start = responseString.search("var statData = ");
+                        if(call === 'memory' && ctlr.nodeParse){
+                            //unexpected end of input
+                            /*var start = responseString.search("var statData = ");
                             var ctlrData = responseString.substr(start);
                             var end = ctlrData.indexOf(";");
                             var ctlrData = ctlrData.substr(0, end);
@@ -42,6 +43,7 @@ module.exports = function (ctlr,call,postData,cb) {
                                 normalizedObject = normalizedObject;
                             } 
                             cb(null,normalizedObject);
+                            */
                         }
             
                         else if(call === 'modules' && ctlr.nodeParse){
@@ -49,12 +51,12 @@ module.exports = function (ctlr,call,postData,cb) {
                             var end = responseString.search("</pre>"); //not working?
                             var modules = responseString.substr(start, end);
                             var modules = modules.replace("&nbsp;", " ");
-                            console.log(modules);
-                            cb(null,modules);
-                        }*/
+                            //console.log(modules); //non-object
+                            //cb(null,modules);
+                        }
             
             
-                        if (responseString.charAt(0) == '<'){
+                        else if (responseString.charAt(0) == '<'){
                             
                         }
             
@@ -84,9 +86,62 @@ module.exports = function (ctlr,call,postData,cb) {
             
                         //ctlr.response.send(normalizedObject);
                        
-                        cb(null,normalizedObject);
+                        finalCheckForSubsequentData(normalizedObject);    
+                            
+                        //cb(null,normalizedObject);
                         }
                         
 		});
 	}
+    
+    function finalCheckForSubsequentData(normalizedObject){
+        if(call === 'switch' && ctlr.nodeParse){
+           
+            var options = {
+              hostname: 'localhost',
+              port: 8080,
+              path: '/controller/nb/v2/switchmanager/default/node/OF/00:00:00:00:00:00:00:01', //todo: specific port lists
+              method: 'GET',
+              auth: 'admin:admin'
+            };
+            
+            var responseString = '';
+            
+            var http = require('http');
+            
+	       http.get(options, function(res) {
+              var body = '';
+              res.on('data', function(chunk) {
+                body += chunk;
+              });
+              res.on('end', function() {
+                if (body.charAt(0) == '<'){
+                    //To handle ODL's xml responses        
+                }
+                
+                else{
+                var PortObj = JSON.parse(body);
+                  
+                PortObj = ctlr.nodeParse('port', PortObj, normalizedObject);
+                  
+                PortObj = ctlr.normalize(PortObj);  
+                
+                cb(null,normalizedObject);
+                }
+              });
+            }).on('error', function(e) {
+              console.log("Got error: " + e.message);
+            }); 
+            
+            
+        }
+        
+        
+                     
+        else{
+            cb(null,normalizedObject);
+        }
+
+    }
+    
 }
