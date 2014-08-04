@@ -134,6 +134,12 @@ var TO_OFP = {
     upTime: 'Uptime_msec',
     TotalMemory: 'TotalMemory', //total is mem_free + mem_used & note that this is JVM mem, not just the controller.
     mem_free: 'FreeMemory',
+    
+    DPID: "DPID",
+    Actions: "Actions",
+    Buffers: "Buffers",
+    Capabilities: "Capabilities",
+    Connected_Since: "Connected_Since",
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -209,6 +215,9 @@ module.exports = {
                 case 'switch': return this.getNodes({args:['default'],call:coll},cb);
                          break;
                 case 'flowspec': return this.getFlowSpecs({args:['default'],call:coll},cb);
+                         break;
+                        
+                case 'switchfeatures': this.find(conn, 'switch', options, cb); //close to the same call, but fix later
                          break;
                         
                 //no calls in opendaylight
@@ -514,7 +523,7 @@ module.exports = {
                             Ports = [];
                             for(var j=0; j<portsObj.nodeConnectorProperties.length; j++){
                             portObj = {};
-                            portObj.PortNum = portsObj.nodeConnectorProperties[j].nodeconnector.id;
+                            portObj.PortNum = parseInt(portsObj.nodeConnectorProperties[j].nodeconnector.id);
                             portObj.PortName = portsObj.nodeConnectorProperties[j].properties.name.value;
                             portObj.PortState = portsObj.nodeConnectorProperties[j].properties.state.value;
                             portObj.CurrentFeatures = "N/A";
@@ -525,7 +534,15 @@ module.exports = {
                             portObj.HardwareAddress = "N/A";
                             Ports.push(portObj);
                             }
-                this.nodeParse('switch', {nodeProperties:[]}, Ports);   
+                //this.nodeParse('switch', {nodeProperties:[]}, Ports);
+                if(innerArr){
+                    for(var k=0; k<innerArr.length; k++){
+                        innerArr[k].Ports = Ports;
+                    }
+                }
+                else{
+                 return Ports;   
+                }
                 break;
             
             case 'switchports':
