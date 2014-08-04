@@ -24,7 +24,7 @@ module.exports = function (ctlr,call,postData,cb) {
                         */
             
                 
-                        if(call === 'memory' && ctlr.nodeParse){
+                        /*if(call === 'memory' && ctlr.nodeParse){
                             var start = responseString.search("var statData = ");
                             var ctlrData = responseString.substr(start);
                             var end = ctlrData.indexOf(";");
@@ -51,10 +51,10 @@ module.exports = function (ctlr,call,postData,cb) {
                             var modules = modules.replace("&nbsp;", " ");
                             console.log(modules);
                             cb(null,modules);
-                        }
+                        }*/
             
             
-                        else if (responseString.charAt(0) == '<'){
+                        if (responseString.charAt(0) == '<'){
                             
                         }
             

@@ -259,22 +259,25 @@ define([
 			fm = new FirewallMod("status");
 			fm.fetch().complete(function () {
 			firewallStatus = fm.get("0");
-            console.log(firewallStatus.Result);
-				if(firewallStatus.Result === "firewall enabled"){
-				$( "#radio-choice-c" ).prop( "checked", true );
-				$( "#radio-choice-d" ).prop( "checked", false );
-				//$("#radio-choice-c").prop("disabled", true);
-				//$("#radio-choice-d").prop("disabled", false);
-				}
-				else{
-				$( "#radio-choice-d" ).prop( "checked", true );
-				$( "#radio-choice-c" ).prop( "checked", false );
-				//$("#radio-choice-d").prop("disabled", true);
-				//$("#radio-choice-c").prop("disabled", false);
+            //Since ODL doesn't have firewall support. Doing this to avoid getting undefined and having sails crash.
+            console.log(firewallStatus);
+            if (firewallStatus != undefined)
+            switch (firewallStatus.Result){
+                case 'firewall enabled':$( "#radio-choice-c" ).prop( "checked", true );
+                                        $( "#radio-choice-d" ).prop( "checked", false );
+                                        //$("#radio-choice-c").prop("disabled", true);
+                                        //$("#radio-choice-d").prop("disabled", false);
+                        break;
+				case 'firewall disabled':$( "#radio-choice-d" ).prop( "checked", true );
+                                         $( "#radio-choice-c" ).prop( "checked", false );
+                                         //$("#radio-choice-d").prop("disabled", true);
+                                         //$("#radio-choice-c").prop("disabled", false);
+                        break;
+                default:
+                        break;
 				}
 			$('#content').append(this.template3).trigger('create');		
-			},this);
-			
+			},this);   
 		},
 		
 		// displays the basic firewall editing menu for a specific dpid
