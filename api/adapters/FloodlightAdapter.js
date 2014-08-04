@@ -274,7 +274,7 @@ module.exports = {
                 case 'modules':return this.getModules({args:[],call:coll},cb);
                          break;
                //case 'alterflow':return this.postFlow({data:{},call:coll},cb);
-                case 'alterflow':return this.getFlows({data:{},call:coll},cb);
+                case 'alterflow':return this.getFlows({args:['all'],call:coll},cb);
                         break;
 		        default: return cb();
                         break;
@@ -433,7 +433,7 @@ module.exports = {
                 return arr;
             }*/
 
-            else if(current === 'flow'){
+            else if(current === 'flow' || current === 'alterflow'){
                  for (dpid in obj){
                      innerObj = {};
                      Flows = [];

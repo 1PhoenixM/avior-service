@@ -135,7 +135,13 @@ var TO_OFP = {
     TotalMemory: 'TotalMemory', //total is mem_free + mem_used & note that this is JVM mem, not just the controller.
     mem_free: 'FreeMemory',
     
-    DPID: "DPID",
+    IdleTimeout: 'IdleTimeout', 
+    HardTimeout: 'HardTimeout',
+    Actions: 'Actions',
+    Match: 'Match',
+    Cookie: 'Cookie',
+    Priority: 'Priority',
+    Flow: "Flow",
     Actions: "Actions",
     Buffers: "Buffers",
     Capabilities: "Capabilities",
@@ -210,15 +216,18 @@ module.exports = {
                          break;
                 case 'host': return this.getHosts({args:['default'],call:coll},cb);
                          break;
-                case 'flows': return this.getFlows({args:['default'],call:coll},cb);
+                case 'alterflow': return this.getFlows({args:['default'],call:coll},cb);
                          break;
                 case 'switch': return this.getNodes({args:['default'],call:coll},cb);
                          break;
                 case 'flowspec': return this.getFlowSpecs({args:['default'],call:coll},cb);
                          break;
                         
-                case 'switchfeatures': this.find(conn, 'switch', options, cb); //close to the same call, but fix later
+                case 'switchfeatures': this.find(conn, 'switch', options, cb); //close to the same call, but fix later. //this recursion may be causing socket issues?
                          break;
+                        
+                //case 'flows': return this.find(conn, 'flow', options, cb);
+                         //break;
                         
                 //no calls in opendaylight
                 case 'switchdesc': return this.getNodes({args:['default'],call:coll},cb);
@@ -616,6 +625,27 @@ module.exports = {
                 }
                 return arr;
                 break;
+            
+            case 'alterflow':
+                arr = [];
+                for(var i=0; i<obj.flowConfig.length; i++){
+                    newObj = {};
+                    newObj.DPID = obj.flowConfig[i].node.id;
+                    newObj.Flows = [];
+                    flowObj = {}; //soon: multiple flows
+                    flowObj.IdleTimeout = obj.flowConfig[i].idleTimeout;
+                    flowObj.HardTimeout = obj.flowConfig[i].hardTimeout;
+                    flowObj.Actions = [];
+                    flowObj.Match = {};
+                    flowObj.Cookie = obj.flowConfig[i].cookie;
+                    flowObj.Priority =obj.flowConfig[i].priority;
+                    flowObj.Flow = obj.flowConfig[i].name;
+                    newObj.Flows.push(flowObj);
+                    arr.push(newObj);    
+                }
+                return arr;
+                break;
+                
             
             case 'switchdesc':
                 arr = [];
