@@ -272,7 +272,7 @@ define([
 		
 		deleteFlow: function () {
 			var delFlow = new FlowMod("delete");
-			delFlow.fetch({data: {name: this.name}});
+			delFlow.destroy({data: {name: this.name}});
 		},
 		
 		/*deleteFlows: function () {
