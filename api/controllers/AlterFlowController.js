@@ -79,7 +79,7 @@ module.exports = {
         requ.end();*/
     },
 
-    destroy: function(req, res) {
+    /*destroy: function(req, res) {
 
         console.log('Check');
 
@@ -106,19 +106,16 @@ module.exports = {
         });
         console.log(JSON.stringify(flowData));
 
-        var realData; //temporary fix until find out what front-end parsing is doing
-        for(realData in flowData){
-            break;
-        }
+        
         console.log(realData);
         req.write(realData);
         req.end();
         
 
-    },
+    },*/
 
-    /*destroy: function(req, res) {
-        console.log("DELETED DATA: " + JSON.stringify(req.body) + '\n');
+    destroy: function(req, res) {
+        console.log("DELETED DATA: ");
         var flowData = req.body;
         
         var res = res;
@@ -129,7 +126,7 @@ module.exports = {
             method:'DELETE'};
         
         var req = http.request(options, function(res) {
-          console.log('STATUS: ' + res.statusCode + '\n');
+          console.log('\n' + 'STATUS: ' + res.statusCode + '\n');
           console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
           res.setEncoding('utf8');
           res.on('data', function (chunk) {
@@ -141,9 +138,15 @@ module.exports = {
           console.log('problem with request: ' + e.message + '\n');
         });
         
-        req.write(flowData);
+        var realData; //temporary fix until find out what front-end parsing is doing
+        for(realData in flowData){
+            break;
+        }
+        
+        console.log(realData);
+        req.write(realData);
         req.end();
-    },*/
+    },
 
     tag: function(req, res) {
 
