@@ -181,7 +181,7 @@ var restCall = function(apiMethod,apiPath){
                                 apiPath = apiPath.replace(/:[A-Za-z]+:/, options.args[arg]);
                         }
                 }
-                console.log(apiPath);
+                //console.log(apiPath);
                 if(sails.controllers.main.hostname){
                   var host = sails.controllers.main.hostname;
                 }
