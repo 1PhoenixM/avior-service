@@ -49,7 +49,8 @@ define([
 				}
   				
   				if (localStorage.loggedIn == "true") {
-  					if (window.location.href == "http://localhost:1337/avior/index.html"){
+  					//has to be change to the actual href.
+                    if (window.location.href == "http://localhost:1337/avior/index.html"){
                         $(document).bind('pageinit');
                         $(function() { $("#some-div").show(); });
                         $.mobile.linkBindingEnabled = false;

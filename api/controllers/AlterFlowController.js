@@ -80,8 +80,9 @@ module.exports = {
     },
 
     destroy: function(req, res) {
-        restCall('DELETE','/wm/staticflowentrypusher/json');
-        /*console.log("DELETED DATA: ")
+        console.log('Check');
+        //restCall('DELETE','/wm/staticflowentrypusher/json');
+        console.log("DELETED DATA: ")
         console.log(req.body);
         flowData = req.body;
         resp = res;
@@ -102,9 +103,14 @@ module.exports = {
           });
         });
         console.log(JSON.stringify(flowData));
-        req.write(JSON.stringify(flowData));
+        //req.write(JSON.stringify(flowData));
+        var realData;
+        for (realData in flowData) {
+            break;
+        }
+        console.log(JSON.stringify(realData));
+        req.write(JSON.stringify(realData));
         req.end();
-        */
     },
 
     /*destroy: function(req, res) {

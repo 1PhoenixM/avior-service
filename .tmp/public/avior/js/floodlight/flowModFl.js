@@ -5,7 +5,7 @@ define([
 	FlowMod.prototype.urlRoot = function () {
 		switch(this.DPID){
             case 'add': this.unset(this.DPID);
-			            return "/alterflow/create/";
+			            return "/alterflow/create";
                     break;
             case 'delete': this.unset(this.DPID);
 			               return "/alterflow/destroy/";
@@ -46,9 +46,10 @@ define([
      	var model = this;
       	var success = options.success;
 
-      	var destroy = function() {
+      	/*var destroy = function() {
+            console.log('Does this really get called?');
         	model.trigger('destroy', model, model.collection, options);
-      	};
+      	};*/
 
       	options.success = function(resp) {
         	model.trigger('sync', model, resp, options);

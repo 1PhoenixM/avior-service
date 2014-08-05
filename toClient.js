@@ -61,34 +61,39 @@ module.exports = function (ctlr,call,postData,cb) {
                         }
             
                         else{
-                        var responseObject = JSON.parse(responseString);
-                    
-                        if(ctlr.dpidParse){
-                            //console.log('\n\n\n\n\n\n\n\n\n\n\n' + responseObject);
-                            var newObject = ctlr.dpidParse(call, responseObject);
-                            //console.log('\n\n\n\n\n\n\n\n\n\n\n' + newObject);
-                            var normalizedObject = ctlr.normalize(newObject);
-                        }
-            
-                        else{
-                            var newObject = ctlr.nodeParse(call, responseObject, null);
-                            
-                            var normalizedObject = ctlr.normalize(newObject);
-                            if(normalizedObject.Stats){
-                                normalizedObject = normalizedObject.Stats; //ODL only
+
+                            if (responseString === ''){
+                                responseString = '{}';
                             }
+
+                            var responseObject = JSON.parse(responseString);
+
+                            if(ctlr.dpidParse){
+                                //console.log('\n\n\n\n\n\n\n\n\n\n\n' + responseObject);
+                                var newObject = ctlr.dpidParse(call, responseObject);
+                                //console.log('\n\n\n\n\n\n\n\n\n\n\n' + newObject);
+                                var normalizedObject = ctlr.normalize(newObject);
+                            }
+
                             else{
-                                normalizedObject = normalizedObject;
-                            }   
-                        }
-            
-                        //console.log(normalizedObject);
-            
-                        //ctlr.response.send(normalizedObject);
-                       
-                        finalCheckForSubsequentData(normalizedObject);    
-                            
-                        //cb(null,normalizedObject);
+                                var newObject = ctlr.nodeParse(call, responseObject, null);
+
+                                var normalizedObject = ctlr.normalize(newObject);
+                                if(normalizedObject.Stats){
+                                    normalizedObject = normalizedObject.Stats; //ODL only
+                                }
+                                else{
+                                    normalizedObject = normalizedObject;
+                                }   
+                            }
+
+                            //console.log(normalizedObject);
+
+                            //ctlr.response.send(normalizedObject);
+
+                            finalCheckForSubsequentData(normalizedObject);    
+
+                            //cb(null,normalizedObject);
                         }
                         
 		});
