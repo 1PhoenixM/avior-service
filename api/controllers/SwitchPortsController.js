@@ -1,6 +1,10 @@
 module.exports = {
     find: function(req, res){
-         SwitchPorts.find({}, function(err, ports) {
+        var DPID = req.param('id');
+        
+        sails.adapters.floodlight.dpid = DPID;
+        
+        SwitchPorts.find({}, function(err, ports) {
           if(err) {return console.log(err);}
           else { 
             if(req.param('id') && ports.length >= 1){

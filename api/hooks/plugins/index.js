@@ -1,4 +1,4 @@
-//Much of this code: http://stackoverflow.com/questions/21085624/how-to-create-a-normal-sails-model-without-being-in-the-models-folder
+//Much of this code is from: http://stackoverflow.com/questions/21085624/how-to-create-a-normal-sails-model-without-being-in-the-models-folder
 
 // E.g. in /api/hooks/plugins/index.js
 /*
@@ -6,10 +6,11 @@
  */
 
 var Waterline = require('waterline');
-//var Role = require('../../plugins/RoleModel.js'); 
+//var Role = require('./models/RoleModel.js'); 
 var Role = 
     
     {
+        
 	identity: 'role',
 
 	connection: 'util',
@@ -131,7 +132,7 @@ function injectPluginModels(pluginModels, cb) {
             plugins = [RolePlugin];  
           // assuming plugin.models holds array of models for this plugin
           // customize for your use case
-          var pluginModels = _.pluck(plugins, 'models');     
+          var pluginModels = _.pluck(plugins, 'models');
           injectPluginModels(pluginModels, cb);
           mountBlueprintsForModels(pluginModels);
           //console.log(sails.models);

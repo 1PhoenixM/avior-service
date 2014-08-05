@@ -1,7 +1,7 @@
 //Plugin for controller role
 
 module.export = {
-	identity: 'rolemodel',
+	identity: 'role',
 
 	connection: 'util',
 

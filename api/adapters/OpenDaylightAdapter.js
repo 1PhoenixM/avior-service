@@ -573,6 +573,7 @@ module.exports = {
                             Ports = [];
                             for(var j=0; j<portsObj.nodeConnectorProperties.length; j++){
                             portObj = {};
+                            portObj.DPID = portsObj.nodeConnectorProperties[j].nodeconnector.node.id;
                             portObj.PortNum = parseInt(portsObj.nodeConnectorProperties[j].nodeconnector.id);
                             portObj.PortName = portsObj.nodeConnectorProperties[j].properties.name.value;
                             portObj.PortState = portsObj.nodeConnectorProperties[j].properties.state.value;
@@ -586,8 +587,10 @@ module.exports = {
                             }
                 //this.nodeParse('switch', {nodeProperties:[]}, Ports);
                 if(innerArr){
-                    for(var k=0; k<innerArr.length; k++){
-                        innerArr[k].Ports = Ports;
+                    for(var k=0,m=0; k<innerArr.length,m<Ports.length; k++,m++){
+                        if(innerArr[k].DPID === Ports[m].DPID){
+                            innerArr[k].Ports = Ports;
+                        }
                     }
                 }
                 else{

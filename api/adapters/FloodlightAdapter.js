@@ -181,6 +181,7 @@ var restCall = function(apiMethod,apiPath){
                                 apiPath = apiPath.replace(/:[A-Za-z]+:/, options.args[arg]);
                         }
                 }
+                console.log(apiPath);
                 if(sails.controllers.main.hostname){
                   var host = sails.controllers.main.hostname;
                 }
@@ -221,10 +222,10 @@ module.exports = {
 
         find: function (conn, coll, options, cb) {
             switch (coll){   
-                //core        
+                //core
                 case 'flow': return this.getFlows({args:['all'],call:coll},cb);
                         break;
-                case 'switchports': return this.getSwitchPorts({args:['all'],call:coll},cb);
+                case 'switchports': return this.getSwitchPorts({args:[this.dpid ? this.dpid : 'all'],call:coll},cb); //dpid here
                         break;
                 case 'tablestats': return this.getTableStats({args:['all'],call:coll},cb);
                         break;

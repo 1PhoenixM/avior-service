@@ -47,17 +47,17 @@ module.exports = function (ctlr,call,postData,cb) {
                         }
             
                         else if(call === 'modules' && ctlr.nodeParse){
-                            var start = responseString.search("<pre>"); 
+                            /*var start = responseString.search("<pre>"); 
                             var end = responseString.search("</pre>"); //not working?
                             var modules = responseString.substr(start, end);
                             var modules = modules.replace("&nbsp;", " ");
                             //console.log(modules); //non-object
-                            //cb(null,modules);
+                            //cb(null,modules);*/
                         }
             
             
                         else if (responseString.charAt(0) == '<'){
-                            
+                            //handle ODL crash
                         }
             
                         else{
@@ -95,12 +95,18 @@ module.exports = function (ctlr,call,postData,cb) {
 	}
     
     function finalCheckForSubsequentData(normalizedObject){
+        var counter = 0;
+        
         if(call === 'switch' && ctlr.nodeParse){
            
+            for(var i=0; i<normalizedObject.length; i++){
+                var DPID = normalizedObject[i].DPID
+            
+                
             var options = {
               hostname: 'localhost',
               port: 8080,
-              path: '/controller/nb/v2/switchmanager/default/node/OF/00:00:00:00:00:00:00:01', //todo: specific port lists
+              path: '/controller/nb/v2/switchmanager/default/node/OF/' + DPID +'', //todo: specific port lists
               method: 'GET',
               auth: 'admin:admin'
             };
@@ -126,14 +132,22 @@ module.exports = function (ctlr,call,postData,cb) {
                   
                 PortObj = ctlr.normalize(PortObj);  
                 
-                cb(null,normalizedObject);
+                //cb(null,normalizedObject);
+                
+                counter++;   
+                    
+                    if(counter === normalizedObject.length){
+                         cb(null,normalizedObject);
+                    }
                 }
               });
             }).on('error', function(e) {
               console.log("Got error: " + e.message);
             }); 
+                
+            }
             
-            
+           
         }
         
         

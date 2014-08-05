@@ -80,8 +80,8 @@ module.exports = {
     },
 
     destroy: function(req, res) {
-        restCall('DELETE','/wm/staticflowentrypusher/json');
-        /*console.log("DELETED DATA: ")
+        //restCall('DELETE','/wm/staticflowentrypusher/json');
+        console.log("DELETED DATA: ")
         console.log(req.body);
         flowData = req.body;
         resp = res;
@@ -102,9 +102,14 @@ module.exports = {
           });
         });
         console.log(JSON.stringify(flowData));
-        req.write(JSON.stringify(flowData));
+        var realData; //temporary fix until find out what front-end parsing is doing
+        for(realData in flowData){
+            break;
+        }
+        console.log(realData);
+        req.write(realData);
         req.end();
-        */
+        
     },
 
     /*destroy: function(req, res) {
