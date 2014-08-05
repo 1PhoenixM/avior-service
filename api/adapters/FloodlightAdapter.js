@@ -174,8 +174,9 @@ var TO_OFP = {
 
 // Creates a function that, when called, will make a REST API call
 var restCall = function(apiMethod,apiPath){
-        //var self = this;
+        var self = this;
         return function(options,cb){
+                var rawPath = apiPath;
                 if (options.args){
                         for (arg in options.args){
                                 apiPath = apiPath.replace(/:[A-Za-z]+:/, options.args[arg]);
@@ -196,8 +197,8 @@ var restCall = function(apiMethod,apiPath){
                         console.log("DATA: " + options);
                         console.log("Got here");
                 }
+                apiPath = rawPath;
                 req.end();
-                
         }
 };
 
@@ -205,6 +206,8 @@ var restCall = function(apiMethod,apiPath){
 module.exports = {
     
     postData: {},
+    
+    dpid: '',
     
 	identity: 'floodlight',
 

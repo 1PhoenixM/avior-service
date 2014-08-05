@@ -1,8 +1,16 @@
 module.exports = {
     find: function(req, res){
+     
+    //Sets dpid for any switchport call, not just floodlight
+        
+    //if(sails.controllers.main.sdncontroller === 'floodlight'){    
         var DPID = req.param('id');
         
-        sails.adapters.floodlight.dpid = DPID;
+        var Floodlight = require('../adapters/FloodlightAdapter');
+        
+        Floodlight.dpid = DPID;
+        
+    //}
         
         SwitchPorts.find({}, function(err, ports) {
           if(err) {return console.log(err);}

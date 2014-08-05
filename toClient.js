@@ -56,8 +56,13 @@ module.exports = function (ctlr,call,postData,cb) {
                         }
             
             
-                        else if (responseString.charAt(0) == '<'){
+                        else if (responseString.charAt(0) == '<' && ctlr.nodeParse){
                             //handle ODL crash
+                            //attempt the same call again
+                            //todo: deal with create/delete
+                            
+                            //console.log("ODL auth denied");
+                            ctlr.find(ctlr.identity, call, {}, cb); //Is this working?
                         }
             
                         else{
@@ -86,6 +91,10 @@ module.exports = function (ctlr,call,postData,cb) {
                                     normalizedObject = normalizedObject;
                                 }   
                             }
+                            
+                            if(ctlr.dpid){
+                                ctlr.dpid = '';
+                            }
 
                             //console.log(normalizedObject);
 
@@ -105,50 +114,50 @@ module.exports = function (ctlr,call,postData,cb) {
         if(call === 'switch' && ctlr.nodeParse){
            
             for(var i=0; i<normalizedObject.length; i++){
-                var DPID = normalizedObject[i].DPID
-            
-                
-            var options = {
-              hostname: 'localhost',
-              port: 8080,
-              path: '/controller/nb/v2/switchmanager/default/node/OF/' + DPID +'', //todo: specific port lists
-              method: 'GET',
-              auth: 'admin:admin'
-            };
-            
-            var responseString = '';
-            
-            var http = require('http');
-            
-	       http.get(options, function(res) {
-              var body = '';
-              res.on('data', function(chunk) {
-                body += chunk;
-              });
-              res.on('end', function() {
-                if (body.charAt(0) == '<'){
-                    //To handle ODL's xml responses        
-                }
-                
-                else{
-                var PortObj = JSON.parse(body);
-                  
-                PortObj = ctlr.nodeParse('port', PortObj, normalizedObject);
-                  
-                PortObj = ctlr.normalize(PortObj);  
-                
-                //cb(null,normalizedObject);
-                
-                counter++;   
-                    
-                    if(counter === normalizedObject.length){
-                         cb(null,normalizedObject);
+                    var DPID = normalizedObject[i].DPID
+
+
+                var options = {
+                  hostname: 'localhost',
+                  port: 8080,
+                  path: '/controller/nb/v2/switchmanager/default/node/OF/' + DPID +'', //todo: specific port lists
+                  method: 'GET',
+                  auth: 'admin:admin'
+                };
+
+                var responseString = '';
+
+                var http = require('http');
+
+               http.get(options, function(res) {
+                  var body = '';
+                  res.on('data', function(chunk) {
+                    body += chunk;
+                  });
+                  res.on('end', function() {
+                    if (body.charAt(0) == '<'){
+                        //To handle ODL's xml responses        
                     }
-                }
-              });
-            }).on('error', function(e) {
-              console.log("Got error: " + e.message);
-            }); 
+
+                    else{
+                    var PortObj = JSON.parse(body);
+
+                    PortObj = ctlr.nodeParse('port', PortObj, normalizedObject);
+
+                    PortObj = ctlr.normalize(PortObj);  
+
+                    //cb(null,normalizedObject);
+
+                    counter++;   
+
+                        if(counter === normalizedObject.length){
+                             cb(null,normalizedObject);
+                        }
+                    }
+                  });
+                }).on('error', function(e) {
+                  console.log("Got error: " + e.message);
+                }); 
                 
             }
             
