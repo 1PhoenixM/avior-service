@@ -56,11 +56,11 @@ module.exports = {
         var options = {
             hostname:'10.11.17.40', 
             port:8080, 
-            path:'/wm/staticflowentrypusher/json',
+            path:'/wm/firewall/rules/json',
             method:'DELETE'};
         
         var req = http.request(options, function(res) {
-          console.log('STATUS: ' + res.statusCode + '\n');
+          console.log('\n' + 'STATUS: ' + res.statusCode + '\n');
           console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
           res.setEncoding('utf8');
           res.on('data', function (chunk) {

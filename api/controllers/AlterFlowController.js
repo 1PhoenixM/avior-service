@@ -126,7 +126,7 @@ module.exports = {
             method:'DELETE'};
         
         var req = http.request(options, function(res) {
-          console.log('STATUS: ' + res.statusCode + '\n');
+          console.log('\n' + 'STATUS: ' + res.statusCode + '\n');
           console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
           res.setEncoding('utf8');
           res.on('data', function (chunk) {
