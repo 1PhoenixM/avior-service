@@ -56,13 +56,13 @@ module.exports = function (ctlr,call,postData,cb) {
                         }
             
             
-                        else if (responseString.charAt(0) == '<' && ctlr.nodeParse){
+                        else if (responseString.charAt(0) == '<'){
                             //handle ODL crash
                             //attempt the same call again
                             //todo: deal with create/delete
                             
                             //console.log("ODL auth denied");
-                            ctlr.find(ctlr.identity, call, {}, cb); //Is this working?
+                            //ctlr.find(ctlr.identity, call, {}, cb); //Is this working? Auth page comes back
                         }
             
                         else{

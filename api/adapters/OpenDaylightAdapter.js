@@ -151,12 +151,29 @@ var TO_OFP = {
     DurationNanoSeconds: 'DurationNanoSeconds',
     PacketCount: 'PacketCount',
     ByteCount: 'ByteCount',
+    
+    Wildcards: "Wildcards",
+    DataLayerDestination: "DataLayerDestination",
+    DataLayerSource:      "DataLayerSource",
+    DataLayerType:      "DataLayerType",
+    DataLayerVLAN:      "DataLayerVLAN",
+     DataLayerVLAN_PCP:     "DataLayerVLAN_PCP",
+     InputPort:     "InputPort",
+      NetworkDestination:    "NetworkDestination",
+    NetworkDestinationMaskLen:      "NetworkDestinationMaskLen",
+      NetworkProtocol:    "NetworkProtocol",
+      NetworkSource:    "NetworkSource",
+      NetworkSourceMaskLen:    "NetworkSourceMaskLen",
+    NetworkTOS:      "NetworkTOS",
+      TransportDestination:    "TransportDestination",
+      TransportSource:    "TransportSource",
 };
 
 // Creates a function that, when called, will make a REST API call
 var restCall = function(apiMethod,apiPath){
         //var self = this;
         return function(options,cb){
+                var rawPath = apiPath;
                 if (options.args){ 
                         for (arg in options.args){
                                 apiPath = apiPath.replace(/:[A-Za-z]+:/, options.args[arg]);
@@ -169,16 +186,20 @@ var restCall = function(apiMethod,apiPath){
                   var host = 'localhost';
                 }
                 opts = {method:apiMethod,hostname:host,port:8080,path:apiPath,auth:'admin:admin'}; //TODO: mask auth
+                //console.log(apiPath);
                 req = http.request(opts, toClient(this,options.call,null,cb));
                 if (options.data) {
                         req.write(JSON.stringify(options.data));
                 }
+                apiPath = rawPath;
                 req.end();
         }
 };
 
 module.exports = {
 	identity: 'opendaylight',
+    
+        dpid: '00:00:00:00:00:00:00:01',
 
         registerConnection: function (conn, coll, cb) {
                 if (!conn.port) { conn.port = 8080; }
@@ -235,8 +256,8 @@ module.exports = {
                 //case 'flows': return this.find(conn, 'flow', options, cb);
                          //break;
                         
-                //no calls in opendaylight
                 case 'switchdesc': return this.getNodes({args:['default'],call:coll},cb);
+                        //return this.getSwitchDesc({args:[this.dpid],call:coll},cb); //what if no dpid provided?
                         break;
                         
                 //odl only        
@@ -452,11 +473,13 @@ module.exports = {
     addPortAndVlanToBridge: restCall('POST', '/controller/nb/v2/networkconfig/bridgedomain/port/:nodeType:/:nodeId:/:bridgeName:/:portName:/:vlan:'), 
     
     
-    //
+    //Not part of normal Northbound REST APIs
     
     getControllerData: restCall('GET', '/controller/osgi/system/console/vmstat'),
     
     getModules: restCall('GET', '/controller/osgi/system/console/status-Bundlelist'),
+    
+    //getSwitchDesc: restCall('GET', '/controller/web/troubleshoot/nodeInfo?nodeId=OF|:nodeId:'),
     
     //Left to add: 
     //Neutron: https://jenkins.opendaylight.org/controller/job/controller-merge/lastSuccessfulBuild/artifact/opendaylight/northbound/networkconfiguration/neutron/target/site/wsdocs/index.html
@@ -630,6 +653,24 @@ module.exports = {
                         flowObj.PacketCount = obj.flowStatistics[i].flowStatistic[j].packetCount;
                         flowObj.ByteCount = obj.flowStatistics[i].flowStatistic[j].byteCount;
                         flowObj.Match = {};
+                        for(var k=0; k<obj.flowStatistics[i].flowStatistic[j].flow.match.matchField.length; k++){
+                            flowObj.Match.Wildcards = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "WILDCARDS" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.DataLayerDestination = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_DST" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.DataLayerSource = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_SRC" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.DataLayerType = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_TYPE" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.DataLayerVLAN = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "VLAN_ID" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.DataLayerVLAN_PCP = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "VLAN_PRIORITY" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.InputPort = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "INGRESS_PORT" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.NetworkDestination = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_DST" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.NetworkDestinationMaskLen = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_DST_MASK" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.NetworkProtocol = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_PROTOCOL" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.NetworkSource = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_SRC" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.NetworkSourceMaskLen = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_SRC_MASK" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.NetworkTOS = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_TOS" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.TransportDestination = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "TP_DST" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.TransportSource = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "TP_SRC" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                        }
+                        
                         flowObj.Actions = []; //todo: add match and actions
                         flowObj.Priority = obj.flowStatistics[i].flowStatistic[j].flow.priority;
                         flowObj.IdleTimeout = obj.flowStatistics[i].flowStatistic[j].flow.idleTimeout;
@@ -668,7 +709,14 @@ module.exports = {
             
             case 'switchdesc':
                 arr = [];
-                 for (var i=0; i<obj.nodeProperties.length; i++){
+                 /*newObj = {};
+                 newObj.Manufacturer = obj.manufacturer; 
+                 newObj.Hardware = obj.hardware;
+                 newObj.Software = obj.software;
+                 newObj.SerialNum = obj.serialNumber;
+                arr.push(newObj);
+                */
+                for (var i=0; i<obj.nodeProperties.length; i++){
                  newObj = {};
                  newObj.DPID = obj.nodeProperties[i].node.id;
                  newObj.Manufacturer = "Not found"; 
