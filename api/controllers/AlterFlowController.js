@@ -80,6 +80,9 @@ module.exports = {
     },
 
     destroy: function(req, res) {
+
+        console.log('Check');
+
         //restCall('DELETE','/wm/staticflowentrypusher/json');
         console.log("DELETED DATA: ")
         console.log(req.body);
@@ -102,6 +105,7 @@ module.exports = {
           });
         });
         console.log(JSON.stringify(flowData));
+
         var realData; //temporary fix until find out what front-end parsing is doing
         for(realData in flowData){
             break;
@@ -110,6 +114,7 @@ module.exports = {
         req.write(realData);
         req.end();
         
+
     },
 
     /*destroy: function(req, res) {

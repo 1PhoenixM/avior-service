@@ -284,10 +284,10 @@ module.exports = {
     
         
         create: function (conn, coll, options, cb) {
+            console.log("POSTED DATA: " + JSON.stringify(options.data) + '\n')
                 switch (coll){
-                case 'flow': 
-                        console.log("POSTED DATA: " + JSON.stringify(options.data) + '\n')
-
+                case 'alterflow': // fall-through!
+                case 'flow':
                         flowData = options.data;
                         resp = options.response;
                         if(sails.controllers.main.hostname){

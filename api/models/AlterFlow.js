@@ -8,8 +8,8 @@
 
 module.exports = {
   identity: "alterflow", 
-  
-    attributes: {
+  connection: 'util',
+  attributes: {
   	
   	/* e.g.
   	nickname: 'string'
