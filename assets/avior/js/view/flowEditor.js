@@ -272,16 +272,16 @@ define([
 		
 		deleteFlow: function () {
 			var delFlow = new FlowMod("delete");
-			delFlow.destroy({data: {name: this.name}});
+			delFlow.fetch({data: {name: this.name}});
 		},
 		
-		deleteFlows: function () {
+		/*deleteFlows: function () {
 			var x = new FlowMod("all");
 			x.fetch();
 			//x.fetch().complete(function () {
     	  		//console.log(JSON.stringify(x));
     	 	//});
-		},
+		},*/
 		
 		deleteSwFlows: function () {
 			var x = new FlowMod($('#dpid').val());
