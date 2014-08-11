@@ -813,6 +813,7 @@ module.exports = {
             
             case 'switchdesc2':
                  //newObj = {};
+                //improve the accuracy of this
                  for(var j=0; j<innerArr.length; j++){
                      if(!innerArr[j].Manufacturer){
                      innerArr[j].Manufacturer = obj.manufacturer;

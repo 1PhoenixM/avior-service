@@ -45,4 +45,27 @@ module.exports = {
         res.json(jsonObj);    
         }
     },
+    
+    unzip_plugin: function (req, res){
+        var filename = req.param('name');
+        console.log(filename);
+        var DecompressZip = require('decompress-zip');
+        var unzipper = new DecompressZip(filename)
+
+        unzipper.on('error', function (err) {
+            console.log('Caught an error: ' + err);
+        });
+
+        unzipper.on('extract', function (log) {
+            console.log('Finished extracting');
+        });
+
+        unzipper.extract({
+            path: '../hooks/plugins/models',
+            filter: function (file) {
+                return file.type !== "SymbolicLink";
+            }
+        });
+    }
+
 };

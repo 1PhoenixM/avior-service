@@ -81,6 +81,8 @@ var TO_OFP = {
     transmitPackets: "TXPackets",
     receiveBytes: "RXBytes",
     transmitBytes:"TXBytes",
+    receiveDropped:"RXDrops",
+    transmitDropped:"TXDrops",
     receiveErrors: "RXErrors",
     transmitErrors: "TXErrors",
     receiveFrameErrors: "RXFrameErr",

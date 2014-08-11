@@ -68,7 +68,7 @@ module.exports = function (ctlr,call,postData,cb) {
                         }
             
             
-                        else if (responseString.charAt(0) == '<' || responseString.charAt(0) === '&#60;'){
+                        else if (responseString.charAt(0) == '<' || responseString.charAt(0) === '&#60;'){ //maybe should deny any message not starting w/ '{'
                             //console.log(res);
                             //handle ODL crash
                             //attempt the same call again

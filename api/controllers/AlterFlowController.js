@@ -115,6 +115,7 @@ module.exports = {
     },*/
 
     destroy: function(req, res) {
+        //needs further work / controller choice
         console.log("DELETED DATA: ");
         var flowData = req.body;
         

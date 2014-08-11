@@ -31,10 +31,20 @@ module.exports.routes = {
     view: 'controllercheck' //original: 'homepage'
   },
     
+  '/plugins': {
+    view: 'plugins'
+  },
+    
   '/sdncontroller': 'MainController.setinfo',
     
+  '/unzip': 'MainController.unzip_plugin',
+    
+  '/success': {
+    view: 'success'  
+  },
+    
   '/avior':{
-    view: 'login' 
+    view: 'login' //drop this, it doesn't work right
   },
 
   // Custom routes here...
