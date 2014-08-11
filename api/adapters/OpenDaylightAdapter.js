@@ -327,7 +327,42 @@ module.exports = {
     
         destroy: function (conn, coll, options, cb) {
                 switch (coll){
-                case 'flow': return this.deleteFlow();
+                case 'flow': 
+                        console.log("DELETED DATA: " + JSON.stringify(options.data) + '\n')
+                        
+                        //Todo: parse/normalize the flow data
+                        /*unparsed = options.data;
+                        flowData = {};
+                        flowData.node = {};
+                        flowData.node.id = unparsed.switch;
+                        flowData.node.type = 'OF';
+                        flowData.name = unparsed.name;
+                        flowData.ingressPort = unparsed.ingress_port;
+                        flowData.actions = [];
+                        flowData.actions.push(unparsed.actions);*/
+                        flowData = options.data;
+        
+                        resp = options.response;
+                        if(sails.controllers.main.hostname){
+                                  var host = sails.controllers.main.hostname;
+                                }
+                                else{
+                                  var host = 'localhost';
+                                }
+                        var opts = {method:'DELETE',hostname:host,port:8080,path:'http://localhost:8080/controller/nb/v2/flowprogrammer/default/node/OF/' + flowData.node.id +  '/staticFlow/' + flowData.name +'',auth:'admin:admin'};
+                        var requ = http.request(opts,  function(res) {
+                          console.log('STATUS: ' + res.statusCode);
+                          console.log('HEADERS: ' + JSON.stringify(res.headers));
+                          res.setEncoding('utf8');
+                          res.on('data', function (chunk) {
+                            console.log('BODY: ' + chunk);
+                            resp.send(chunk);
+                          });
+                        });
+                        console.log(JSON.stringify(flowData));
+                        requ.write(JSON.stringify(flowData));
+                        requ.end();
+                        break;
 		        default: return cb();
                 }
         },
