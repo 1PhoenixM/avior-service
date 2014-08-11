@@ -62,7 +62,7 @@ define([
 			this.features = new Features();
 			this.features.fetch();
 			this.switchStats = new SwitchStats();
-			this.switchStats.fetch();	
+			this.switchStats.fetch();
 			this.listenTo(this.features, "sync", this.syncComplete);
 			this.listenTo(this.description, "sync", this.syncComplete);
 			this.listenTo(this.switchStats, "sync", this.syncComplete);

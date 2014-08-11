@@ -167,6 +167,8 @@ var TO_OFP = {
     NetworkTOS:      "NetworkTOS",
       TransportDestination:    "TransportDestination",
       TransportSource:    "TransportSource",
+    
+    Type: "Type",
 };
 
 // Creates a function that, when called, will make a REST API call
@@ -185,9 +187,36 @@ var restCall = function(apiMethod,apiPath){
                 else{
                   var host = 'localhost';
                 }
-                opts = {method:apiMethod,hostname:host,port:8080,path:apiPath,auth:'admin:admin'}; //TODO: mask auth
+                opts = {method:apiMethod,hostname:host,port:8080,path:apiPath}; //TODO: mask auth //auth:'admin:admin'
+                //if(options.call === 'switchdesc'){opts.auth = new Buffer(opts.auth).toString('base64');} //calls outside of rest api need encoded to base64
                 //console.log(apiPath);
+                var username = 'admin';
+                var password = 'admin';
+                var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
+
+                // auth is: 'Basic VGVzdDoxMjM='
+
+                opts.headers = {'Host': opts.hostname + ':' + opts.port, 'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+'Accept-Encoding': 'gzip,deflate,sdch',
+'Accept-Language':'en-US,en;q=0.8',
+'Cache-Control':'max-age=0',
+'Connection':'keep-alive',
+'Cookie':'sails.sid=s%3AG2lmPjtFgtwMyK8XEvIrPU18.MwqSF6Op873bY4iA%2BuJ6XU8ywMBZ15yYgB36d8GXd%2FU; JSESSIONIDSSO=F5F105B0BB6EC113FD7C9E1D81171B8B; JSESSIONID=5221426DD686C1B5D1A7E072B97C4A24',
+'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'}; //spoofing for now, will fix
+            
+                if(this.cookie){
+                    opts.headers = {'Cookie': this.cookie, 'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+'Accept-Encoding': 'gzip,deflate,sdch',
+'Accept-Language':'en-US,en;q=0.8',
+'Cache-Control':'max-age=0',
+'Connection':'keep-alive',
+'Cookie':'sails.sid=s%3AG2lmPjtFgtwMyK8XEvIrPU18.MwqSF6Op873bY4iA%2BuJ6XU8ywMBZ15yYgB36d8GXd%2FU; JSESSIONIDSSO=F5F105B0BB6EC113FD7C9E1D81171B8B; JSESSIONID=5221426DD686C1B5D1A7E072B97C4A24',
+                               'Host': opts.hostname + ':' + opts.port,
+'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'};
+                    //console.log(this.cookie);
+                }
                 req = http.request(opts, toClient(this,options.call,null,cb));
+                
                 if (options.data) {
                         req.write(JSON.stringify(options.data));
                 }
@@ -200,6 +229,12 @@ module.exports = {
 	identity: 'opendaylight',
     
         dpid: '00:00:00:00:00:00:00:01',
+    
+    
+        cookie: '',
+    
+    
+        cookieGet: false,
 
         registerConnection: function (conn, coll, cb) {
                 if (!conn.port) { conn.port = 8080; }
@@ -214,7 +249,13 @@ module.exports = {
         },
 
         find: function (conn, coll, options, cb) {
-                switch (coll){
+                
+            //console.log(conn);
+            //console.log(coll);
+            //console.log(options);
+            //console.log(cb);
+            
+            switch (coll){
                 
                 //fake calls for front-end
                 case 'uptime': return 'uptime';
@@ -257,7 +298,8 @@ module.exports = {
                          //break;
                         
                 case 'switchdesc': return this.getNodes({args:['default'],call:coll},cb);
-                        //return this.getSwitchDesc({args:[this.dpid],call:coll},cb); //what if no dpid provided?
+                        //return this.getSwitchDesc({args:[this.dpid],call:coll},cb); //what if no dpid provided? //this does not allow auth unless you're in the browser...
+                        //maybe it's not an allowed call because not part of rest api
                         break;
                         
                 //odl only        
@@ -292,7 +334,9 @@ module.exports = {
                         flowData.actions = [];
                         flowData.actions.push(unparsed.actions);*/
                         flowData = options.data;
-        
+                        string = JSON.stringify(flowData);
+                        parsed = JSON.parse(string);
+                        
                         resp = options.response;
                         if(sails.controllers.main.hostname){
                                   var host = sails.controllers.main.hostname;
@@ -300,7 +344,8 @@ module.exports = {
                                 else{
                                   var host = 'localhost';
                                 }
-                        var opts = {method:'PUT',hostname:host,port:8080,path:'http://localhost:8080/controller/nb/v2/flowprogrammer/default/node/OF/' + flowData.node.id +  '/staticFlow/' + flowData.name +'',auth:'admin:admin'};
+                        var opts = {method:'PUT',hostname:host,port:8080,path:'http://localhost:8080/controller/nb/v2/flowprogrammer/default/node/OF/' + parsed.switch +  '/staticFlow/' + parsed.name +'',auth:'admin:admin'};
+                        console.log(opts.path);
                         var requ = http.request(opts,  function(res) {
                           console.log('STATUS: ' + res.statusCode);
                           console.log('HEADERS: ' + JSON.stringify(res.headers));
@@ -310,8 +355,8 @@ module.exports = {
                             resp.send(chunk);
                           });
                         });
-                        console.log(JSON.stringify(flowData));
-                        requ.write(JSON.stringify(flowData));
+                        //console.log(JSON.stringify(flowData));
+                        requ.write(JSON.stringify(string));
                         requ.end();
                         break;
 		        default: return cb();
@@ -479,7 +524,7 @@ module.exports = {
     
     getModules: restCall('GET', '/controller/osgi/system/console/status-Bundlelist'),
     
-    //getSwitchDesc: restCall('GET', '/controller/web/troubleshoot/nodeInfo?nodeId=OF|:nodeId:'),
+    getSwitchDesc: restCall('GET', '/controller/web/troubleshoot/nodeInfo?nodeId=OF|:nodeId:'), //unused until toClient
     
     //Left to add: 
     //Neutron: https://jenkins.opendaylight.org/controller/job/controller-merge/lastSuccessfulBuild/artifact/opendaylight/northbound/networkconfiguration/neutron/target/site/wsdocs/index.html
@@ -499,7 +544,7 @@ module.exports = {
 		} else {
 			normalizedObj = {};
 			for (fromField in TO_OFP) {
-				if (obj[fromField] || obj[fromField] === 0) {
+				if (obj[fromField] || obj[fromField] === 0 || obj[fromField] === "") {
 		 	        	toField = TO_OFP[fromField];
 	                        	normalizedObj[toField] = this.normalize(obj[fromField]);
 				}
@@ -653,14 +698,16 @@ module.exports = {
                         flowObj.PacketCount = obj.flowStatistics[i].flowStatistic[j].packetCount;
                         flowObj.ByteCount = obj.flowStatistics[i].flowStatistic[j].byteCount;
                         flowObj.Match = {};
+                        
+                        //Match fields not accurate yet. Also, the same flowmatch appears on all switches?
                         for(var k=0; k<obj.flowStatistics[i].flowStatistic[j].flow.match.matchField.length; k++){
                             flowObj.Match.Wildcards = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "WILDCARDS" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
                             flowObj.Match.DataLayerDestination = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_DST" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
                             flowObj.Match.DataLayerSource = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_SRC" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
                             flowObj.Match.DataLayerType = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_TYPE" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.DataLayerVLAN = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "VLAN_ID" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.DataLayerVLAN_PCP = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "VLAN_PRIORITY" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.InputPort = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "INGRESS_PORT" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.DataLayerVLAN = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_VLAN" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.DataLayerVLAN_PCP = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_VLAN_PR" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            flowObj.Match.InputPort = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "IN_PORT" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
                             flowObj.Match.NetworkDestination = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_DST" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
                             flowObj.Match.NetworkDestinationMaskLen = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_DST_MASK" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
                             flowObj.Match.NetworkProtocol = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_PROTOCOL" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
@@ -671,7 +718,17 @@ module.exports = {
                             flowObj.Match.TransportSource = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "TP_SRC" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
                         }
                         
-                        flowObj.Actions = []; //todo: add match and actions
+                        flowObj.Actions = [];
+                            
+                        for(var m=0; m<obj.flowStatistics[i].flowStatistic[j].flow.actions.length; m++){
+                             actionObj = {}; //specify the switch that port belongs to?
+                             actionObj.Type = obj.flowStatistics[i].flowStatistic[j].flow.actions[m].type;
+                             if(obj.flowStatistics[i].flowStatistic[j].flow.actions[m].port){
+                             actionObj.PortNum = parseInt(obj.flowStatistics[i].flowStatistic[j].flow.actions[m].port.id);
+                             }
+                             flowObj.Actions.push(actionObj);
+                            }
+                        
                         flowObj.Priority = obj.flowStatistics[i].flowStatistic[j].flow.priority;
                         flowObj.IdleTimeout = obj.flowStatistics[i].flowStatistic[j].flow.idleTimeout;
                         flowObj.HardTimeout = obj.flowStatistics[i].flowStatistic[j].flow.hardTimeout;
@@ -707,16 +764,36 @@ module.exports = {
                 break;
                 
             
-            case 'switchdesc':
+            case 'switchdesc': //actually calling nodes (switches) call first
                 arr = [];
-                 /*newObj = {};
-                 newObj.Manufacturer = obj.manufacturer; 
-                 newObj.Hardware = obj.hardware;
-                 newObj.Software = obj.software;
-                 newObj.SerialNum = obj.serialNumber;
-                arr.push(newObj);
-                */
                 for (var i=0; i<obj.nodeProperties.length; i++){
+                    newObj = {}; //newObj has to be defined within the for loop
+                    newObj.DPID = obj.nodeProperties[i].node.id;
+                    arr.push(newObj);
+                }
+                    normalizerObj = {};
+                    normalizerObj.Stats = arr;
+                    return normalizerObj;
+                break;
+            
+            case 'switchdesc2':
+                 //newObj = {};
+                 for(var j=0; j<innerArr.length; j++){
+                     if(!innerArr[j].Manufacturer){
+                     innerArr[j].Manufacturer = obj.manufacturer;
+                     }
+                     if(!innerArr[j].Hardware){
+                     innerArr[j].Hardware = obj.hardware;
+                     }
+                     if(!innerArr[j].Software){
+                     innerArr[j].Software = obj.software;
+                     }
+                     if(!innerArr[j].SerialNum){
+                     innerArr[j].SerialNum = obj.serialNumber;
+                     }
+                 }         
+                
+                /*for (var i=0; i<obj.nodeProperties.length; i++){
                  newObj = {};
                  newObj.DPID = obj.nodeProperties[i].node.id;
                  newObj.Manufacturer = "Not found"; 
@@ -724,7 +801,7 @@ module.exports = {
                  newObj.Software = "Not found";
                  newObj.SerialNum = "Not found";
                  arr.push(newObj);  
-                 }
+                 }*/
                 return arr;
                 break;
             

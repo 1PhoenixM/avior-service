@@ -57,15 +57,60 @@ module.exports = {
     
         
         create: function (conn, coll, options, cb) {
-               
+            /*if(!sails.controllers.main.sdncontroller && sails.config.models.connection === 'util'){
+                sails.controllers.main.sdncontroller = 'floodlight';
+            }
+            switch(sails.controllers.main.sdncontroller){
+             case 'floodlight': 
+                    //console.log(sails.controllers.main.sdncontroller);
+                    Floodlight.create(conn, coll, options, cb);
+                    break;
+             case 'opendaylight':
+                    //console.log(sails.controllers.main.sdncontroller);
+                    OpenDaylight.create(conn, coll, options, cb);
+                    break;
+            default:
+                    console.log("Error: No valid controller was provided.");
+                    break;
+            }*/        
         },
     
         update: function (conn, coll, options, cb) {
-              
+            /*if(!sails.controllers.main.sdncontroller && sails.config.models.connection === 'util'){
+                sails.controllers.main.sdncontroller = 'floodlight';
+            }
+            switch(sails.controllers.main.sdncontroller){
+             case 'floodlight': 
+                    //console.log(sails.controllers.main.sdncontroller);
+                    Floodlight.update(conn, coll, options, cb);
+                    break;
+             case 'opendaylight':
+                    //console.log(sails.controllers.main.sdncontroller);
+                    OpenDaylight.update(conn, coll, options, cb);
+                    break;
+            default:
+                    console.log("Error: No valid controller was provided.");
+                    break;
+            }*/       
         },
     
         destroy: function (conn, coll, options, cb) {
-               
+            /*if(!sails.controllers.main.sdncontroller && sails.config.models.connection === 'util'){
+                sails.controllers.main.sdncontroller = 'floodlight';
+            }
+            switch(sails.controllers.main.sdncontroller){
+             case 'floodlight': 
+                    //console.log(sails.controllers.main.sdncontroller);
+                    Floodlight.destroy(conn, coll, options, cb);
+                    break;
+             case 'opendaylight':
+                    //console.log(sails.controllers.main.sdncontroller);
+                    OpenDaylight.destroy(conn, coll, options, cb);
+                    break;
+            default:
+                    console.log("Error: No valid controller was provided.");
+                    break;
+            }*/        
         },
     
 }
