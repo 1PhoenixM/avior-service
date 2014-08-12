@@ -7,7 +7,7 @@
 
 var Waterline = require('waterline');
 //var Role = require('./models/RoleModel.js'); 
-var Role = 
+/*var Role = 
     
     {
         
@@ -33,7 +33,7 @@ var Role =
 
 var RolePlugin = {
     models: Role,
-};
+};*/
 
 module.exports = function(sails) {
 
@@ -41,7 +41,7 @@ function injectPluginModels(pluginModels, cb) {
   // copy sails/lib/hooks/orm/loadUserModules to make it accessible here
     
   var loadUserModelsAndAdapters = require('./loadUserModules')(sails);
-
+    
   async.auto({
     // 1. load api/models, api/adapters
     _loadModules: loadUserModelsAndAdapters,
@@ -121,6 +121,7 @@ function injectPluginModels(pluginModels, cb) {
 
     function pluginLoader(cb){
         //filesystem iterator
+        
         cb();
     }
 
@@ -129,7 +130,25 @@ function injectPluginModels(pluginModels, cb) {
     initialize: function(cb) {
       sails.after('hook:orm:loaded', function() {
           pluginLoader(function(err, plugins) {
-            plugins = [RolePlugin];  
+            //plugins = [RolePlugin];  
+
+            var fs = require('fs');
+
+            var plugins = fs.readdirSync('./api/hooks/plugins/models');
+
+            arr = [];
+
+            for(var i=0; i<plugins.length; i++){
+
+                        mod = require('./models/' + plugins[i]);
+                        obj = {};
+                        obj.models = mod;
+                        arr.push(obj);
+
+            }
+
+            plugins = arr;
+              
           // assuming plugin.models holds array of models for this plugin
           // customize for your use case
           var pluginModels = _.pluck(plugins, 'models');

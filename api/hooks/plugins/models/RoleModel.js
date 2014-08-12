@@ -1,6 +1,6 @@
 //Plugin for controller role
-
-module.export = {
+//the 's' in exports is crucial
+module.exports = {
 	identity: 'role',
 
 	connection: 'util',
