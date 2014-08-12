@@ -203,12 +203,13 @@ module.exports = function (ctlr,call,postData,cb) {
                   auth: auth,
                 };
                 
+                
                 options.headers = {'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
 'Accept-Encoding': 'gzip,deflate,sdch',
 'Accept-Language':'en-US,en;q=0.8',
 'Cache-Control':'max-age=0',
 'Connection':'keep-alive',
-'Cookie':'sails.sid=s%3AG2lmPjtFgtwMyK8XEvIrPU18.MwqSF6Op873bY4iA%2BuJ6XU8ywMBZ15yYgB36d8GXd%2FU; JSESSIONIDSSO=F5F105B0BB6EC113FD7C9E1D81171B8B; JSESSIONID=5221426DD686C1B5D1A7E072B97C4A24',
+'Cookie': 'JSESSIONIDSSO=3EA1E1F47A159E7997138EA0E50693B6; JSESSIONID=09F2EDAE0CCC51B60CFD61B4CDC038CF; sails.sid=s%3Aw7TDSEAWvI40GYAu2BA5wJZS.NjS6Kowd8iLIKjdpet2UUPsXYTczi6jDh3nzf1MK7Fk',
                                'Host':'localhost:8080',
 'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'};
 

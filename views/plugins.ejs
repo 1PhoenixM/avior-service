@@ -44,20 +44,21 @@
 
 <script>
     function validate(){
-        window.URL = window.URL || window.webkitURL;
+        //window.URL = window.URL || window.webkitURL;
      //todo: add actual validations, disallow more than 1 zip file, disallow files over a certain size (?), etc.
        //Validation breakdown of individual files will commence. List of newly bound routes: 
        var plugin_name = document.getElementById('plugin_file').value;
-       var plugin = document.getElementById('plugin_file').files[0];
-        var pluginURL = window.URL.createObjectURL(plugin);
+       
+       //var plugin = document.getElementById('plugin_file').files[0];
+        //var pluginURL = window.URL.createObjectURL(plugin);
        //console.log(plugin);
-        var ext = plugin_name.substr(plugin_name.length - 4, plugin_name.length);
+        //var ext = plugin_name.substr(plugin_name.length - 4, plugin_name.length);
         //console.log(ext);
-        if(ext === '.zip'){
+        /*if(ext === '.zip'){
             alert('Verified: ' + ext + '. Decompression will begin.');
             $.post(
                 '/unzip',
-                {name: pluginURL},
+                {name: plugin_name},
                 function () {
                    //alert("Sent");
                 }
@@ -66,10 +67,22 @@
             });
             window.location = "/success";
             //window.URL.revokeObjectURL(pluginURL);
-        }
-        else{
-            alert(ext + ' is not an Avior plugin filetype. Please place your files into a .zip archive and re-upload.');
-        }
+        }*/
+        //else{
+            //alert(ext + ' is not an Avior plugin filetype. Please place your files into a .zip archive and re-upload.');
+            alert("Integration pending...");
+            $.post(
+                '/unzip',
+                {name: plugin_name},
+                function () {
+                   //alert("Sent");
+                }
+            ).fail(function(res){
+                alert("Error: " + res.getResponseHeader("error"));
+            });
+            window.location = "/success";
+            //window.URL.revokeObjectURL(pluginURL);
+        //}
     }
 </script>
 

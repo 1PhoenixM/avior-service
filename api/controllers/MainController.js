@@ -47,9 +47,38 @@ module.exports = {
     },
     
     unzip_plugin: function (req, res){
-        var filename = req.param('name');
-        console.log(filename);
-        var DecompressZip = require('decompress-zip');
+        //All this piece of code does is move the file. We could put a zip file here to move it into the directory, then extract from there.
+        var fs = require('fs');
+        fs.readFile('./PlexxiModel.js', {encoding: 'utf-8'}, function(err, data){
+             fs.writeFileSync('./api/hooks/plugins/models/PlexxiModel.js', data, {});
+        });
+       
+        /*
+        var file = req.param('name');
+        console.log(file);
+            file = file.substr(12, file.length); //C:/fakepath/
+            console.log(file);
+            if(file.search("Model.js") > 0){
+                            fs.renameSync('C:/fakepath/'+file+'', './api/hooks/plugins/models/'+file+'')
+                            //sails.models[file] = './api/plugins/'+file+''; //How to do this?
+
+                            //file = file.substring(0, file.length - 3);
+                            //var plugin = require('../../plugins/'+file+'');
+                            //sails.models[file] = plugin;
+
+                            console.log(file + " was successfully loaded as a new Model on restart.")
+                        }
+                        else if(file.search("Controller.js") > 0){
+                            fs.renameSync('C:/fakepath/'+file+'', './api/hooks/plugins/controllers/'+file+'')
+                            //sails.controllers[file] = './api/plugins/'+file+'';
+                            console.log(file + " was successfully loaded as a new Controller on restart.")
+                        }
+                        else{
+                            console.log("Unknown file " + file);
+                        }
+                        */
+        
+        /*var DecompressZip = require('decompress-zip');
         var unzipper = new DecompressZip(filename)
 
         unzipper.on('error', function (err) {
@@ -65,7 +94,7 @@ module.exports = {
             filter: function (file) {
                 return file.type !== "SymbolicLink";
             }
-        });
+        });*/
     }
 
 };
