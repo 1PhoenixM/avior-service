@@ -13,16 +13,22 @@ module.exports = function (ctlr,call,postData,cb) {
         });
  
         res.on('end', function() {
-                        //console.log(res);
+                        console.log(res);
+                        //console.log('/////////////////');
             
                         if(ctlr.nodeParse && ctlr.cookieGet === false){
                             //console.log(res.headers["set-cookie"]);
                             if(res.headers["set-cookie"]){
                                 ctlr.cookie = res.headers["set-cookie"];
                                 //ctlr.cookie = ctlr.cookie[0];
+                                ctlr.cookie = ctlr.cookie.toString();
                                 ctlr.cookieGet = true;
                             }
                             //does not seem to work.
+                            //expected vals (how browser does it):
+                            //JSESSIONIDSSO=3EA1E1F47A159E7997138EA0E50693B6; 
+                            //JSESSIONID=09F2EDAE0CCC51B60CFD61B4CDC038CF; 
+                            //sails.sid=s%3Aw7TDSEAWvI40GYAu2BA5wJZS.NjS6Kowd8iLIKjdpet2UUPsXYTczi6jDh3nzf1MK7Fk
                         }
                         
                         //console.log(responseString);
@@ -203,13 +209,14 @@ module.exports = function (ctlr,call,postData,cb) {
                   auth: auth,
                 };
                 
+                //console.log(ctlr.cookie);
                 
                 options.headers = {'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
 'Accept-Encoding': 'gzip,deflate,sdch',
 'Accept-Language':'en-US,en;q=0.8',
 'Cache-Control':'max-age=0',
 'Connection':'keep-alive',
-'Cookie': 'JSESSIONIDSSO=3EA1E1F47A159E7997138EA0E50693B6; JSESSIONID=09F2EDAE0CCC51B60CFD61B4CDC038CF; sails.sid=s%3Aw7TDSEAWvI40GYAu2BA5wJZS.NjS6Kowd8iLIKjdpet2UUPsXYTczi6jDh3nzf1MK7Fk',
+'Cookie': 'JSESSIONID=D4BC96CA4F9564C9EDA4497968348ACC; JSESSIONIDSSO=83379B51A789156F81794B6EF20A6CDB; sails.sid=s%3AscF_dGeNqMz8NY0SegMaQzJm.g7aaB4kZ3Z448mlueOkkKbQQ6SZyFvqL38lOlhlXTjE',
                                'Host':'localhost:8080',
 'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'};
 
@@ -223,8 +230,16 @@ module.exports = function (ctlr,call,postData,cb) {
                     body += chunk;
                   });
                   res.on('end', function() {
-                    if (body.charAt(0) == '<'){
-                        //To handle ODL's xml responses        
+                    //console.log(body);
+                    if (body.charAt(0) === '\n' || body.charAt(0) === '<'){
+                        //To handle ODL's xml responses
+                        for(var j=0; j<normalizedObject.length; j++){
+                            normalizedObject[j].Manufacturer = 'Not found';
+                            normalizedObject[j].Hardware = 'Not found';
+                            normalizedObject[j].Software = 'Not found';
+                            normalizedObject[j].SerialNum = 'Not found';
+                        }
+                        cb(null,normalizedObject);
                     }
 
                     else{
