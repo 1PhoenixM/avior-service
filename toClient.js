@@ -13,22 +13,28 @@ module.exports = function (ctlr,call,postData,cb) {
         });
  
         res.on('end', function() {
-                        console.log(res);
+                        //console.log(res);
                         //console.log('/////////////////');
             
                         if(ctlr.nodeParse && ctlr.cookieGet === false){
+                            
                             //console.log(res.headers["set-cookie"]);
-                            if(res.headers["set-cookie"]){
-                                ctlr.cookie = res.headers["set-cookie"];
+                            //if(res.headers["set-cookie"]){
+                                //ctlr.cookie = res.headers["set-cookie"];
                                 //ctlr.cookie = ctlr.cookie[0];
-                                ctlr.cookie = ctlr.cookie.toString();
-                                ctlr.cookieGet = true;
-                            }
+                                //ctlr.cookie = ctlr.cookie.toString();
+                                //ctlr.cookieGet = true;
+                            //}
                             //does not seem to work.
                             //expected vals (how browser does it):
                             //JSESSIONIDSSO=3EA1E1F47A159E7997138EA0E50693B6; 
                             //JSESSIONID=09F2EDAE0CCC51B60CFD61B4CDC038CF; 
                             //sails.sid=s%3Aw7TDSEAWvI40GYAu2BA5wJZS.NjS6Kowd8iLIKjdpet2UUPsXYTczi6jDh3nzf1MK7Fk
+                            
+                            //gets from '/'
+                            //posts to /j_security_check
+                            //data: j_username=admin&j_password=admin
+                            
                         }
                         
                         //console.log(responseString);
@@ -137,6 +143,81 @@ module.exports = function (ctlr,call,postData,cb) {
     function finalCheckForSubsequentData(normalizedObject){
         var counter = 0;
         
+        if(ctlr.nodeParse && ctlr.cookieGet === false){
+                            //console.log(res.headers["set-cookie"]);
+                            /*if(res.headers["set-cookie"]){
+                                ctlr.cookie = res.headers["set-cookie"];
+                                //ctlr.cookie = ctlr.cookie[0];
+                                ctlr.cookie = ctlr.cookie.toString();
+                                ctlr.cookieGet = true;
+                            }*/
+                            //does not seem to work.
+                            //expected vals (how browser does it):
+                            //JSESSIONIDSSO=3EA1E1F47A159E7997138EA0E50693B6; 
+                            //JSESSIONID=09F2EDAE0CCC51B60CFD61B4CDC038CF; 
+                            //sails.sid=s%3Aw7TDSEAWvI40GYAu2BA5wJZS.NjS6Kowd8iLIKjdpet2UUPsXYTczi6jDh3nzf1MK7Fk
+                            
+                            //gets from '/'
+                            //posts to /j_security_check
+                            //data: j_username=admin&j_password=admin
+                            
+                            var username = 'admin';
+                            var password = 'admin';
+                            var authent = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
+                            
+                            
+                            opts = {method:'POST',hostname:'localhost',port:8080,path:'/j_security_check?j_username=admin&j_password=admin',data:'j_username=admin&j_password=admin'}; //TODO: mask auth //auth:'admin:admin'
+
+
+                opts.headers = {'Host': opts.hostname + ':' + opts.port, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+'Accept-Encoding': 'gzip,deflate,sdch',
+'Accept-Language':'en-US,en;q=0.8',
+'Cache-Control':'max-age=0',
+'Connection':'keep-alive',
+'Content-Length':33,
+'Content-Type':'application/x-www-form-urlencoded',                                
+'Cookie':'',
+'Host':'localhost:8080',
+'Origin':'http://localhost:8080',
+'Referer':'http://localhost:8080/',
+'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'}; //spoofing for now, will fix
+            
+                var http = require('http');            
+                            
+                req = http.request(opts, function(res){ var response = '';
+		                                                  res.setEncoding('utf-8');
+                                                      res.on('data', function(data) {
+			                                             response += data;
+		                                              });
+                                                       res.on('end', function() {
+			                                             //console.log(response);
+                                                           //don't need to call '/', just /security-check
+                                                         http.get({hostname:'localhost',port:8080,path:'/',auth: authent, headers: opts.headers}, function(res){ 
+                                                            var resp = '';
+                                                             res.setEncoding('utf-8');
+                                                             res.on('data', function(data) {
+                                                                 resp += data;
+                                                             });
+                                                             res.on('end', function() {
+                                                                //console.log(res);
+                                                                 ctlr.cookie = res.headers["set-cookie"];
+                                                                 ctlr.cookie = ctlr.cookie[0];
+                                                                 finalCheckForSubsequentData(normalizedObject);
+                                                                 //console.log('end: ' + resp);  
+                                                             });
+                                                         });
+		                                              });
+                                                      
+                                                      });
+                
+                req.write(opts.data);
+   
+                req.end();
+                            
+                ctlr.cookieGet = true;
+                        
+                        }
+        
         if(call === 'switch' && ctlr.nodeParse){
            
             for(var i=0; i<normalizedObject.length; i++){
@@ -209,14 +290,14 @@ module.exports = function (ctlr,call,postData,cb) {
                   auth: auth,
                 };
                 
-                //console.log(ctlr.cookie);
+                console.log(ctlr.cookie);
                 
                 options.headers = {'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
 'Accept-Encoding': 'gzip,deflate,sdch',
 'Accept-Language':'en-US,en;q=0.8',
 'Cache-Control':'max-age=0',
 'Connection':'keep-alive',
-'Cookie': 'JSESSIONID=D4BC96CA4F9564C9EDA4497968348ACC; JSESSIONIDSSO=83379B51A789156F81794B6EF20A6CDB; sails.sid=s%3AscF_dGeNqMz8NY0SegMaQzJm.g7aaB4kZ3Z448mlueOkkKbQQ6SZyFvqL38lOlhlXTjE',
+'Cookie': ctlr.cookie,
                                'Host':'localhost:8080',
 'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'};
 
@@ -230,7 +311,8 @@ module.exports = function (ctlr,call,postData,cb) {
                     body += chunk;
                   });
                   res.on('end', function() {
-                    //console.log(body);
+                     //console.log(res);
+                      //console.log(body);
                     if (body.charAt(0) === '\n' || body.charAt(0) === '<'){
                         //To handle ODL's xml responses
                         for(var j=0; j<normalizedObject.length; j++){

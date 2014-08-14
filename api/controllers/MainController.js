@@ -46,12 +46,45 @@ module.exports = {
         }
     },
     
-    unzip_plugin: function (req, res){
+    unzip: function (req, res){
+        
+        var formidable = require('formidable'),
+            http = require('http'),
+            util = require('util');
+            
+        
+              if (req.url === '/files' && req.method.toLowerCase() === 'post') {
+                  // parse a file upload
+                var form = new formidable.IncomingForm();
+
+                form.parse(req, function(err, fields, files) {
+                  res.writeHead(200, {'content-type': 'text/plain'});
+                  console.log(err);
+                  console.log(fields);
+                  console.log(files);
+                  res.write('received upload:\n\n');
+                  res.end(util.inspect({fields: fields, files: files}));
+                });
+                  
+                return;
+              }
+
+              // show a file upload form 
+              res.writeHead(200, {'content-type': 'text/html'});
+              res.end(
+                '<form action="/files" enctype="multipart/form-data" method="post">'+
+                '<input type="text" name="title"><br>'+
+                '<input type="file" name="upload" multiple="multiple"><br>'+
+                '<input type="submit" value="Upload">'+
+                '</form>'
+              );
+            
         //All this piece of code does is move the file. We could put a zip file here to move it into the directory, then extract from there.
-        var fs = require('fs');
+        
+        /*var fs = require('fs');
         fs.readFile('./PlexxiModel.js', {encoding: 'utf-8'}, function(err, data){
              fs.writeFileSync('./api/hooks/plugins/models/PlexxiModel.js', data, {});
-        });
+        });*/
        
         /*
         var file = req.param('name');
@@ -95,6 +128,29 @@ module.exports = {
                 return file.type !== "SymbolicLink";
             }
         });*/
+    },
+    
+    files: function (req, res){
+          // parse a file upload
+        
+                 var formidable = require('formidable'),
+            http = require('http'),
+            util = require('util');
+        
+                var form = new formidable.IncomingForm();
+
+                form.parse(req, function(err, fields, files) {
+                  res.writeHead(200, {'content-type': 'text/plain'});
+                  console.log(err);
+                  console.log(fields);
+                  console.log(files);
+                  res.write('received upload:\n\n');
+                  res.end(util.inspect({fields: fields, files: files}));
+                });
+                  
+                return;
+        
+        
     }
 
 };

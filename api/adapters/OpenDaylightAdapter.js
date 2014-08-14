@@ -201,7 +201,7 @@ var restCall = function(apiMethod,apiPath){
 'Accept-Language':'en-US,en;q=0.8',
 'Cache-Control':'max-age=0',
 'Connection':'keep-alive',
-'Cookie':'sails.sid=s%3AG2lmPjtFgtwMyK8XEvIrPU18.MwqSF6Op873bY4iA%2BuJ6XU8ywMBZ15yYgB36d8GXd%2FU; JSESSIONIDSSO=F5F105B0BB6EC113FD7C9E1D81171B8B; JSESSIONID=5221426DD686C1B5D1A7E072B97C4A24',
+'Cookie':'',
 'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'}; //spoofing for now, will fix
             
                 if(this.cookie){
@@ -210,7 +210,7 @@ var restCall = function(apiMethod,apiPath){
 'Accept-Language':'en-US,en;q=0.8',
 'Cache-Control':'max-age=0',
 'Connection':'keep-alive',
-'Cookie':'sails.sid=s%3AG2lmPjtFgtwMyK8XEvIrPU18.MwqSF6Op873bY4iA%2BuJ6XU8ywMBZ15yYgB36d8GXd%2FU; JSESSIONIDSSO=F5F105B0BB6EC113FD7C9E1D81171B8B; JSESSIONID=5221426DD686C1B5D1A7E072B97C4A24',
+'Cookie':'',
                                'Host': opts.hostname + ':' + opts.port,
 'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'};
                     //console.log(this.cookie);
@@ -234,7 +234,7 @@ module.exports = {
         cookie: '',
     
     
-        cookieGet: false,
+        cookieGet: false, //keeps resetting to false here
 
         registerConnection: function (conn, coll, cb) {
                 if (!conn.port) { conn.port = 8080; }
@@ -313,7 +313,7 @@ module.exports = {
                          break;
                 case 'nodecluster': return this.getNodeCluster({args:['default'],call:coll},cb);
                          break;
-		        default: return cb();
+		        default: return cb(); //return this.get + coll + ({args:['default'],call:coll},cb); //for plugin routes
                         break;
                 }
         },

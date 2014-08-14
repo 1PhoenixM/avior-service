@@ -70,7 +70,7 @@
         //else{
             //alert(ext + ' is not an Avior plugin filetype. Please place your files into a .zip archive and re-upload.');
             alert("Integration pending...");
-            $.post(
+            /*$.post(
                 '/unzip',
                 {name: plugin_name},
                 function () {
@@ -78,7 +78,7 @@
                 }
             ).fail(function(res){
                 alert("Error: " + res.getResponseHeader("error"));
-            });
+            });*/
             window.location = "/success";
             //window.URL.revokeObjectURL(pluginURL);
         //}
@@ -98,7 +98,9 @@
 <h4> Please upload your plugin package below. </h4>
 <p>The only file extension currently accepted by Avior is .zip </p>
 <p id="warning"> To use your new plugin, it is necessary to restart the Avior backend server after you upload and validate your file. </p>
-<input id="plugin_file" type="file"></input>
+<form action="/upload" enctype="multipart/form-data" method="post">    
+<input id="plugin_file" type="file" name="unzip" multiple="multiple">
+<input type="submit" value="Upload">
+</form>
 <button name="validation" id="validate" class="small-6 columns" onclick="validate();">Submit New Plugin</button>
-
 </div>

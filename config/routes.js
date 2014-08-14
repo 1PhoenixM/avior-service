@@ -37,7 +37,7 @@ module.exports.routes = {
     
   '/sdncontroller': 'MainController.setinfo',
     
-  '/unzip': 'MainController.unzip_plugin',
+  '/unzip': 'MainController.unzip',
     
   '/success': {
     view: 'success'  
@@ -46,10 +46,14 @@ module.exports.routes = {
   '/avior':{
     view: 'login' //drop this, it doesn't work right
   },
-
+    
+  'post /files': {
+        controller    : 'main',
+        action        : 'files'
+    },
+    
   // Custom routes here...
-
-
+  
   // If a request to a URL doesn't match any of the custom routes above,
   // it is matched against Sails route blueprints.  See `config/blueprints.js`
   // for configuration options and examples.
