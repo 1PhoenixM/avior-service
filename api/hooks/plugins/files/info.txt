@@ -1,0 +1,1 @@
+Unzipped plugins are stored here.

@@ -19,7 +19,9 @@ module.exports = {
         //console.log(files);
         //base dir: /avior-service
 	   //console.log(fs.readdirSync('./.tmp/uploads'));
-         var fs = require('fs');
+         var fs = require('fs');  
+    if(files[0].type === "application/zip"){
+        console.log(".zip file found, starting integration...");
         fs.renameSync('./.tmp/uploads/' + files[0].filename, './api/hooks/plugins/zipped/' + files[0].filename);
          var DecompressZip = require('decompress-zip');
         var unzipper = new DecompressZip('./api/hooks/plugins/zipped/' + files[0].filename)
@@ -29,11 +31,11 @@ module.exports = {
         });
 
         unzipper.on('extract', function (log) {
-            console.log('Finished extracting to /api/hooks/plugins/unzip/');
+            console.log('Finished extracting to /api/hooks/plugins/files/');
         });
 
         unzipper.extract({
-            path: './api/hooks/plugins/unzip/',
+            path: './api/hooks/plugins/files/',
             filter: function (file) {
                 return file.type !== "SymbolicLink";
             }
@@ -42,8 +44,14 @@ module.exports = {
         message: files.length + ' file(s) uploaded successfully!',
         files: files
       });
+    }
 	
-    
+  else{
+    console.log("Please upload a .zip file containing your files.");
+       return res.json({
+        error: "Not a .zip file."
+      });
+  }
     });
   }
 
