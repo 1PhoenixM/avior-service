@@ -80,7 +80,7 @@ module.exports = function (ctlr,call,postData,cb) {
                         }
             
             
-                        else if (responseString.charAt(0) == '<' || responseString.charAt(0) === '&#60;'){ //maybe should deny any message not starting w/ '{'
+                        else if (responseString.charAt(0) === '<' || responseString.charAt(0) === '&#60;'){ //maybe should deny any message not starting w/ '{'
                             //console.log(res);
                             //handle ODL crash
                             //attempt the same call again
@@ -92,8 +92,8 @@ module.exports = function (ctlr,call,postData,cb) {
                             
                             //Another idea: Send an object message to the front end and tell it to initiate another call
                             
-                            //errorObject = {error: "AUTH"};
-                            //cb(null,errorObject);
+                            errorObject = {aviorError: "AUTH"};
+                            cb(null, errorObject);
                           
                         }
             
@@ -290,7 +290,7 @@ module.exports = function (ctlr,call,postData,cb) {
                   auth: auth,
                 };
                 
-                console.log(ctlr.cookie);
+                //console.log(ctlr.cookie);
                 
                 options.headers = {'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
 'Accept-Encoding': 'gzip,deflate,sdch',

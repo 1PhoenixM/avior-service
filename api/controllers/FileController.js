@@ -15,15 +15,18 @@ module.exports = {
     req.file('avatar').upload(function (err, files) {
       if (err)
         return res.serverError(err);
-
+        
+        //console.log(files);
+        //base dir: /avior-service
+	   //console.log(fs.readdirSync('./.tmp/uploads'));
+         var fs = require('fs');
+        fs.renameSync('./.tmp/uploads/' + files[0].filename, './api/hooks/plugins/zipped/' + files[0].filename);
       return res.json({
         message: files.length + ' file(s) uploaded successfully!',
         files: files
       });
-	var fs = require('fs');
-	fs.renameSync('../../.tmp/uploads/' + files.filename, './' + files.filename);
-	console.log('../../.tmp/uploads/' + files.filename);
-	console.log(fs.existsSync('../../.tmp/uploads/' + files.filename));
+	
+    
     });
   }
 
