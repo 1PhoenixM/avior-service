@@ -21,6 +21,23 @@ module.exports = {
 	   //console.log(fs.readdirSync('./.tmp/uploads'));
          var fs = require('fs');
         fs.renameSync('./.tmp/uploads/' + files[0].filename, './api/hooks/plugins/zipped/' + files[0].filename);
+         var DecompressZip = require('decompress-zip');
+        var unzipper = new DecompressZip('./api/hooks/plugins/zipped/' + files[0].filename)
+
+        unzipper.on('error', function (err) {
+            console.log('Caught an error: ' + err);
+        });
+
+        unzipper.on('extract', function (log) {
+            console.log('Finished extracting to /api/hooks/plugins/unzip/');
+        });
+
+        unzipper.extract({
+            path: './api/hooks/plugins/unzip/',
+            filter: function (file) {
+                return file.type !== "SymbolicLink";
+            }
+        });
       return res.json({
         message: files.length + ' file(s) uploaded successfully!',
         files: files
