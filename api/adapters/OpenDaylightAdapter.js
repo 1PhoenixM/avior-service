@@ -321,21 +321,38 @@ module.exports = {
         create: function (conn, coll, options, cb) {
                 switch (coll){
                 case 'flow': 
-                        console.log("POSTED DATA: " + JSON.stringify(options.data) + '\n')
+                        console.log(" odl POSTED DATA: " + JSON.stringify(options.data) + '\n');
+                        /*options.data = {
+                        "installInHw":"true",
+                        "name":"flow1",
+                        "node":{
+                        "id":"00:00:00:00:00:00:00:01",
+                        "type":"OF"
+                        },
+                        "ingressPort":"1",
+                        "priority":"500",
+                        "etherType":"0x800",
+                        "nwSrc":"9.9.1.1",
+                        "actions":[
+                        "OUTPUT=2"
+                        ]
+                        };*/
                         
                         //Todo: parse/normalize the flow data
-                        /*unparsed = options.data;
+                        unparsed = options.data;
                         flowData = {};
                         flowData.node = {};
                         flowData.node.id = unparsed.switch;
                         flowData.node.type = 'OF';
                         flowData.name = unparsed.name;
-                        flowData.ingressPort = unparsed.ingress_port;
+                        flowData.ingressPort = unparsed["ingress-port"];
                         flowData.actions = [];
-                        flowData.actions.push(unparsed.actions);*/
-                        flowData = options.data;
+                        flowData.actions.push(unparsed.actions.toUpperCase());
+                        
+                        //flowData = options.data;
                         string = JSON.stringify(flowData);
                         parsed = JSON.parse(string);
+                        parsed.switch = flowData.node.id;
                         
                         resp = options.response;
                         if(sails.controllers.main.hostname){
@@ -344,8 +361,19 @@ module.exports = {
                                 else{
                                   var host = 'localhost';
                                 }
-                        var opts = {method:'PUT',hostname:host,port:8080,path:'http://localhost:8080/controller/nb/v2/flowprogrammer/default/node/OF/' + parsed.switch +  '/staticFlow/' + parsed.name +'',auth:'admin:admin'};
+                        var username = 'admin';
+                        var password = 'admin';
+                        var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
+                        var opts = {method:'PUT',hostname:host,port:8080,path:'/controller/nb/v2/flowprogrammer/default/node/OF/' + unparsed.switch +  '/staticFlow/' + unparsed.name +'',auth:auth};
                         console.log(opts.path);
+                        opts.headers = {'Host': opts.hostname + ':' + opts.port, 'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                            'Accept-Encoding': 'gzip,deflate,sdch',
+                            'Accept-Language':'en-US,en;q=0.8',
+                            'Cache-Control':'max-age=0',
+                            'Connection':'keep-alive',
+                            'Content-type':'application/json', //necessary
+                            'Cookie':'',
+                            'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'};
                         var requ = http.request(opts,  function(res) {
                           console.log('STATUS: ' + res.statusCode);
                           console.log('HEADERS: ' + JSON.stringify(res.headers));
@@ -355,8 +383,8 @@ module.exports = {
                             resp.send(chunk);
                           });
                         });
-                        //console.log(JSON.stringify(flowData));
-                        requ.write(JSON.stringify(string));
+                        console.log(JSON.stringify(flowData));
+                        requ.write(JSON.stringify(flowData));
                         requ.end();
                         break;
 		        default: return cb();
@@ -690,9 +718,11 @@ module.exports = {
                             }
                 //this.nodeParse('switch', {nodeProperties:[]}, Ports);
                 if(innerArr){
-                    for(var k=0,m=0; k<innerArr.length,m<Ports.length; k++,m++){
-                        if(innerArr[k].DPID === Ports[m].DPID){
-                            innerArr[k].Ports = Ports;
+                    for(var k=0; k<Ports.length; k++){
+                        for(var m=0; m<innerArr.length; m++){
+                            if(innerArr[m].DPID === Ports[k].DPID){
+                                innerArr[m].Ports = Ports;
+                            }
                         }
                     }
                 }

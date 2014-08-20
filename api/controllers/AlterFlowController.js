@@ -115,6 +115,21 @@ module.exports = {
     },*/
 
     destroy: function(req, res) {
+        /*
+        var floodlight = require('../adapters/FloodlightAdapter');
+        var opendaylight = require('../adapters/OpenDaylightAdapter');
+        if(sails.controllers.main.sdncontroller === 'floodlight'){
+            var Adapter = floodlight;    
+        }
+        else if(sails.controllers.main.sdncontroller === 'opendaylight'){
+            var Adapter = opendaylight;
+        }
+        else{
+            console.log("Flow delete error: No controller specified at localhost:1337");
+            return;
+        }
+        Adapter.destroy(sails.controllers.main.sdncontroller, 'flow', {data: req.body, response: res}, null);
+        */
         //needs further work / controller choice
         console.log("DELETED DATA: ");
         var flowData = req.body;

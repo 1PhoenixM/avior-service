@@ -165,8 +165,14 @@ module.exports = function (ctlr,call,postData,cb) {
                             var password = 'admin';
                             var authent = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
                             
-                            
-                            opts = {method:'POST',hostname:'localhost',port:8080,path:'/j_security_check?j_username=admin&j_password=admin',data:'j_username=admin&j_password=admin'}; //TODO: mask auth //auth:'admin:admin'
+                            if(sails.controllers.main.hostname){
+                              var host = sails.controllers.main.hostname;
+                            }
+                            else{
+                              var host = 'localhost';
+                            }
+            
+                            opts = {method:'POST',hostname:host,port:8080,path:'/j_security_check?j_username=admin&j_password=admin',data:'j_username=admin&j_password=admin'}; //TODO: mask auth //auth:'admin:admin'
 
 
                 opts.headers = {'Host': opts.hostname + ':' + opts.port, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -192,7 +198,7 @@ module.exports = function (ctlr,call,postData,cb) {
                                                        res.on('end', function() {
 			                                             //console.log(response);
                                                            //don't need to call '/', just /security-check
-                                                         http.get({hostname:'localhost',port:8080,path:'/',auth: authent, headers: opts.headers}, function(res){ 
+                                                         http.get({hostname:host,port:8080,path:'/',auth: authent, headers: opts.headers}, function(res){ 
                                                             var resp = '';
                                                              res.setEncoding('utf-8');
                                                              res.on('data', function(data) {
@@ -222,10 +228,20 @@ module.exports = function (ctlr,call,postData,cb) {
            
             for(var i=0; i<normalizedObject.length; i++){
                     var DPID = normalizedObject[i].DPID;
-
-
+                 
+                //var username = 'admin';
+                            //var password = 'admin';
+                            //var authent = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
+                
+                if(sails.controllers.main.hostname){
+                  var host = sails.controllers.main.hostname;
+                }
+                else{
+                  var host = 'localhost';
+                }
+                
                 var options = {
-                  hostname: 'localhost',
+                  hostname: host,
                   port: 8080,
                   path: '/controller/nb/v2/switchmanager/default/node/OF/' + DPID +'', //todo: specific port lists
                   method: 'GET',
@@ -248,7 +264,7 @@ module.exports = function (ctlr,call,postData,cb) {
 
                     else{
                     var PortObj = JSON.parse(body);
-
+                     
                     PortObj = ctlr.nodeParse('port', PortObj, normalizedObject);
 
                     PortObj = ctlr.normalize(PortObj);  
@@ -281,9 +297,16 @@ module.exports = function (ctlr,call,postData,cb) {
                 var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
 
                 // auth is: 'Basic VGVzdDoxMjM='
+                
+                if(sails.controllers.main.hostname){
+                  var host = sails.controllers.main.hostname;
+                }
+                else{
+                  var host = 'localhost';
+                }
 
                 var options = {
-                  hostname: 'localhost',
+                  hostname: host,
                   port: 8080,
                   path: '/controller/web/troubleshoot/nodeInfo?nodeId=OF|' + DPID +'', //todo: specific port lists
                   method: 'GET',

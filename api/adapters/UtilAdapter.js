@@ -57,7 +57,7 @@ module.exports = {
     
         
         create: function (conn, coll, options, cb) {
-            /*if(!sails.controllers.main.sdncontroller && sails.config.models.connection === 'util'){
+            if(!sails.controllers.main.sdncontroller && sails.config.models.connection === 'util'){
                 sails.controllers.main.sdncontroller = 'floodlight';
             }
             switch(sails.controllers.main.sdncontroller){
@@ -72,7 +72,7 @@ module.exports = {
             default:
                     console.log("Error: No valid controller was provided.");
                     break;
-            }*/        
+            }     
         },
     
         update: function (conn, coll, options, cb) {
