@@ -134,18 +134,36 @@ function injectPluginModels(pluginModels, cb) {
 
             var fs = require('fs');
 
-            var plugins = fs.readdirSync('./api/hooks/plugins/models');
-
+            //var plugins = fs.readdirSync('./api/hooks/plugins/models');
+              
+            var recursive = require('recursive-readdir');
+              
+            recursive('./api/hooks/plugins/files', function (err, files) {
+              // Files is an array of filename
+                
             arr = [];
+                
+            for(var g=0; g<files.length; g++){
+                    var file = files[g];
+                    var index = file.search("Model.js");
+                    if(index !== -1){
+                        var model = files[g].substr(17, files[g].length);
+                        var model = '.' + model;
+                        mod = require(model);
+                        obj = {};
+                        obj.models = mod;
+                        arr.push(obj);
+                    }
+            }
 
-            for(var i=0; i<plugins.length; i++){
+            /*for(var i=0; i<plugins.length; i++){
 
-                        mod = require('./models/' + plugins[i]);
+                        mod = require('./files/' + plugins[i]);
                         obj = {};
                         obj.models = mod;
                         arr.push(obj);
 
-            }
+            }*/
 
             plugins = arr;
               
@@ -155,6 +173,9 @@ function injectPluginModels(pluginModels, cb) {
           injectPluginModels(pluginModels, cb);
           mountBlueprintsForModels(pluginModels);
           //console.log(sails.models);
+              console.log(files);
+            });
+
     });
 
     });

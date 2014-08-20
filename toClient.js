@@ -320,7 +320,7 @@ module.exports = function (ctlr,call,postData,cb) {
 'Accept-Language':'en-US,en;q=0.8',
 'Cache-Control':'max-age=0',
 'Connection':'keep-alive',
-'Cookie': ctlr.cookie,
+'Cookie': '',
                                'Host':'localhost:8080',
 'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'};
 
@@ -349,6 +349,8 @@ module.exports = function (ctlr,call,postData,cb) {
 
                     else{
                     var DescObj = JSON.parse(body);
+                        
+                    DescObj.DPID = DPID;
                         
                     DescObj = ctlr.nodeParse('switchdesc2', DescObj, normalizedObject);
                         
