@@ -98,24 +98,54 @@ function injectPluginModels(pluginModels, cb) {
     
     
   // injectPluginModels and mountBlueprintsForModels defined here
-  function mountBlueprintsForModels(pluginModels) {
+  function mountBlueprintsForModels(pluginModels, pluginControllers) {
   _.each(pluginModels, function(pluginModel){
-    var controller = _.cloneDeep(pluginModel);
+    /*var controller = _.cloneDeep(pluginModel);
     controller._config = { actions: true, rest: true, shortcuts: true };
     
     controller.index = function (req, res) {
         return res.send("To be completed...");
     };
       
-    var controllerId = pluginModel.identity;
+    var controllerId = pluginModel.identity;*/
+      
+      _.each(pluginControllers, function(pluginController){ //consider multiple unmatching models and controllers. some are empty objs (from before)
+          //models are not being recognized. actions are not being recognized.
+          //undefined is being bound
+          //console.log(pluginModel);
+         // console.log(pluginController);
+        if(pluginModel.identity === pluginController.identity){
+                var controller = pluginController;
+                controllerId = pluginController.identity;
+               
+            }
+          else{
+              var controller = _.cloneDeep(pluginModel);
+                controller._config = { actions: true, rest: true, shortcuts: true };
 
-    if (!_.isObject(sails.controllers[controllerId])) {
+                controller.index = function (req, res) {
+                    return res.send("To be completed...");
+                };
+
+                controllerId = pluginModel.identity;
+              
+              }
+               if (!_.isObject(sails.controllers[controllerId])) {
+                  sails.controllers[controllerId] = controller;
+                }
+
+                if (!_.isObject(sails.hooks.controllers.middleware[controllerId])) {
+                  sails.hooks.controllers.middleware[controllerId] = controller;
+                }
+        });
+
+    /*if (!_.isObject(sails.controllers[controllerId])) {
       sails.controllers[controllerId] = controller;
     }
 
     if (!_.isObject(sails.hooks.controllers.middleware[controllerId])) {
       sails.hooks.controllers.middleware[controllerId] = controller;
-    }
+    }*/
   });
 }
 
@@ -145,13 +175,24 @@ function injectPluginModels(pluginModels, cb) {
                 
             for(var g=0; g<files.length; g++){
                     var file = files[g];
-                    var index = file.search("Model.js");
-                    if(index !== -1){
+                    var modindex = file.search("Model.js");
+                    if(modindex !== -1){
                         var model = files[g].substr(17, files[g].length);
                         var model = '.' + model;
                         mod = require(model);
                         obj = {};
                         obj.models = mod;
+                        obj.controllers = {};
+                        arr.push(obj);
+                    }
+                    var ctlrindex = file.search("Controller.js");
+                    if(ctlrindex !== -1){
+                        var controller = files[g].substr(17, files[g].length);
+                        var controller = '.' + controller;
+                        ctr = require(controller);
+                        obj = {};
+                        obj.controllers = ctr;
+                        obj.models = {}; //all objects must have a controllers prop and a models prop
                         arr.push(obj);
                     }
             }
@@ -166,12 +207,13 @@ function injectPluginModels(pluginModels, cb) {
             }*/
 
             plugins = arr;
-              
+             
           // assuming plugin.models holds array of models for this plugin
           // customize for your use case
           var pluginModels = _.pluck(plugins, 'models');
+          var pluginControllers = _.pluck(plugins, 'controllers');
           injectPluginModels(pluginModels, cb);
-          mountBlueprintsForModels(pluginModels);
+          mountBlueprintsForModels(pluginModels, pluginControllers);
           //console.log(sails.models);
               //console.log(files);
             });
