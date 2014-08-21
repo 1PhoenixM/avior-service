@@ -130,31 +130,35 @@ define([
 			$('#leftPanel').append(this.template).trigger('create');
 								
 		 	// Create views for controller aspects
+            
 			this.statusview = new StatusView({model: new Status});
 			this.uptimeview = new UptimeView({model: new Uptime});
+            this.activeview = new ActiveView({model: new Controller});	
 			this.memoryview = new MemoryView({model: new Memory});
 			this.modulesview = new ModulesView({model: new Modules});
 			this.controllerview = new ControllerView({model: new Topo, collection: new TopologyCollection});
 			this.hostview = new HostView({model: new Host});	
-            //this.activeview = new ActiveView({model: new Controller});	
+            
             
 			// Delegate events for controller views
+            
 			this.statusview.delegateEvents(this.statusview.events);
 			this.uptimeview.delegateEvents(this.uptimeview.events);
+            this.activeview.delegateEvents(this.activeview.events);
 			this.memoryview.delegateEvents(this.memoryview.events);
 			this.modulesview.delegateEvents(this.modulesview.events);
 			this.controllerview.delegateEvents(this.controllerview.events);
 			this.hostview.delegateEvents(this.hostview.events);
-			//this.activeview.delegateEvents(this.activeview.events);
+			
 				
 			// Link controller aspects to id tags
-            //$('#sdn_controller').append(this.activeview.render().el);
+            
 			$('#uptimeview').append(this.uptimeview.render().el);
+            $('#activeview').append(this.activeview.render().el);
 			$('#statusview').append(this.statusview.render().el);
 			$('#memoryview').append(this.memoryview.render().el);
 			$('#modulesview').append(this.modulesview.render().el);
 			//$('#hostview').append(this.hostview.render().el);
-            
 	
 			//moved toggle button stuff back to firewallEditor.js.
 			//the third parameter here indicates whether or not the buttonUpdating function in firewallEditor should be called. check initialize
@@ -171,11 +175,12 @@ define([
 
 			//only call fetch when the view is visible
 			this.interval = setInterval(function(){
-					self.uptimeview.model.fetch();
+					
+                    self.uptimeview.model.fetch();
+                    self.activeview.model.fetch();
 					self.statusview.model.fetch();
 					self.memoryview.model.fetch();
 					self.controllerview.model.fetch();
-                    //self.activeview.model.fetch();
 					//self.hostview.model.fetch();
 				}, 2000);	
 				

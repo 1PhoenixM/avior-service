@@ -32,16 +32,35 @@ module.exports = {
         if(sails.controllers.main.sdncontroller){
         jsonObj = {};
         jsonObj.sdncontroller = sails.controllers.main.sdncontroller;
+            if(jsonObj.sdncontroller === 'floodlight'){
+            jsonObj.icon = '/avior/img/floodlight-icon.png';
+            }
+            else if(jsonObj.sdncontroller === 'opendaylight'){
+            jsonObj.icon = '/avior/img/opendaylight-icon.png';    
+            }
+            else{
+            jsonObj.icon = '';    
+            }
         res.json(jsonObj);
         }
         else if(sails.config.models.connection !== 'util'){
         jsonObj = {};
         jsonObj.sdncontroller = sails.config.models.connection;
+            if(jsonObj.sdncontroller === 'floodlight'){
+            jsonObj.icon = '/avior/img/floodlight-icon.png';
+            }
+            else if(jsonObj.sdncontroller === 'opendaylight'){
+            jsonObj.icon = '/avior/img/opendaylight-icon.png';    
+            }
+            else{
+            jsonObj.icon = '';    
+            }
         res.json(jsonObj);    
         }
         else{
         jsonObj = {};
         jsonObj.sdncontroller = "Not set at localhost:1337.";
+        jsonObj.icon = '';
         res.json(jsonObj);    
         }
     },
