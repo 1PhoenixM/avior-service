@@ -173,7 +173,7 @@ function injectPluginModels(pluginModels, cb) {
           injectPluginModels(pluginModels, cb);
           mountBlueprintsForModels(pluginModels);
           //console.log(sails.models);
-              console.log(files);
+              //console.log(files);
             });
 
     });

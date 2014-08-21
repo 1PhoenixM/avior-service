@@ -115,7 +115,6 @@ module.exports = {
     },*/
 
     destroy: function(req, res) {
-        /*
         var floodlight = require('../adapters/FloodlightAdapter');
         var opendaylight = require('../adapters/OpenDaylightAdapter');
         if(sails.controllers.main.sdncontroller === 'floodlight'){
@@ -129,39 +128,9 @@ module.exports = {
             return;
         }
         Adapter.destroy(sails.controllers.main.sdncontroller, 'flow', {data: req.body, response: res}, null);
-        */
+        
         //needs further work / controller choice
-        console.log("DELETED DATA: ");
-        var flowData = req.body;
         
-        var res = res;
-        var options = {
-            hostname:'10.11.17.40', 
-            port:8080, 
-            path:'/wm/staticflowentrypusher/json',
-            method:'DELETE'};
-        
-        var req = http.request(options, function(res) {
-          console.log('\n' + 'STATUS: ' + res.statusCode + '\n');
-          console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
-          res.setEncoding('utf8');
-          res.on('data', function (chunk) {
-            console.log('BODY: ' + chunk + '\n');
-          });
-        });
-        
-        req.on('error', function(e) {
-          console.log('problem with request: ' + e.message + '\n');
-        });
-        
-        var realData; //temporary fix until find out what front-end parsing is doing
-        for(realData in flowData){
-            break;
-        }
-        
-        console.log(realData);
-        req.write(realData);
-        req.end();
     },
 
     tag: function(req, res) {

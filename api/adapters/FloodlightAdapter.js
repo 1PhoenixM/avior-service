@@ -325,7 +325,48 @@ module.exports = {
         },
     
         destroy: function (conn, coll, options, cb) {
-                
+         console.log("DELETED DATA: ");
+            switch(coll){
+            case 'alterflow':
+            case 'flow':
+            var flowData = options.data;
+        if(sails.controllers.main.hostname){
+                                  var host = sails.controllers.main.hostname;
+                                }
+                                else{
+                                  var host = '10.11.17.40';
+                                }
+        var res = res;
+        var options = {
+            hostname:host, 
+            port:8080, 
+            path:'/wm/staticflowentrypusher/json',
+            method:'DELETE'};
+        
+        var req = http.request(options, function(res) {
+          console.log('\n' + 'STATUS: ' + res.statusCode + '\n');
+          console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
+          res.setEncoding('utf8');
+          res.on('data', function (chunk) {
+            console.log('BODY: ' + chunk + '\n');
+          });
+        });
+        
+        req.on('error', function(e) {
+          console.log('problem with request: ' + e.message + '\n');
+        });
+        
+        var realData; //temporary fix until find out what front-end parsing is doing
+        for(realData in flowData){
+            break;
+        }
+        
+        console.log(realData);
+        req.write(realData);
+        req.end(); 
+        break;
+            default: return cb();
+            }
         },
     
         normalize: function (obj) {

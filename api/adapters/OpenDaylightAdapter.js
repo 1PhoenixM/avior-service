@@ -401,7 +401,7 @@ module.exports = {
         destroy: function (conn, coll, options, cb) {
                 switch (coll){
                 case 'flow': 
-                        console.log("DELETED DATA: " + JSON.stringify(options.data) + '\n')
+                        console.log("DELETED DATA: " + options.data + '\n')
                         
                         //Todo: parse/normalize the flow data
                         /*unparsed = options.data;
@@ -414,7 +414,13 @@ module.exports = {
                         flowData.actions = [];
                         flowData.actions.push(unparsed.actions);*/
                         flowData = options.data;
-        
+                        var realData;
+                        for (realData in flowData){
+                            break;
+                        }
+                        console.log(realData);
+                        var parsed = JSON.parse(realData);
+                        
                         resp = options.response;
                         if(sails.controllers.main.hostname){
                                   var host = sails.controllers.main.hostname;
@@ -422,7 +428,8 @@ module.exports = {
                                 else{
                                   var host = 'localhost';
                                 }
-                        var opts = {method:'DELETE',hostname:host,port:8080,path:'http://localhost:8080/controller/nb/v2/flowprogrammer/default/node/OF/' + flowData.node.id +  '/staticFlow/' + flowData.name +'',auth:'admin:admin'};
+                        var opts = {method:'DELETE',hostname:host,port:8080,path:'http://localhost:8080/controller/nb/v2/flowprogrammer/default/node/OF/' + parsed.switch +  '/staticFlow/' + parsed.name +'',auth:'admin:admin'};
+                        console.log(opts.path);
                         var requ = http.request(opts,  function(res) {
                           console.log('STATUS: ' + res.statusCode);
                           console.log('HEADERS: ' + JSON.stringify(res.headers));
@@ -432,8 +439,9 @@ module.exports = {
                             resp.send(chunk);
                           });
                         });
-                        console.log(JSON.stringify(flowData));
-                        requ.write(JSON.stringify(flowData));
+                        
+                        //console.log(JSON.stringify(flowData));
+                        //requ.write(JSON.stringify(flowData));
                         requ.end();
                         break;
 		        default: return cb();
