@@ -188,9 +188,6 @@ var restCall = function(apiMethod,apiPath){
                 if(sails.controllers.main.hostname){
                   var host = sails.controllers.main.hostname;
                 }
-                else{
-                  var host = '10.11.17.40';
-                }
                 opts = {method:apiMethod,hostname:host,port:8080,path:apiPath};
                 
                 req = http.request(opts, toClient(this,options.call,options.data,cb));
@@ -298,9 +295,6 @@ module.exports = {
                         if(sails.controllers.main.hostname){
                                   var host = sails.controllers.main.hostname;
                                 }
-                                else{
-                                  var host = '10.11.17.40';
-                                }
                         var opts = {method:'POST',hostname:host,port:8080,path:'/wm/staticflowentrypusher/json'};
                         //var opts = {method:'POST',hostname:'10.11.17.40',port:8080,path:'/wm/staticflowentrypusher/json'};
                         var requ = http.request(opts,  function(res) {
@@ -331,11 +325,8 @@ module.exports = {
             case 'flow':
             var flowData = options.data;
         if(sails.controllers.main.hostname){
-                                  var host = sails.controllers.main.hostname;
-                                }
-                                else{
-                                  var host = '10.11.17.40';
-                                }
+          var host = sails.controllers.main.hostname;
+        }
         var res = res;
         var options = {
             hostname:host, 

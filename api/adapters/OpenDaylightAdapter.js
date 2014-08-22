@@ -184,9 +184,7 @@ var restCall = function(apiMethod,apiPath){
                 if(sails.controllers.main.hostname){
                   var host = sails.controllers.main.hostname;
                 }
-                else{
-                  var host = 'localhost';
-                }
+
                 opts = {method:apiMethod,hostname:host,port:8080,path:apiPath}; //TODO: mask auth //auth:'admin:admin'
                 //if(options.call === 'switchdesc'){opts.auth = new Buffer(opts.auth).toString('base64');} //calls outside of rest api need encoded to base64
                 //console.log(apiPath);
@@ -358,9 +356,6 @@ module.exports = {
                         if(sails.controllers.main.hostname){
                                   var host = sails.controllers.main.hostname;
                                 }
-                                else{
-                                  var host = 'localhost';
-                                }
                         var username = 'admin';
                         var password = 'admin';
                         var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
@@ -424,9 +419,6 @@ module.exports = {
                         resp = options.response;
                         if(sails.controllers.main.hostname){
                                   var host = sails.controllers.main.hostname;
-                                }
-                                else{
-                                  var host = 'localhost';
                                 }
                         var opts = {method:'DELETE',hostname:host,port:8080,path:'http://localhost:8080/controller/nb/v2/flowprogrammer/default/node/OF/' + parsed.switch +  '/staticFlow/' + parsed.name +'',auth:'admin:admin'};
                         console.log(opts.path);
