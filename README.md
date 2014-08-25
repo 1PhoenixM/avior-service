@@ -27,10 +27,10 @@ Dependencies: node.js, sails.js (via npm)
 5. Navigate to localhost:1337 in your browser. 
 
 6. Select your SDN controller. Currently supported: 
-  * Floodlight (full support) ![Floodlight Logo]
-(https://raw.githubusercontent.com/1PhoenixM/avior-service/master/assets/avior/img/floodlight-icon.png)
-  * OpenDaylight (in development, full support coming soon) ![Opendaylight Logo]
-(https://raw.githubusercontent.com/1PhoenixM/avior-service/master/assets/avior/img/opendaylight-icon.png)
+  * Floodlight ![Floodlight Logo]
+(https://raw.githubusercontent.com/1PhoenixM/avior-service/master/assets/avior/img/floodlight-icon.png) (full support)
+  * OpenDaylight ![Opendaylight Logo]
+(https://raw.githubusercontent.com/1PhoenixM/avior-service/master/assets/avior/img/opendaylight-icon.png) (near-full support coming very soon)
   * And more...
     
 7. Enter the IP address of your controller and click "Start Avior". 
