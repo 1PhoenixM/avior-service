@@ -132,6 +132,7 @@ var TO_OFP = {
     HardwareAddress: 'HardwareAddress',
     
     upTime: 'Uptime_msec',
+    Uptime_msec: 'Uptime_msec',
     TotalMemory: 'TotalMemory', //total is mem_free + mem_used & note that this is JVM mem, not just the controller.
     mem_free: 'FreeMemory',
     
@@ -226,7 +227,7 @@ var restCall = function(apiMethod,apiPath){
 module.exports = {
 	identity: 'opendaylight',
     
-        dpid: '00:00:00:00:00:00:00:01',
+        dpid: '00:00:00:00:00:00:00:0e',
     
     
         cookie: '',
@@ -256,7 +257,7 @@ module.exports = {
             switch (coll){
                 
                 //fake calls for front-end
-                case 'uptime': return 'uptime';
+                case 'uptime': return this.getControllerData({args:['default'],call:coll},cb);
                         break;    
                 case 'health': return 'health';
                         break;    
@@ -267,8 +268,8 @@ module.exports = {
                 case 'modules': return this.getModules({args:['default'],call:coll},cb);
                         break;
                 //core
-                case 'port': return this.getNodeConnectors({args:['default', 'OF', '00:00:00:00:00:00:00:01'],call:coll},cb); //for now
-                        break;
+                case 'port': return this.getNodeConnectors({args:['default', 'OF', '00:00:00:00:00:00:00:0e'],call:coll},cb); //for now
+                       break;
                 case 'flow': return this.getFlowStats({args:['default'],call:coll},cb);
                         break;
                 case 'switchports': return this.getPortStats({args:['default'],call:coll},cb);
@@ -629,6 +630,11 @@ module.exports = {
     nodeParse: function(current, obj, innerArr) {
     
     switch(current){
+            
+              case 'uptime':
+                obj.Uptime_msec = obj.upTime;
+                return obj;
+                break;
             
               case 'memory':
                 obj.TotalMemory = obj.mem_free + obj.mem_used;

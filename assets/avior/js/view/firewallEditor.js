@@ -261,7 +261,7 @@ define([
 			firewallStatus = fm.get("0");
             //Since ODL doesn't have firewall support. Doing this to avoid getting undefined and having sails crash.
             console.log(firewallStatus);
-            if (firewallStatus != undefined)
+            if (firewallStatus !== undefined){
             switch (firewallStatus.Result){
                 case 'firewall enabled':$( "#radio-choice-c" ).prop( "checked", true );
                                         $( "#radio-choice-d" ).prop( "checked", false );
@@ -276,6 +276,10 @@ define([
                 default:
                         break;
 				}
+            }
+            else{
+                $( "#firewallToggle" ).css('display', 'none');   
+            }
 			$('#content').append(this.template3).trigger('create');		
 			},this);   
 		},

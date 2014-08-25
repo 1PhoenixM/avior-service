@@ -66,8 +66,29 @@ module.exports = function (ctlr,call,postData,cb) {
                             else{
                                 normalizedObject = normalizedObject;
                             } 
-                            cb(null,normalizedObject);
-                            */
+                            cb(null,normalizedObject);*/
+                            
+                        }
+            
+                        else if(call === 'uptime' && ctlr.nodeParse){
+                            //unexpected end of input
+                            /*var start = responseString.search("var statData = ");
+                            var ctlrData = responseString.substr(start);
+                            var end = ctlrData.indexOf(";");
+                            var ctlrData = ctlrData.substr(0, end);
+                            var ctlrData = ctlrData.slice(15, ctlrData.length);
+                            ctlrData = JSON.parse(ctlrData);
+                            
+                            ctlrData = ctlr.nodeParse(call, ctlrData, null);
+                            
+                            var normalizedObject = ctlr.normalize(ctlrData);
+                            if(normalizedObject.Stats){
+                                normalizedObject = normalizedObject.Stats; //ODL only
+                            }
+                            else{
+                                normalizedObject = normalizedObject;
+                            } 
+                            cb(null,normalizedObject);*/
                         }
             
                         else if(call === 'modules' && ctlr.nodeParse){
@@ -75,12 +96,17 @@ module.exports = function (ctlr,call,postData,cb) {
                             var end = responseString.search("</pre>"); //not working?
                             var modules = responseString.substr(start, end);
                             var modules = modules.replace("&nbsp;", " ");
+                            var modobj = {};
+                            modobj.Stats = modules;
                             //console.log(modules); //non-object
-                            //cb(null,modules);*/
+                            cb(null,modobj);*/
                         }
             
             
                         else if (responseString.charAt(0) === '<' || responseString.charAt(0) === '&#60;'){ //maybe should deny any message not starting w/ '{'
+                            //Err: ODL returns 401 on parallel rest calls
+                            //retry?
+                            
                             //console.log(res);
                             //handle ODL crash
                             //attempt the same call again
@@ -92,8 +118,20 @@ module.exports = function (ctlr,call,postData,cb) {
                             
                             //Another idea: Send an object message to the front end and tell it to initiate another call
                             
-                            errorObject = {aviorError: "AUTH"};
-                            cb(null, errorObject);
+                            /*var async = require('async');
+                            
+                            async.retry(3, reCheck(cb, {}), function(err, result) {
+                                if(err){ console.log(err); }
+                                else{ cb(null, result); }
+                            });*/
+                            
+                            //console.log(res.statusCode);
+                            if(res.statusCode === 401){
+                                   ctlr.find('util', call, { where: null, limit: 30, skip: 0, recursive: 'yes' }, cb);
+                            }
+                            
+                            /*errorObject = {aviorError: "AUTH"};
+                            cb(null, errorObject);*/
                           
                         }
             
@@ -182,7 +220,7 @@ module.exports = function (ctlr,call,postData,cb) {
 'Connection':'keep-alive',
 'Content-Length':33,
 'Content-Type':'application/x-www-form-urlencoded',                                
-'Cookie':'',
+'Cookie': ctlr.cookie,
 'Host':'localhost:8080',
 'Origin':'http://localhost:8080',
 'Referer':'http://localhost:8080/',
