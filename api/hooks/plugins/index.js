@@ -163,10 +163,16 @@ function injectPluginModels(pluginModels, cb) {
             //plugins = [RolePlugin];  
 
             var fs = require('fs');
+              
+            var path = require('path');  
 
             //var plugins = fs.readdirSync('./api/hooks/plugins/models');
               
             var recursive = require('recursive-readdir');
+              
+            var Floodlight = require('../../adapters/FloodlightAdapter');  
+              
+            var Opendaylight = require('../../adapters/OpenDaylightAdapter');    
               
             recursive('./api/hooks/plugins/files', function (err, files) {
               // Files is an array of filename
@@ -195,6 +201,75 @@ function injectPluginModels(pluginModels, cb) {
                         obj.models = {}; //all objects must have a controllers prop and a models prop
                         arr.push(obj);
                     }
+                   var adapterindex = file.search("Adapter.js");
+                   if(adapterindex !== -1){
+                        var adapter = files[g].substr(17, files[g].length);
+                        var adapter = '.' + adapter;
+                        adp = require(adapter);
+                        if(adp.floodlight){
+                            for(key in adp.floodlight){
+                                /*if(key === 'TO_OFP'){
+                                    for(ky in adp.floodlight.TO_OFP){
+                                    Floodlight.TO_OFP[ky] = adp.floodlight.TO_OFP[ky]; //use this.TO_OFP
+                                    }
+                                }*/
+                                //else{
+                                Floodlight[key] = adp.floodlight[key];
+                                //}
+                            }    
+                        }
+                        if(adp.opendaylight){
+                             for(key in adp.opendaylight){
+                                /*if(key === 'TO_OFP'){
+                                    for(ky in adp.opendaylight.TO_OFP){
+                                    Opendaylight.TO_OFP[ky] = adp.opendaylight.TO_OFP[ky]; //use this.TO_OFP
+                                    }
+                                }*/
+                                //else{
+                                Opendaylight[key] = adp.opendaylight[key];
+                                //}
+                            }   
+                        }
+                    }
+                
+                //Views are moved into their folders for the restart
+                //To handle: Python scripts folder
+                var apindex = file.search("API.js");
+                if(apindex !== -1){
+                    var API = files[g].substr(24, files[g].length);
+                    var APIName = path.basename(API);
+                    fs.renameSync('./api/hooks/plugins/files/' + API, './assets/avior/js/floodlight/' + APIName);
+                }
+                var modelfindex = file.search("ModelF.js");
+                if(modelfindex !== -1){
+                    var ModelF = files[g].substr(24, files[g].length);
+                    var ModelFName = path.basename(ModelF);
+                    fs.renameSync('./api/hooks/plugins/files/' + ModelF, './assets/avior/js/model/' + ModelFName);
+                }
+                var collectionindex = file.search("Collection.js");
+                if(collectionindex !== -1){
+                    var Collection = files[g].substr(24, files[g].length);
+                    var CollectionName = path.basename(Collection);
+                    fs.renameSync('./api/hooks/plugins/files/' + Collection, './assets/avior/js/collection/' + CollectionName);
+                }
+                var viewindex = file.search("View.js");
+                if(viewindex !== -1){
+                    var View = files[g].substr(24, files[g].length);
+                    var ViewName = path.basename(View);
+                    fs.renameSync('./api/hooks/plugins/files/' + View, './assets/avior/js/view/' + ViewName);
+                }
+                var tplindex = file.search("tpl.html");
+                if(tplindex !== -1){
+                    var Template = files[g].substr(24, files[g].length);
+                    var TemplateName = path.basename(Template);
+                    fs.renameSync('./api/hooks/plugins/files/' + Template, './assets/avior/tpl/' + TemplateName);
+                }
+                var routeindex = file.search("Router.js");
+                if(routeindex !== -1){
+                    var Router = files[g].substr(24, files[g].length);
+                    var RouterName = path.basename(Router);
+                    fs.renameSync('./api/hooks/plugins/files/' + Router, './assets/avior/js/router/' + RouterName);
+                }
             }
 
             /*for(var i=0; i<plugins.length; i++){
