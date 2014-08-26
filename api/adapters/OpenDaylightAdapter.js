@@ -31,7 +31,7 @@ var http = require('http');
     Collisions:'collisionCount', 
 };*/
 
-var TO_OFP = {
+/*var TO_OFP = {
 	// name-in-opendaylight: name-in-models
 	dataLayerAddress: 'MAC_Address',
 	networkAddress: 'IP_Address',
@@ -170,7 +170,7 @@ var TO_OFP = {
       TransportSource:    "TransportSource",
     
     Type: "Type",
-};
+};*/
 
 // Creates a function that, when called, will make a REST API call
 var restCall = function(apiMethod,apiPath){
@@ -225,6 +225,148 @@ var restCall = function(apiMethod,apiPath){
 };
 
 module.exports = {
+    
+    TO_OFP:  {
+	// name-in-opendaylight: name-in-models
+	dataLayerAddress: 'MAC_Address',
+	networkAddress: 'IP_Address',
+	vlan: 'VLAN_ID',
+	nodeId: 'DPID',
+	nodeConnectorId: 'Port',
+    //ODL includes many object/array labels that FL doesn't, such as the below.
+    hostConfig: 'Stats',
+    flowStatistics: 'Stats',
+    //node: 'AttachedTo',
+    flowStatistic: 'Stats',
+    flow: 'Stats',
+    match: 'Match',
+    matchField: 'MatchField',
+    type: 'Type', //switch type or match type?
+    value: 'Value', //this is used a lot
+    actions: 'Actions',
+    port: 'Port',
+    priority: 'Priority',
+    idleTimeout: 'IdleTimeout',
+    hardTimeout: 'HardTimeout',
+    //id: 'ID', //flow id and dpid are both id.
+    tableId: 'TableID',
+    durationSeconds: 'DurationSeconds',
+    durationNanoseconds: 'DurationNanoSeconds',
+    packetCount: 'PacketCount',
+    byteCount: 'ByteCount',
+    portStatistics: 'Stats',
+    portStatistic: 'Stats',
+    //nodeConnector: 'Port',
+    receivePackets: 'RXPackets',
+    transmitPackets: 'TXPackets',
+    receiveBytes: 'RXBytes',
+    transmitBytes: 'TXBytes',
+    receiveDrops: 'RXDrops',
+    transmitDrops: 'TXDrops',
+    receiveErrors: 'RXErrors',
+    transmitErrors: 'TXErrors',
+    receiveFrameError: 'RXFrameErr',
+    receiveOverRunError: 'RXOverrunErr',
+    receiveCrcError: 'RXCrcErr',
+    collisionCount: 'Collisions',
+    properties: 'Stats',
+    tables: 'Tables',
+    actions: 'Actions',
+    macAddress: 'MAC_Address',
+    capabilities: 'Capabilities',
+    buffers: 'Buffers',
+    tableStatistics: 'Stats',
+    tableStatistic: 'Stats',
+    activeCount: 'ActiveCount',
+    lookupCount: 'LookupCount',
+    matchedCount: 'MatchedCount',
+    maximumEntries: 'MaxEntries', 
+    nodeProperties: '',
+    //topology
+    edgeProperties: 'Stats',
+    edge: 'Stats',
+    tailNodeConnector: 'Stats',
+    headNodeConnector: 'Stats',
+    node: 'Stats',
+    id: 'PortNum', //other ids?
+    properties: 'Port',
+    state: 'State', 
+    config: 'Config',
+    //timestamp
+    //bandwidth
+    name: 'PortName',
+    // topology modified by nodeparse, not odl
+    SourceDPID: 'SourceDPID',
+    SourcePortNum: 'SourcePortNum',
+    DestinationDPID: 'DestinationDPID',
+    DestinationPortNum: 'DestinationPortNum',
+    Stats: 'Stats',
+    MAC_Address: 'MAC_Address', 
+    IP_Address: 'IP_Address',
+    VLAN_ID: 'VLAN_ID',
+    Attached_To: 'Attached_To',
+    DPID: 'DPID',
+    PortNum: 'PortNum',
+    Actions: 'Actions',
+    Buffers: 'Buffers',
+    Capabilities: 'Capabilities',
+    Connected_Since: 'Connected_Since',
+    Ports: 'Ports',
+    Flows: 'Flows',
+    Manufacturer: 'Manufacturer',
+    Software: 'Software',
+    Hardware: 'Hardware',
+    SerialNum: 'SerialNum',
+    PortName: 'PortName',
+    PortState: 'PortState',
+    CurrentFeatures: 'CurrentFeatures',
+    AdvertisedFeatures: 'AdvertisedFeatures',
+    SupportedFeatures: 'SupportedFeatures',
+    PeerFeatures: 'PeerFeatures',
+    Config: 'Config',
+    HardwareAddress: 'HardwareAddress',
+    
+    upTime: 'Uptime_msec',
+    Uptime_msec: 'Uptime_msec',
+    TotalMemory: 'TotalMemory', //total is mem_free + mem_used & note that this is JVM mem, not just the controller.
+    mem_free: 'FreeMemory',
+    
+    IdleTimeout: 'IdleTimeout', 
+    HardTimeout: 'HardTimeout',
+    Actions: 'Actions',
+    Match: 'Match',
+    Cookie: 'Cookie',
+    Priority: 'Priority',
+    Flow: "Flow",
+    Actions: "Actions",
+    Buffers: "Buffers",
+    Capabilities: "Capabilities",
+    Connected_Since: "Connected_Since",
+    
+    DurationSeconds: 'DurationSeconds',
+    DurationNanoSeconds: 'DurationNanoSeconds',
+    PacketCount: 'PacketCount',
+    ByteCount: 'ByteCount',
+    
+    Wildcards: "Wildcards",
+    DataLayerDestination: "DataLayerDestination",
+    DataLayerSource:      "DataLayerSource",
+    DataLayerType:      "DataLayerType",
+    DataLayerVLAN:      "DataLayerVLAN",
+     DataLayerVLAN_PCP:     "DataLayerVLAN_PCP",
+     InputPort:     "InputPort",
+      NetworkDestination:    "NetworkDestination",
+    NetworkDestinationMaskLen:      "NetworkDestinationMaskLen",
+      NetworkProtocol:    "NetworkProtocol",
+      NetworkSource:    "NetworkSource",
+      NetworkSourceMaskLen:    "NetworkSourceMaskLen",
+    NetworkTOS:      "NetworkTOS",
+      TransportDestination:    "TransportDestination",
+      TransportSource:    "TransportSource",
+    
+    Type: "Type",
+    },
+    
 	identity: 'opendaylight',
     
         dpid: '00:00:00:00:00:00:00:0e',
@@ -607,9 +749,9 @@ module.exports = {
 			normalizedObj = obj;
 		} else {
 			normalizedObj = {};
-			for (fromField in TO_OFP) {
+			for (fromField in this.TO_OFP) {
 				if (obj[fromField] || obj[fromField] === 0 || obj[fromField] === "") {
-		 	        	toField = TO_OFP[fromField];
+		 	        	toField = this.TO_OFP[fromField];
 	                        	normalizedObj[toField] = this.normalize(obj[fromField]);
 				}
 			}
@@ -662,6 +804,9 @@ module.exports = {
             
               case 'memory':
                 obj.TotalMemory = obj.mem_free + obj.mem_used;
+                //obj.TotalMemory = obj.TotalMemory * 1000;
+                //obj.mem_free = obj.mem_free * 1000; 
+                //supposedly the mem. in odl is in kB. we expect bytes (?).
                 return obj;    
                 break;
             

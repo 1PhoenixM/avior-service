@@ -146,7 +146,7 @@ module.exports = function (ctlr,call,postData,cb) {
                             
                             //console.log(res.statusCode);
                             if(res.statusCode === 401){
-                                   ctlr.find('util', call, { where: null, limit: 30, skip: 0, recursive: 'yes' }, cb);
+                                   ctlr.find('util', call, { where: null, limit: 30, skip: 0, recursive: 'yes', autherror: 'yes' }, cb);
                             }
                             
                             /*errorObject = {aviorError: "AUTH"};

@@ -48,7 +48,163 @@ var http = require('http');
     
 };*/
 
-var TO_OFP = {
+/*var TO_OFP = {
+	// name-in-floodlight: name-in-models
+	//Hosts Information
+    Stats: 'Stats',
+    DPID: 'DPID',
+    mac: 'MAC_Address',
+	ipv4: 'IP_Address',
+	vlan: 'VLAN_ID',
+	attachmentPoint: 'Attached_To',
+	switchDPID: 'DPID',
+	port: 'Port',
+    idleTimeout: 'IdleTimeout', 
+    hardTimeout: 'HardTimeout',
+    tableId: 'TableID',
+    durationSeconds:'DurationSeconds', 
+    durationNanoseconds:'DurationNanoSeconds',
+    packetCount:'PacketCount',
+    byteCount:'ByteCount',
+    flowCount:'FlowCount',
+	lastSeen: 'Last_Seen',
+    //Uptime Information
+    systemUptimeMsec: 'Uptime_msec',
+    //Switch Description Information(Shortened to Desc in files)
+    manufacturerDescription:'Manufacturer',
+    hardwareDescription:'Hardware',
+    softwareDescription:'Software',
+    serialNumber:'SerialNum',
+    //Switch Features information
+    portNumber: "PortNum",
+    receivePackets: "RXPackets",
+    transmitPackets: "TXPackets",
+    receiveBytes: "RXBytes",
+    transmitBytes:"TXBytes",
+    receiveDropped:"RXDrops",
+    transmitDropped:"TXDrops",
+    receiveErrors: "RXErrors",
+    transmitErrors: "TXErrors",
+    receiveFrameErrors: "RXFrameErr",
+    receiveOverrunErrors: "RXOverrunErr",
+    receiveCRCErrors: "RXCrcErr",
+    collisions: "Collisions",
+    //Switch Port Information
+    //I assume that this will use PortNum from switch features above
+    name: "PortName",
+    //Keep in mind that it seems that a state of 512 means that the port is up and a state of 513 means that the port is down
+    state: "PortState",
+    currentFeatures: "CurrentFeatures",
+    advertisedFeatures: "AdvertisedFeatures",
+    supportedFeatures: "SupportedFeatures",
+    peerFeatures: "PeerFeatures",
+    config: "Config",
+    hardwareAddress: "HardwareAddress",
+    //TableStats
+    activeCount: "ActiveCount",
+    wildcards: "Wildcards",
+    tableId: "TableID",
+    maximumEntries: "MaxEntries",
+    lookupCount: "LookupCount",
+    matchedCount: "MatchedCount",
+    //name: "Name",
+    //Topology
+    "src-switch": "SourceDPID",
+    "src-port": "SourcePortNum",
+    "src-port-state": "SourcePortState",
+    "dst-switch": "DestinationDPID",
+    "dst-port": "DestinationPortNum",
+    "dst-port-state": "DestinationPortState",
+    total: "TotalMemory",
+    free: "FreeMemory",
+    healthy: "Health",
+    type: "Type",
+    //SwitchFeatures
+    connectedSince: "Connected_Since",
+    actions: "Actions",
+    buffers: "Buffers",
+    capabilities: "Capabilities",
+    datapathId: "Datapath",
+    ports: "Ports",
+    dpid: "DPID",
+    healthy: "Healthy",
+    //type: "LinkType",
+    total: "TotalMemory",
+    free: "FreeMemory",
+    healthy: "Health",
+    //Match Criteria
+    match: "Match",
+    dataLayerDestination: "DataLayerDestination",
+    dataLayerSource: "DataLayerSource",
+    dataLayerType: "DataLayerType",
+    dataLayerVirtualLan: "DataLayerVLAN",
+    dataLayerVirtualLanPriorityCodePoint: "DataLayerVLAN_PCP",
+    inputPort: "InputPort",
+    networkDestination: "NetworkDestination",
+    networkDestinationMaskLen: "NetworkDestinationMaskLen",
+    networkProtocol: "NetworkProtocol",
+    networkSource: "NetworkSource",
+    networkSourceMaskLen: "NetworkSourceMaskLen",
+    networkTypeOfService: "NetworkTOS",
+    transportDestination: "TransportDestination",
+    transportSource: "TransportSource",
+    wildcards: "Wildcards",
+    //Ports
+    Ports: 'Ports',
+    //Flows
+    Link: 'Link',
+    bufferId: 'BufferID',
+    cookie: 'Cookie',
+    idleTimeout: 'IdleTimeout',
+    hardTimeout: 'HardTimeout',
+    //command: 
+    outPort: 'OutPort',
+    actions: 'Actions',
+    port: 'PortNum',
+    priority: 'Priority',
+    flags: 'Flags',
+    Flow: "Flow",
+    Flows: "Flows",
+    result: "Result",
+    status: "Status",
+    details: "Details",
+    Name: "Name",
+    loaded: "Loaded",
+    provides: "Provides",
+    depends: "Depends"
+};*/
+
+// Creates a function that, when called, will make a REST API call
+var restCall = function(apiMethod,apiPath){
+        var self = this;
+        return function(options,cb){
+                var rawPath = apiPath;
+                if (options.args){
+                        for (arg in options.args){
+                                apiPath = apiPath.replace(/:[A-Za-z]+:/, options.args[arg]);
+                        }
+                }
+                //console.log(apiPath);
+                if(sails.controllers.main.hostname){
+                  var host = sails.controllers.main.hostname;
+                }
+                opts = {method:apiMethod,hostname:host,port:8080,path:apiPath};
+                
+                req = http.request(opts, toClient(this,options.call,options.data,cb));
+                if (options.data) {
+                        req.write(JSON.stringify(options.data));
+                        console.log("DATA: " + options);
+                        console.log("Got here");
+                }
+                apiPath = rawPath;
+                req.end();
+        }
+};
+
+ 
+module.exports = {
+    
+    TO_OFP : {
 	// name-in-floodlight: name-in-models
 	//Hosts Information
     Stats: 'Stats',
@@ -172,37 +328,8 @@ var TO_OFP = {
     /*loaded: "Loaded",
     provides: "Provides",
     depends: "Depends"*/ 
-};
+},
 
-// Creates a function that, when called, will make a REST API call
-var restCall = function(apiMethod,apiPath){
-        var self = this;
-        return function(options,cb){
-                var rawPath = apiPath;
-                if (options.args){
-                        for (arg in options.args){
-                                apiPath = apiPath.replace(/:[A-Za-z]+:/, options.args[arg]);
-                        }
-                }
-                //console.log(apiPath);
-                if(sails.controllers.main.hostname){
-                  var host = sails.controllers.main.hostname;
-                }
-                opts = {method:apiMethod,hostname:host,port:8080,path:apiPath};
-                
-                req = http.request(opts, toClient(this,options.call,options.data,cb));
-                if (options.data) {
-                        req.write(JSON.stringify(options.data));
-                        console.log("DATA: " + options);
-                        console.log("Got here");
-                }
-                apiPath = rawPath;
-                req.end();
-        }
-};
-
- 
-module.exports = {
     
     postData: {},
     
@@ -373,9 +500,9 @@ module.exports = {
                         normalizedObj = obj;
 		        } else {
 			         normalizedObj = {};
-			         for (fromField in TO_OFP) {
+			         for (fromField in this.TO_OFP) {
 				        if (obj[fromField] || obj[fromField] === 0 || obj[fromField] === "") { //added so that "0" responses are not discarded
-		 	        	       toField = TO_OFP[fromField];
+		 	        	       toField = this.TO_OFP[fromField];
 	                           normalizedObj[toField] = this.normalize(obj[fromField]); //Nested structs? Probably handled recursively
 				        }
 			         }
