@@ -6,6 +6,10 @@
 Avior is a network management GUI designed for OpenFlow networks, focusing on versatility and usability
 with a variety of dynamic network statistics and useful management tools.
 
+![Avior Screenshots]
+(https://raw.githubusercontent.com/1PhoenixM/avior-service/master/assets/images/Avior.png)
+Development screenshots taken August 26, 2014. Click to enlarge.
+
 Features include:
   * Dynamic stats about the controller, hosts, and switches on the network
   * Network topology rendered with d3.js
