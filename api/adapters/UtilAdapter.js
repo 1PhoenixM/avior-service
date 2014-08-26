@@ -38,7 +38,7 @@ module.exports = {
 
         find: function (conn, coll, options, cb) {  
             if(!sails.controllers.main.sdncontroller && sails.config.models.connection === 'util'){
-                sails.controllers.main.sdncontroller = 'floodlight';
+                sails.controllers.main.sdncontroller = 'floodlight'; //Todo: should this be default? causes ECONN error if it can't find Floodlight.
             }
             switch(sails.controllers.main.sdncontroller){
              case 'floodlight': 

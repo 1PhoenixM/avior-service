@@ -98,13 +98,27 @@ module.exports = function (ctlr,call,postData,cb) {
             
                         else if(call === 'modules' && ctlr.nodeParse){
                             var start = responseString.search("<pre>"); 
+                            start = start + 5;
                             var end = responseString.search("</pre>"); //not working?
-                            var modules = responseString.substr(start, end);
-                            var modules = modules.replace("&nbsp;", " ");
-                            var modobj = {};
-                            modobj.Stats = modules;
+                            var modules = responseString.substring(start, end);
+                            var modules = modules.replace(/&nbsp;/g, " ");
+                            //var modules = modules.replace(/\\/g, "");
+                            //Todo: backslashes before the quote marks
+                            var modules = modules.split("\n");
+                            arr = [];
+                            
+                            for (var i=0; i<modules.length; i++){
+                                modobj = {};
+                                modobj.Name = modules[i];
+                                arr.push(modobj);
+                            }
+                            
+                            //console.log(arr);
+                            
+                            //var modobj = {};
+                            //modobj.Stats = modules;
                             //console.log(modules); //non-object
-                            cb(null,modobj);
+                            cb(null, arr);
                         }
             
             
