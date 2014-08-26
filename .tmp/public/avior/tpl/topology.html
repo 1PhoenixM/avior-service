@@ -14,8 +14,10 @@
 			)document.getElementById('advancedTopo').style.display='block'; else document.getElementById('advancedTopo').style.display='none';">Advanced</button>
 				
 			<div id="advancedTopo" data-theme="c" data-content-theme="d" style="display:none;">
-				<input type="text" id="switchColor" placeholder="Switch Color" value=""></input>
-				<input type="text" id="hostColor" placeholder="Host Color" value=""  onKeydown="if(event.keyCode==13) colorChange.click()"></input>
+				<label for="switchColor">Switch Color: </label>
+                <input type="color" id="switchColor" placeholder="Switch Color" value=""></input>
+                <label for="hostColor">Host Color: </label>
+				<input type="color" id="hostColor" placeholder="Host Color" value=""  onKeydown="if(event.keyCode==13) colorChange.click()"></input>
 				<button id="colorChange">Change Colors</button>
 			</div>
 		</div>

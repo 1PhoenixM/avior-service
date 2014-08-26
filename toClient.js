@@ -50,56 +50,61 @@ module.exports = function (ctlr,call,postData,cb) {
                 
                         if(call === 'memory' && ctlr.nodeParse){
                             //unexpected end of input
-                            /*var start = responseString.search("var statData = ");
+                            var start = responseString.search("var statData = ");
                             var ctlrData = responseString.substr(start);
                             var end = ctlrData.indexOf(";");
                             var ctlrData = ctlrData.substr(0, end);
                             var ctlrData = ctlrData.slice(15, ctlrData.length);
-                            ctlrData = JSON.parse(ctlrData);
-                            
-                            ctlrData = ctlr.nodeParse(call, ctlrData, null);
-                            
-                            var normalizedObject = ctlr.normalize(ctlrData);
-                            if(normalizedObject.Stats){
-                                normalizedObject = normalizedObject.Stats; //ODL only
+                            if(ctlrData){
+                                ctlrData = JSON.parse(ctlrData);
+
+                                ctlrData = ctlr.nodeParse(call, ctlrData, null);
+
+                                var normalizedObject = ctlr.normalize(ctlrData);
+                                if(normalizedObject.Stats){
+                                    normalizedObject = normalizedObject.Stats; //ODL only
+                                }
+                                else{
+                                    normalizedObject = normalizedObject;
+                                } 
+                                cb(null,normalizedObject);
                             }
-                            else{
-                                normalizedObject = normalizedObject;
-                            } 
-                            cb(null,normalizedObject);*/
-                            
+                            else{ ctlr.find('util', call, { where: null, limit: 30, skip: 0, recursive: 'yes' }, cb); } 
                         }
             
                         else if(call === 'uptime' && ctlr.nodeParse){
                             //unexpected end of input
-                            /*var start = responseString.search("var statData = ");
+                            var start = responseString.search("var statData = ");
                             var ctlrData = responseString.substr(start);
                             var end = ctlrData.indexOf(";");
                             var ctlrData = ctlrData.substr(0, end);
                             var ctlrData = ctlrData.slice(15, ctlrData.length);
-                            ctlrData = JSON.parse(ctlrData);
-                            
-                            ctlrData = ctlr.nodeParse(call, ctlrData, null);
-                            
-                            var normalizedObject = ctlr.normalize(ctlrData);
-                            if(normalizedObject.Stats){
-                                normalizedObject = normalizedObject.Stats; //ODL only
+                            if(ctlrData){
+                                ctlrData = JSON.parse(ctlrData);
+
+                                ctlrData = ctlr.nodeParse(call, ctlrData, null);
+
+                                var normalizedObject = ctlr.normalize(ctlrData);
+                                if(normalizedObject.Stats){
+                                    normalizedObject = normalizedObject.Stats; //ODL only
+                                }
+                                else{
+                                    normalizedObject = normalizedObject;
+                                } 
+                                cb(null,normalizedObject);
                             }
-                            else{
-                                normalizedObject = normalizedObject;
-                            } 
-                            cb(null,normalizedObject);*/
+                            else{ ctlr.find('util', call, { where: null, limit: 30, skip: 0, recursive: 'yes' }, cb); } 
                         }
             
                         else if(call === 'modules' && ctlr.nodeParse){
-                            /*var start = responseString.search("<pre>"); 
+                            var start = responseString.search("<pre>"); 
                             var end = responseString.search("</pre>"); //not working?
                             var modules = responseString.substr(start, end);
                             var modules = modules.replace("&nbsp;", " ");
                             var modobj = {};
                             modobj.Stats = modules;
                             //console.log(modules); //non-object
-                            cb(null,modobj);*/
+                            cb(null,modobj);
                         }
             
             

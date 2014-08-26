@@ -632,7 +632,31 @@ module.exports = {
     switch(current){
             
               case 'uptime':
-                obj.Uptime_msec = obj.upTime;
+                //obj.Uptime_msec = obj.upTime;
+                var days = obj.upTime.search(" days");
+                var actualDays = obj.upTime.slice(0, days);
+                var Days_in_msec = parseInt(actualDays) * 86400000;
+              
+                //trim whitespace?
+                //todo: months, years (?)
+                var time = obj.upTime.search(" days") + 5;
+                time++;
+                var actualTime = obj.upTime.slice(time, obj.upTime.length);
+                
+                var hrs = actualTime.slice(0,2);
+                var hrs_in_msec = parseInt(hrs) * 3600000;
+                
+                var mins = actualTime.slice(3,5);
+                var mins_in_msec = parseInt(mins) * 60000;
+                   
+                var secs = actualTime.slice(6,8);
+                var secs_in_msec = parseInt(secs) * 1000; 
+                
+                var ms = actualTime.slice(9,12);
+                var ms = parseInt(ms);
+                
+                obj.Uptime_msec = Days_in_msec + hrs_in_msec + mins_in_msec + secs_in_msec + ms;
+               
                 return obj;
                 break;
             
