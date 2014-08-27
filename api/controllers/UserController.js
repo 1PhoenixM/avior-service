@@ -18,55 +18,6 @@
 module.exports = {
     
   
-  /**
-   * Action blueprints:
-   *    `/user/login`
-   */
-   login: function (req, res) {
-    
-    // Send a JSON response
-    return res.login({
-        successRedirect: '#controllers'
-    });
-  },
-
-
-  /**
-   * Action blueprints:
-   *    `/user/logout`
-   */
-   logout: function (req, res) {
-    
-    // Send a JSON response
-    req.logout();
-    return res.ok('Logged out successfully.');
-  },
-
-
-  /**
-   * Action blueprints:
-   *    `/user/signup`
-   */
-   signup: function (req, res) {
-    
-    // Send a JSON response
-   User.create(req.params.all()).exec(function (err, user) {
-     if (err) return res.negotiate(err);
-        req.login(user, function (err){
-          if (err) return res.negotiate(err);
-          return res.redirect('#controllers');
-        });
-     });
-  },
-
-
-
-
-  /**
-   * Overrides for the settings in `config/controllers.js`
-   * (specific to UserController)
-   */
-  _config: {}
 
   
 };
