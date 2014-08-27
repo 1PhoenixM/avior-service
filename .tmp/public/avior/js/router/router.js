@@ -42,7 +42,7 @@ define([
 			"controllers": "controllerRoute",
 			"hosts": "hostRoute",
 			"switches": "switchRoute",
-			"staticflowmanager": "staticFlowRoute",
+			"floweditor": "staticFlowRoute",
 			"firewall": "firewallRoute",
 			"topology": "topologyRoute",
 			"ADVAlanche": "ADVAlancheRoute",
