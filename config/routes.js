@@ -53,6 +53,9 @@ module.exports.routes = {
     },
     
   // Custom routes here...
+  'get /login': "AuthController.login",
+  'post /login': 'AuthController.process',
+  'get /logout': 'AuthController.logout'
   
   // If a request to a URL doesn't match any of the custom routes above,
   // it is matched against Sails route blueprints.  See `config/blueprints.js`

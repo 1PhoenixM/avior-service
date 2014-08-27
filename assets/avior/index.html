@@ -159,6 +159,10 @@ text {
 {
 	color:#FFFFFF;
 }
+        
+.menu-heading{
+    padding-top: 10px;
+}
   
 	</style>
 </head> 
@@ -203,19 +207,19 @@ text {
 	<nav>
 	<!--<input data-rel="close" class="link" value="Home" onclick="location.href='#home';" type="button">-->
 	<div data-role="controlgroup">
-	<p>Overview:</p>
+	<p class="menu-heading">Overview:</p>
 	<input data-rel="close" class="link" type="button" value="Controllers" onclick="location.href='#controllers';">
 	<input data-rel="close" class="link" type="button" value="Hosts" onclick="location.href='#hosts';">
 	<input data-rel="close" class="link" type="button" value="Switches" onclick="location.href='#switches';">
 	<input data-rel="close" class="link" type="button" value="Topology" onclick="location.href='#topology';">
-	<p>Tools:</p>
+	<p class="menu-heading">Tools:</p>
 	<input data-rel="close" class="link" type="button" value="Flow Editor" onclick="location.href='#staticflowmanager';">
 	<input data-rel="close" class="link" type="button" value="Firewall" onclick="location.href='#firewall';">
 	<input data-rel="close" class="link" type="button" value="ADVAlanche" onclick="window.location.href='http://advalanche.cs.marist.edu';">
 	<input data-rel="close" class="link" type="button" value="QoS" onclick="location.href='#qos';">
 	<input data-rel="close" class="link" type="button" value="Virtual Network Filter" onclick="location.href='#vfilter';">
 	<input data-rel="close" class="link" type="button" value="Load Balancer" onclick="location.href='#loadbalancer';">
-	<p>Management:</p>
+	<p class="menu-heading">Management:</p>
     <input data-rel="close" class="link" type="button" value="Setup" onclick="location.href='../';">
     <input data-rel="close" class="link" type="button" value="Plugin Manager" onclick="location.href='../plugins';">
     </div>
