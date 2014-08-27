@@ -804,8 +804,8 @@ module.exports = {
             
               case 'memory':
                 obj.TotalMemory = obj.mem_free + obj.mem_used;
-                //obj.TotalMemory = obj.TotalMemory * 1000;
-                //obj.mem_free = obj.mem_free * 1000; 
+                obj.TotalMemory = obj.TotalMemory * 1024;
+                obj.mem_free = obj.mem_free * 1024; 
                 //supposedly the mem. in odl is in kB. we expect bytes (?).
                 return obj;    
                 break;
@@ -1019,7 +1019,26 @@ module.exports = {
             case 'switchdesc2':
                  //newObj = {};
                 //improve the accuracy of this
-                 for(var j=0; j<innerArr.length; j++){
+            
+                //Note that would be much easier and more accurate to use the DPID that was sent to Opendaylight to compare,
+                //but can't seem to find this.
+                for(var j=0; j<innerArr.length; j++){
+                    var description = obj.description.slice(14, obj.description.length);
+                    var parseDP = innerArr[j].DPID.replace(/:/g, "");
+                     if(parseDP === description || innerArr[j].DPID.toUpperCase() === obj.description){ //handles how switches broadcast datapath id?
+                     innerArr[j].Manufacturer = obj.manufacturer;
+                     innerArr[j].Hardware = obj.hardware;
+                     innerArr[j].Software = obj.software;
+                     innerArr[j].SerialNum = obj.serialNumber;
+                     }
+                 }  
+                /* 
+                innerArr[obj.counter].Manufacturer = obj.manufacturer;
+                innerArr[obj.counter].Hardware = obj.hardware;
+                innerArr[obj.counter].Software = obj.software;
+                innerArr[obj.counter].SerialNum = obj.serialNumber;
+                */
+                /*for(var j=0; j<innerArr.length; j++){
                      if(!innerArr[j].Manufacturer){
                      innerArr[j].Manufacturer = obj.manufacturer;
                      }
@@ -1032,7 +1051,7 @@ module.exports = {
                      if(!innerArr[j].SerialNum){
                      innerArr[j].SerialNum = obj.serialNumber;
                      }
-                 }         
+                 }*/         
                 
                 /*for (var i=0; i<obj.nodeProperties.length; i++){
                  newObj = {};
@@ -1043,7 +1062,7 @@ module.exports = {
                  newObj.SerialNum = "Not found";
                  arr.push(newObj);  
                  }*/
-                return arr;
+                return innerArr;
                 break;
             
             default:
