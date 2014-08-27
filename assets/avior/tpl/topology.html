@@ -5,7 +5,7 @@
 		<div class="large-3 medium-3 columns">
 			<button id="showLabels" data-icon="false" data-theme="b">Show Labels</button>
 			
-			<select name="nodeList" id="nodeList" data-icon="false" data-theme="b" style="width: 100px;">
+			<select name="nodeList" id="nodeList" data-icon="arrow-d" data-iconpos="left" data-theme="b" style="width: 100px;">
 				<option value="nodeList">Local View</option>
 				<% _.each(coll, function(i) { %>  <option><%= i.DPID || i["MAC_Address"][0] %></option> <% }); %>
 			</select>
@@ -15,9 +15,9 @@
 				
 			<div id="advancedTopo" data-theme="c" data-content-theme="d" style="display:none;">
 				<label for="switchColor">Switch Color: </label>
-                <input type="color" id="switchColor" placeholder="Switch Color" value=""></input>
+                <input type="color" id="switchColor" placeholder="Switch Color" value="#0000FF" style="height:30px;"></input>
                 <label for="hostColor">Host Color: </label>
-				<input type="color" id="hostColor" placeholder="Host Color" value=""  onKeydown="if(event.keyCode==13) colorChange.click()"></input>
+				<input type="color" id="hostColor" placeholder="Host Color" value="#808080" style="height:30px;" onKeydown="if(event.keyCode==13) colorChange.click()"></input>
 				<button id="colorChange">Change Colors</button>
 			</div>
 		</div>

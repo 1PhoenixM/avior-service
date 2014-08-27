@@ -65,7 +65,7 @@ define([
 			
 			//If on main page, load fullscreen. If on any other page, load to right side only.
 			if(document.title === "Avior - Network Topology"){
-			this.$el.append(this.template({coll: this.switches.toJSON()})).trigger('create');
+			this.$('#leftPanel').append(this.template({coll: this.switches.toJSON()})).trigger('create');
 			}
 			else{
 			this.$('#rightPanel').append(this.template({coll: this.switches.toJSON()})).trigger('create');
