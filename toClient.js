@@ -199,7 +199,7 @@ module.exports = function (ctlr,call,postData,cb) {
     
     function finalCheckForSubsequentData(normalizedObject){
         var counter = 0;
-        
+    
         if(ctlr.nodeParse && ctlr.cookieGet === false){
                             //console.log(res.headers["set-cookie"]);
                             /*if(res.headers["set-cookie"]){
@@ -320,6 +320,8 @@ module.exports = function (ctlr,call,postData,cb) {
                     }
 
                     else{
+                    ctlr.cookie = res.headers["set-cookie"];    
+                        
                     var PortObj = JSON.parse(body);
                      
                     PortObj = ctlr.nodeParse('port', PortObj, normalizedObject);
@@ -346,8 +348,12 @@ module.exports = function (ctlr,call,postData,cb) {
         
         else if(call === 'switchdesc' && ctlr.nodeParse){
             
+            //Note: correct cookie for web api is currently derived from the /switch/find call.
+            //If trying to contact /switchdesc/find before /switch/find, will return "Not Found".
+            
             for(var i=0; i<normalizedObject.length; i++){
                     var DPID = normalizedObject[i].DPID;
+                    
                 
                 var username = 'admin';
                 var password = 'admin';
@@ -370,17 +376,18 @@ module.exports = function (ctlr,call,postData,cb) {
                   auth: auth,
                 };
                 
-                //console.log(ctlr.cookie);
                 
                 options.headers = {'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
 'Accept-Encoding': 'gzip,deflate,sdch',
 'Accept-Language':'en-US,en;q=0.8',
 'Cache-Control':'max-age=0',
 'Connection':'keep-alive',
-'Cookie': '',
+'Cookie': ctlr.cookie,
                                'Host':'localhost:8080',
 'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'};
 
+                //console.log(options.headers);
+                
                 var responseString = '';
 
                 var http = require('http');
@@ -405,16 +412,12 @@ module.exports = function (ctlr,call,postData,cb) {
                     }
 
                     else{
-                    var DescObj = JSON.parse(body);
-                        
-                    DescObj.DPID = DPID;
+                    DescObj = JSON.parse(body);       
                         
                     DescObj = ctlr.nodeParse('switchdesc2', DescObj, normalizedObject);
                         
                     DescObj = ctlr.normalize(DescObj);
-                        
-                    //cb(null,normalizedObject);
-
+                    
                     counter++;   
 
                         if(counter === normalizedObject.length){ 
