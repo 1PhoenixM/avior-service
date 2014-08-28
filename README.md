@@ -56,51 +56,51 @@ Guide:
 Clicking the menu button in the top left corner opens the menu.
 
 Overview:
-    *Controller - A brief summary, showing which controller is being used, its uptime, memory usage, its status, and which Java modules are loaded.
-    *Hosts - A list of hosts with their MAC and IP addresses.
-    *Switches - A list of switches and their ports and flows.
-    *Topology - A graphical topology of switches, hosts, and their links. You can change the colors via the Advanced tab.
+ * Controller - A brief summary, showing which controller is being used, its uptime, memory usage, its status, and which Java modules are loaded.
+ * Hosts - A list of hosts with their MAC and IP addresses.
+ * Switches - A list of switches and their ports and flows.
+ * Topology - A graphical topology of switches, hosts, and their links. You can change the colors via the Advanced tab.
 
 Tools:
-    *Flow Editor - Flow Editor allows you to create and delete static flows on the network.
-    *Firewall - Currently a Floodlight-only feature, Firewall allows you to block certain ports.
+ * Flow Editor - Flow Editor allows you to create and delete static flows on the network.
+ * Firewall - Currently a Floodlight-only feature, Firewall allows you to block certain ports.
 
 Management:
-    *Setup - The landing page of Avior, where you can choose your controller and enter an IP address to switch controllers at any time. No need to restart the server.
-    *Plugins - Visit http://github.com/1PhoenixM/avior-plugin-template for details on how to create an Avior plugin. Requires restart to take effect.
-    *Options - Allows you to configure the GUI panels. No need to restart the server.
+ * Setup - The landing page of Avior, where you can choose your controller and enter an IP address to switch controllers at any time. No need to restart the server.
+ * Plugins - Visit http://github.com/1PhoenixM/avior-plugin-template for details on how to create an Avior plugin. Requires restart to take effect.
+ * Options - Allows you to configure the GUI panels. No need to restart the server.
 
 FAQ:
 
 Q: The interface isn't loading, or reports 0 switches when there are switches connected.
-    *A: Especially for OpenDaylight, the web interface is still a little buggy. Clearing your web cache and refreshing your browser should fix the issue.
+ * A: Especially for OpenDaylight, the web interface is still a little buggy. Clearing your web cache and refreshing your browser should fix the issue.
 
 Q: The Sails server crashes with an ECONN_REFUSED error.
-    *A: Close all instances of Avior in the browser and restart the server. Be sure to visit localhost:1337 first to select your controller and point Avior at a valid IP address.
+ * A: Close all instances of Avior in the browser and restart the server. Be sure to visit localhost:1337 first to select your controller and point Avior at a valid IP address.
 
 API:
 
 This is a normalized JSON REST API over HTTP that can be used under Floodlight or OpenDaylight. All methods are GET unless otherwise specified.
 
-    */memory/find - TotalMemory and FreeMemory used by the controller.
-    */modules/find - List of all loaded Java modules / classes used by the controller.
-    */health/find - The health of the controller.
-    */uptime/find - Uptime of the controller.
+ * /memory/find - TotalMemory and FreeMemory used by the controller.
+ * /modules/find - List of all loaded Java modules / classes used by the controller.
+ * /health/find - The health of the controller.
+ * /uptime/find - Uptime of the controller.
 
-    */host/find - Lists all hosts on the network, their MAC and IP addresses.
+ * /host/find - Lists all hosts on the network, their MAC and IP addresses.
 
-    */switch/find - A list of switches on the controller and a port list for each one.
-    */switchdesc/find/:dpid - Description of the switch, including its manufacturer, hardware, software and serial number.
-    */switchfeatures/find - Features of the switches.
-    */aggregate/find - Aggregate stats, packet and byte counts.
-    */switchports/find/:dpid - Port Statistics for each port on a switch including RX and TX packets and bytes, etc.
-    */flowstats/find/:dpid - Flows on the switches.
+ * /switch/find - A list of switches on the controller and a port list for each one.
+ * /switchdesc/find/:dpid - Description of the switch, including its manufacturer, hardware, software and serial number.
+ * /switchfeatures/find - Features of the switches.
+ * /aggregate/find - Aggregate stats, packet and byte counts.
+ * /switchports/find/:dpid - Port Statistics for each port on a switch including RX and TX packets and bytes, etc.
+ * /flowstats/find/:dpid - Flows on the switches.
 
-    */alterflow/find - Static flows on the switches.
-    */alterflow/create - (POST) Create a new static flow.
-    */alterflow/destroy - (DELETE) Destroy an existing static flow. This action cannot be undone.
-    */clearflows - Clears ALL flows. This action cannot be undone.
+ * /alterflow/find - Static flows on the switches.
+ * /alterflow/create - (POST) Create a new static flow.
+ * /alterflow/destroy - (DELETE) Destroy an existing static flow. This action cannot be undone.
+ * /clearflows - Clears ALL flows. This action cannot be undone.
 
-    */topology/find - Topology of the network, showing how switches and hosts are connected through port links.
+ * /topology/find - Topology of the network, showing how switches and hosts are connected through port links.
 
 a [Sails](http://sailsjs.org) application
