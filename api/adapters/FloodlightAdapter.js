@@ -413,8 +413,7 @@ module.exports = {
         },
     
         pluginFind: function(conn, coll, options, cb){
-            
-            
+            return cb(); //if no plugins, default behavior
         },
     
         
