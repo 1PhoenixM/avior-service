@@ -1,0 +1,124 @@
+<style>
+    
+.aviorHeader {
+  position:relative;
+}
+
+.headerIMG {
+  margin:auto;
+  position:absolute;
+  top:0;bottom:0;
+  left:0;right:0;
+}
+
+.headerIMG {
+  max-height:100%;
+  max-width: 100%;
+}
+
+.innerPageLoader{
+    display:none;
+  position:absolute;
+  vertical-align:center;
+  margin:auto;
+  top:40.5%; 
+  left:0;right:0;
+  //left:47.40%;
+  //top:45.35%;
+}
+    
+.ui-loader{
+    display:none;
+}
+
+.ui-icon-loading{
+    display:none;   
+}
+</style>
+
+
+<script>
+    function config_send(){
+        
+        var ctlr = document.getElementById("controller_main");
+        var hst = document.getElementById("host_main");
+        var sw = document.getElementById("switch_main");
+        var topo = document.getElementById("topology_main");
+        var flow = document.getElementById("flow_main");
+        
+        var controller_main = ctlr.options[ctlr.selectedIndex].value;
+        var host_main = hst.options[hst.selectedIndex].value;
+        var switch_main = sw.options[sw.selectedIndex].value;
+        var topology_main = topo.options[topo.selectedIndex].value;
+        var flow_main = flow.options[flow.selectedIndex].value;
+        
+        $.post(
+                '/config/setPanels',
+                {controller_main: controller_main, host_main: host_main, switch_main: switch_main, topology_main: topology_main, flow_main: flow_main},
+                function () {
+                   //alert("Sent");
+                }
+            ).fail(function(res){
+                alert("Error: " + res.getResponseHeader("error"));
+        });
+        alert("Successfully set options.");
+        window.location = "/avior/index.html#login";
+        
+    }
+</script>
+
+<header>
+    <div class="aviorHeader" data-role="header" data-theme="a" style="max-height: 60px;">
+	<h1><img class="headerIMG" src="/images/avior_logo_alt_trans.png"  height="40" width="120" style="vertical-align: top;"> </h1>
+	</div>
+</header>
+
+<div id="config" style="text-align:center;"> 
+<h2> Avior Configuration </h2>
+<h4> Secondary Panels </h4>
+<h4> Here, you can customize Avior by choosing which panels will show up on the right of the main panel. </h4>
+<form>
+	<label for="controller_main" class="select">Controller Page: </label>
+    <select id="controller_main">
+        <option value="host_view">Hosts</option>
+        <option value="switch_view">Switches</option>
+        <option value="topology_view" selected="selected">Topology</option>
+        <option value="flow_view">Flow Editor</option>
+    </select>
+    
+    <label for="host_main" class="select">Host Page: </label>
+    <select id="host_main">
+        <option value="controller_view">Controller</option>
+        <option value="switch_view">Switches</option>
+        <option value="topology_view" selected="selected">Topology</option>
+        <option value="flow_view">Flow Editor</option>
+    </select>
+    
+    <label for="switch_main" class="select">Switch Page: </label>
+    <select id="switch_main">
+         <option value="controller_view">Controller</option>
+        <option value="host_view">Hosts</option>
+        <option value="topology_view" selected="selected">Topology</option>
+        <option value="flow_view">Flow Editor</option>
+    </select>
+    
+    <label for="topology_main" class="select">Topology Page: </label>
+    <select id="topology_main">
+        <option value="controller_view">Controller</option></option>
+        <option value="host_view" selected="selected">Hosts</option>
+        <option value="switch_view">Switches</option>
+        <option value="flow_view">Flow Editor</option>
+    </select>
+    
+    <label for="flow_main" class="select">Flow Editor Page: </label>
+    <select id="flow_main">
+        <option value="controller_view">Controller</option>
+        <option value="host_view">Hosts</option>
+        <option value="switch_view" selected="selected">Switches</option>
+        <option value="topology_view">Topology</option>
+    </select>
+    
+</form>
+
+<button name="config_send" id="config_send" onclick="config_send();">Set</button>
+</div>

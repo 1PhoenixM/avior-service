@@ -47,6 +47,14 @@ module.exports.routes = {
     view: 'login' //drop this, it doesn't work right
   },
     
+    '/config/index': "ConfigController.index",
+    
+    //'/config': "ConfigController.panels",
+    
+    '/configuration':{
+     view: 'configuration'   
+    },
+    
   'post /files': {
         controller    : 'main',
         action        : 'files'

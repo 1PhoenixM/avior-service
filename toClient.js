@@ -350,6 +350,7 @@ module.exports = function (ctlr,call,postData,cb) {
             
             //Note: correct cookie for web api is currently derived from the /switch/find call.
             //If trying to contact /switchdesc/find before /switch/find, will return "Not Found".
+            DescArr = [];
             
             for(var i=0; i<normalizedObject.length; i++){
                     var DPID = normalizedObject[i].DPID;
@@ -413,6 +414,10 @@ module.exports = function (ctlr,call,postData,cb) {
 
                     else{
                     DescObj = JSON.parse(body);       
+                    
+                    //DescArr.push(DescObj);    
+                      
+                    //Parsing must be found here, dpid is not found
                         
                     DescObj = ctlr.nodeParse('switchdesc2', DescObj, normalizedObject);
                         

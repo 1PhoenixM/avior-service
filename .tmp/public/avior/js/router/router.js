@@ -7,6 +7,7 @@ define([
 	"floodlight/firewallModFl",
 	"floodlight/switch",
 	"view/switchDetail",
+    "floodlight/config",
     "floodlight/controllerFl",
 	"floodlight/memory",
 	"floodlight/modules",
@@ -30,7 +31,7 @@ define([
 	"text!template/login.html",
 	"text!template/controller.html",
 	"text!template/content.html",
-], function($, _, Backbone, Marionette, TopologyCollection, FirewallMod, Switch, SwitchDetail, Controller, Memory, Modules, Status, Uptime, Host, Test, Topo, FrontPage, MemoryView, ModulesView, StatusView, UptimeView, FlowEditor, FirewallEditor, HostView, TopologyView, TestView, ControllerView, ActiveView, loginTpl, controllerTpl, contentTpl){
+], function($, _, Backbone, Marionette, TopologyCollection, FirewallMod, Switch, SwitchDetail, Config, Controller, Memory, Modules, Status, Uptime, Host, Test, Topo, FrontPage, MemoryView, ModulesView, StatusView, UptimeView, FlowEditor, FirewallEditor, HostView, TopologyView, TestView, ControllerView, ActiveView, loginTpl, controllerTpl, contentTpl){
 	/* Structure used to navigate through views */
 	var Router = Marionette.AppRouter.extend({
 		template: _.template(controllerTpl),
@@ -50,6 +51,51 @@ define([
 			"vfilter": "vfilterRoute",
 			"loadbalancer": "loadbalancerRoute",
 		},
+        
+        secondaryPanel: function(main_view){
+            cf = new Config();
+			cf.fetch().complete(function () {
+			 	switch(main_view){
+                    case "controller":
+                        var second_view = cf.get("controller_main");
+                        console.log("Second view:" + second_view);
+                        break;
+                    case "hosts":
+                        var second_view = cf.get("host_main");
+                        break;
+                    case "switches":
+                        var second_view = cf.get("switch_main");
+                        break;
+                    case "topology":
+                        var second_view = cf.get("topology_main");
+                        break;
+                    case "flowed":
+                        var second_view = cf.get("flow_main");
+                        break;
+                }
+                
+                layout = new FrontPage();
+                
+                switch(second_view){
+                    case "controller_view":
+                        layout.controllerShow();
+                        break;
+                    case "host_view":
+                        layout.hostShow();
+                        break;
+                    case "switch_view":
+                        layout.switchShow();
+                        break;
+                    case "topology_view":
+                        layout.topologyShow();
+                        break;
+                    case "flow_view":
+                        layout.staticFlowShow();
+                        break;    
+                }
+			},this); 
+            
+        },
 		
 		/*initialize: function(collec, display, state) {
 			this.toggleCount = 0;
@@ -169,12 +215,14 @@ define([
 	       
             
             //Secondary view choices
-			layout = new FrontPage();
+			//layout = new FrontPage();
 			//layout.controllerShow();
             //layout.hostShow();
             //layout.switchShow();
-            layout.topologyShow();
+            //layout.topologyShow();
             //layout.staticFlowShow();
+            
+            this.secondaryPanel("controller");
 	
 			var self = this;
 
@@ -216,13 +264,7 @@ define([
 			$('#content').append(this.template3).trigger('create');
 			$('#leftPanel').append(this.hostview.render().el).trigger('create'); //leftPanel
 			
-            
-			layout = new FrontPage();
-            //layout.controllerShow();
-            //layout.hostShow();
-            //layout.switchShow();
-            layout.topologyShow();
-            //layout.staticFlowShow();
+            this.secondaryPanel("hosts");
             
         },
 		
@@ -248,13 +290,9 @@ define([
 			
 					
 			$('#content').append(this.template3).trigger('create');
-				
-			layout = new FrontPage();
-			//layout.controllerShow();
-            //layout.hostShow();
-            //layout.switchShow();
-            layout.topologyShow();
-            //layout.staticFlowShow();
+			
+            
+            this.secondaryPanel("switches");
 	
 			function syncComplete() {
   				syncCount += 1;
@@ -285,12 +323,9 @@ define([
 			else
 				new FlowEditor(this.switchCollection, true);
 				$('#content').append(this.template3).trigger('create');
-				layout = new FrontPage();
-				//layout.controllerShow();
-                //layout.hostShow();
-                layout.switchShow();
-                //layout.topologyShow();
-                //layout.staticFlowShow();
+				
+            
+                this.secondaryPanel("flowed");
         },
         
         firewallRoute: function() {
@@ -319,7 +354,7 @@ define([
             layout.topologyShow();
             //layout.staticFlowShow();
 			
-				
+            //not customizable yet because it will soon be a plugin
         },
         
         topologyRoute: function () {
@@ -356,11 +391,12 @@ define([
 			else if(this.switchCollection.models.length > 0 && this.hostCollection.models.length > 0 && this.topology === undefined){
 				this.topology = new TopologyView(self.switchCollection, self.hostCollection);
 				this.topology.render;
-				
+				this.secondaryPanel("topology");
 			}
 			 
 			else if (this.topology != undefined){
 				this.topology.render();
+                this.secondaryPanel("topology");
 			}
 				
 				
@@ -370,6 +406,7 @@ define([
 				this.hostview.listenTo(this.hostview.collection, "sync", function () {
 					this.topology = new TopologyView(self.switchCollection, self.hostCollection);
 					this.topology.render;
+                    this.secondaryPanel("topology");
 				});
 			}
 			
@@ -387,12 +424,8 @@ define([
 					//create graph nodes based on switch and host data
 					self.topology = new TopologyView(self.switchCollection, self.hostCollection);										
 					self.topology.render();
-					//layout = new FrontPage();
-                    //layout.controllerShow();
-                    //layout.hostShow();
-                    //layout.switchShow();
-                    //layout.topologyShow();
-                    //layout.staticFlowShow();
+					
+                    this.secondaryPanel("topology");
 						
 			}
         },
