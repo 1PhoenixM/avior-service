@@ -137,7 +137,7 @@ define([
 			this.memoryview = new MemoryView({model: new Memory});
 			this.modulesview = new ModulesView({model: new Modules});
 			this.controllerview = new ControllerView({model: new Topo, collection: new TopologyCollection});
-			this.hostview = new HostView({model: new Host});	
+			//this.hostview = new HostView({model: new Host});	
             
             
 			// Delegate events for controller views
@@ -148,7 +148,7 @@ define([
 			this.memoryview.delegateEvents(this.memoryview.events);
 			this.modulesview.delegateEvents(this.modulesview.events);
 			this.controllerview.delegateEvents(this.controllerview.events);
-			this.hostview.delegateEvents(this.hostview.events);
+			//this.hostview.delegateEvents(this.hostview.events);
 			
 				
 			// Link controller aspects to id tags
@@ -166,10 +166,15 @@ define([
 		
 			document.title = 'Avior - Controllers';
 			//refactor titleChange to a function that takes in the new title as parameter
-	
+	       
+            
+            //Secondary view choices
 			layout = new FrontPage();
-			layout.topologyShow();
-			
+			//layout.controllerShow();
+            //layout.hostShow();
+            //layout.switchShow();
+            layout.topologyShow();
+            //layout.staticFlowShow();
 	
 			var self = this;
 
@@ -204,16 +209,21 @@ define([
 			this.hostCollection = this.hostview.collection;
 			
 			document.title = 'Avior - Hosts';
-			
-			layout = new FrontPage();
-			layout.topologyShow();
-			
+
 			
 			// Link host to id tag
 			$('#content').empty();
 			$('#content').append(this.template3).trigger('create');
-			$('#leftPanel').append(this.hostview.render().el).trigger('create');
+			$('#leftPanel').append(this.hostview.render().el).trigger('create'); //leftPanel
 			
+            
+			layout = new FrontPage();
+            //layout.controllerShow();
+            //layout.hostShow();
+            //layout.switchShow();
+            layout.topologyShow();
+            //layout.staticFlowShow();
+            
         },
 		
 		switchRoute: function() {
@@ -240,7 +250,11 @@ define([
 			$('#content').append(this.template3).trigger('create');
 				
 			layout = new FrontPage();
-			layout.topologyShow();
+			//layout.controllerShow();
+            //layout.hostShow();
+            //layout.switchShow();
+            layout.topologyShow();
+            //layout.staticFlowShow();
 	
 			function syncComplete() {
   				syncCount += 1;
@@ -260,7 +274,7 @@ define([
 			// Clears out any previous intervals
 			clearInterval(this.interval);
 			
-			document.title = 'Avior - Static Flow Manager';
+			document.title = 'Avior - Flow Editor';
 			
 
 			if (this.switchCollection === undefined){
@@ -272,7 +286,11 @@ define([
 				new FlowEditor(this.switchCollection, true);
 				$('#content').append(this.template3).trigger('create');
 				layout = new FrontPage();
-				layout.topologyShow();
+				//layout.controllerShow();
+                //layout.hostShow();
+                layout.switchShow();
+                //layout.topologyShow();
+                //layout.staticFlowShow();
         },
         
         firewallRoute: function() {
@@ -295,7 +313,11 @@ define([
 				new FirewallEditor(this.switchCollection, true, false);
 			$('#content').append(this.template3).trigger('create');
 			layout = new FrontPage();
-			layout.topologyShow();
+			//layout.controllerShow();
+            //layout.hostShow();
+            //layout.switchShow();
+            layout.topologyShow();
+            //layout.staticFlowShow();
 			
 				
         },
@@ -365,7 +387,12 @@ define([
 					//create graph nodes based on switch and host data
 					self.topology = new TopologyView(self.switchCollection, self.hostCollection);										
 					self.topology.render();
-					
+					//layout = new FrontPage();
+                    //layout.controllerShow();
+                    //layout.hostShow();
+                    //layout.switchShow();
+                    //layout.topologyShow();
+                    //layout.staticFlowShow();
 						
 			}
         },

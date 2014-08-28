@@ -4,12 +4,16 @@ define([
 	"backbone",
 	"marionette",
 	"floodlight/hostCollectionFl",
-	"text!template/hosts.html"
-], function($, _, Backbone, Marionette, HostCollection, hostTableTpl){
+	"text!template/hosts.html",
+    "text!template/content.html"
+], function($, _, Backbone, Marionette, HostCollection, hostTableTpl, contentTpl){
 	var HostView = Backbone.View.extend({
 	    tagName: "div",
+        
+        //el: $('#content'),
 	    
 		template: _.template(hostTableTpl),
+        template1: _.template(contentTpl),
 		
 		initialize: function(){
 			var self = this;
@@ -30,8 +34,23 @@ define([
 		
 		// Render the collection
 	    render: function() {
-			this.$el.html(this.template({hosts: this.collection.models})).trigger('create');
+            
+            /*this.$el.append(this.template1()).trigger('create');
+			this.$('#leftPanel').empty();
+            
+			//If on main page, load fullscreen. If on any other page, load to right side only.
+			if(document.title === "Avior - Hosts"){
+			this.$('#leftPanel').html(this.template({hosts: this.collection.models})).trigger('create');
 			return this;
+			}
+			else{
+			this.$('#rightPanel').html(this.template({hosts: this.collection.models})).trigger('create');
+			return this;
+			}*/
+            
+            this.$el.html(this.template({hosts: this.collection.models})).trigger('create');
+			return this;
+        
 	    },
 		refresh: function(){this.collection.fetch();},
 		

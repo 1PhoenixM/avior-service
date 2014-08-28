@@ -43,8 +43,16 @@ define([
 		render: function() {
 			//$('#container2').remove();
 			$('#content').empty();
-			this.$el.html(this.template3({coll: this.collection.toJSON()})).trigger('create');
-			this.$('#leftPanel').html(this.template1({coll: this.collection.toJSON()})).trigger('create');
+           this.$el.html(this.template3({coll: this.collection.toJSON()})).trigger('create');
+			
+			//If on main page, load fullscreen. If on any other page, load to right side only.
+			if(document.title === "Avior - Flow Editor"){
+			 this.$('#leftPanel').html(this.template1({coll: this.collection.toJSON()})).trigger('create');
+			}
+			else{
+			 this.$('#rightPanel').html(this.template1({coll: this.collection.toJSON()})).trigger('create');
+			}
+            
 		},
 		
 		validate: function(e){

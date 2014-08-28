@@ -98,9 +98,21 @@ define([
 			switchCount = this.collection.length;
 			
 			//Loads to leftPanel
+			//Loads left/right div template
+			this.$el.append(this.template9(switchCount)).trigger('create');
+			
+			//If on main page, load fullscreen. If on any other page, load to right side only.
+			if(document.title === "Avior - Switches"){
 			this.$el.html(this.template9(switchCount)).trigger('create');
 			this.$('#leftPanel').html(this.template2(switchCount)).trigger('create');
 			switchList.appendTo(this.$('#leftPanel')).trigger('create');
+			}
+			else{
+			this.$('#rightPanel').html(this.template9(switchCount)).trigger('create');
+			this.$('#rightPanel').html(this.template2(switchCount)).trigger('create');
+			switchList.appendTo(this.$('#rightPanel')).trigger('create');
+			}
+            
 			
 			//switch details appending...move to specific 
 			//functions for description, ports, flows
