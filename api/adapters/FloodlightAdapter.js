@@ -406,9 +406,15 @@ module.exports = {
                //case 'alterflow':return this.postFlow({data:{},call:coll},cb);
                 case 'alterflow':return this.getFlows({args:['all'],call:coll},cb);
                         break;
-		        default: return cb();
+		        default: return this.pluginFind(conn, coll, options, cb);
                         break;
-                }
+                }    
+            
+        },
+    
+        pluginFind: function(conn, coll, options, cb){
+            
+            
         },
     
         
@@ -658,10 +664,15 @@ module.exports = {
                     return arr;
                 }
             else{
+                this.pluginParse(current, obj);
                 return obj;
             }
         
         },
+    
+    pluginParse: function(current, obj){
+        return obj; //If no plugins, default behavior
+    },
   
     getSwitchDesc: restCall('GET','/wm/core/switch/:arg:/desc/json'),    //"all" returns switch dpid objects
     getSwitchFeatures: restCall('GET','/wm/core/switch/:arg:/features/json'),   //"all" returns switch dpid objects

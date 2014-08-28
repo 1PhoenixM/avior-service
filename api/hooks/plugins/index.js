@@ -206,28 +206,30 @@ function injectPluginModels(pluginModels, cb) {
                         var adapter = files[g].substr(17, files[g].length);
                         var adapter = '.' + adapter;
                         adp = require(adapter);
-                        if(adp.floodlight){
+                        
+                       if(adp.floodlight){
                             for(key in adp.floodlight){
-                                /*if(key === 'TO_OFP'){
+                                if(key === 'TO_OFP'){
                                     for(ky in adp.floodlight.TO_OFP){
                                     Floodlight.TO_OFP[ky] = adp.floodlight.TO_OFP[ky]; //use this.TO_OFP
                                     }
-                                }*/
-                                //else{
+                                }
+                                else{
                                 Floodlight[key] = adp.floodlight[key];
-                                //}
+                                }
                             }    
                         }
+                        
                         if(adp.opendaylight){
                              for(key in adp.opendaylight){
-                                /*if(key === 'TO_OFP'){
+                                if(key === 'TO_OFP'){
                                     for(ky in adp.opendaylight.TO_OFP){
                                     Opendaylight.TO_OFP[ky] = adp.opendaylight.TO_OFP[ky]; //use this.TO_OFP
                                     }
-                                }*/
-                                //else{
+                                }
+                                else{
                                 Opendaylight[key] = adp.opendaylight[key];
-                                //}
+                                }
                             }   
                         }
                     }
