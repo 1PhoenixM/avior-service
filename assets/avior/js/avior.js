@@ -6,9 +6,11 @@ define([
 	"text!template/login.html",
 	"text!template/content.html",
 	"layout/frontpage",
-], function($, _, Backbone, Router, loginTpl, contentTpl, FrontPage){
+    "router/pluginrouter",
+], function($, _, Backbone, Router, loginTpl, contentTpl, FrontPage, PluginRouter){
 	return { 
 		Router: Router,
+        PluginRouter: PluginRouter,
 
 		template: _.template(loginTpl),
 		template2: _.template(contentTpl),
@@ -74,6 +76,7 @@ define([
                             document.getElementById("leftpanel3").style.display='block';
                             document.getElementById("logout").style.display='block';
                             var router = new Router();
+                            var pluginRouter = new PluginRouter();
                             Backbone.history.start();
                         }
   				}

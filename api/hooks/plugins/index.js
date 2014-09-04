@@ -6,34 +6,6 @@
  */
 
 var Waterline = require('waterline');
-//var Role = require('./models/RoleModel.js'); 
-/*var Role = 
-    
-    {
-        
-	identity: 'role',
-
-	connection: 'util',
-
-	attributes: {
-        Role: {
-            type: 'string',
-            required: true,
-        },
-		Description: {
-			type: 'string',
-			required: true
-		},
-        Date: {
-			type: 'string',
-			required: true
-		},
-    }
-};
-
-var RolePlugin = {
-    models: Role,
-};*/
 
 module.exports = function(sails) {
 
@@ -89,7 +61,7 @@ function injectPluginModels(pluginModels, cb) {
          }, next)
       });
     }],
-
+ 
     // 7. Expose initialized models to global scope and sails
     _prepareModels: ['instantiatedCollections', sails.hooks.orm.prepareModels]
 
@@ -100,26 +72,7 @@ function injectPluginModels(pluginModels, cb) {
   // injectPluginModels and mountBlueprintsForModels defined here
   function mountBlueprintsForModels(pluginModels, pluginControllers) {
   _.each(pluginModels, function(pluginModel){
-    /*var controller = _.cloneDeep(pluginModel);
-    controller._config = { actions: true, rest: true, shortcuts: true };
-    
-    controller.index = function (req, res) {
-        return res.send("To be completed...");
-    };
-      
-    var controllerId = pluginModel.identity;*/
-      
-      _.each(pluginControllers, function(pluginController){ //consider multiple unmatching models and controllers. some are empty objs (from before)
-          //models are not being recognized. actions are not being recognized.
-          //undefined is being bound
-          //console.log(pluginModel);
-         // console.log(pluginController);
-        if(pluginModel.identity === pluginController.identity){
-                var controller = pluginController;
-                controllerId = pluginController.identity;
-               
-            }
-          else{
+ 
               var controller = _.cloneDeep(pluginModel);
                 controller._config = { actions: true, rest: true, shortcuts: true };
 
@@ -129,7 +82,7 @@ function injectPluginModels(pluginModels, cb) {
 
                 controllerId = pluginModel.identity;
               
-              }
+           
                if (!_.isObject(sails.controllers[controllerId])) {
                   sails.controllers[controllerId] = controller;
                 }
@@ -137,28 +90,22 @@ function injectPluginModels(pluginModels, cb) {
                 if (!_.isObject(sails.hooks.controllers.middleware[controllerId])) {
                   sails.hooks.controllers.middleware[controllerId] = controller;
                 }
-        });
-
-    /*if (!_.isObject(sails.controllers[controllerId])) {
-      sails.controllers[controllerId] = controller;
-    }
-
-    if (!_.isObject(sails.hooks.controllers.middleware[controllerId])) {
-      sails.hooks.controllers.middleware[controllerId] = controller;
-    }*/
-  });
+    });
 }
 
     function pluginLoader(cb){
         //filesystem iterator
-        
         cb();
     }
 
   return {
 
     initialize: function(cb) {
-      sails.after('hook:orm:loaded', function() {
+       var Floodlight = require('../../adapters/FloodlightAdapter');  
+              
+       var Opendaylight = require('../../adapters/OpenDaylightAdapter');    
+    
+        sails.after('hook:orm:loaded', function() {
           pluginLoader(function(err, plugins) {
             //plugins = [RolePlugin];  
 
@@ -170,10 +117,6 @@ function injectPluginModels(pluginModels, cb) {
               
             var recursive = require('recursive-readdir');
               
-            var Floodlight = require('../../adapters/FloodlightAdapter');  
-              
-            var Opendaylight = require('../../adapters/OpenDaylightAdapter');    
-              
             recursive('./api/hooks/plugins/files', function (err, files) {
               // Files is an array of filename
                 
@@ -181,7 +124,7 @@ function injectPluginModels(pluginModels, cb) {
                 
             for(var g=0; g<files.length; g++){
                     var file = files[g];
-                    var modindex = file.search("Model.js");
+                    var modindex = file.search("Model.js"); //change to identify files in the Model folder
                     if(modindex !== -1){
                         var model = files[g].substr(17, files[g].length);
                         var model = '.' + model;
@@ -189,9 +132,10 @@ function injectPluginModels(pluginModels, cb) {
                         obj = {};
                         obj.models = mod;
                         obj.controllers = {};
+                        obj.adapters = {};
                         arr.push(obj);
                     }
-                    var ctlrindex = file.search("Controller.js");
+                    /*var ctlrindex = file.search("Controller.js");
                     if(ctlrindex !== -1){
                         var controller = files[g].substr(17, files[g].length);
                         var controller = '.' + controller;
@@ -199,19 +143,27 @@ function injectPluginModels(pluginModels, cb) {
                         obj = {};
                         obj.controllers = ctr;
                         obj.models = {}; //all objects must have a controllers prop and a models prop
+                        obj.adapters = {};
                         arr.push(obj);
-                    }
+                    }*/
                    var adapterindex = file.search("Adapter.js");
                    if(adapterindex !== -1){
                         var adapter = files[g].substr(17, files[g].length);
                         var adapter = '.' + adapter;
                         adp = require(adapter);
+                        sails.config.plugin = adp;
                         
-                       if(adp.floodlight){
+                       obj = {};
+                       obj.models = {};
+                       obj.controllers = {};
+                       obj.adapters = adp;
+                       arr.push(obj);
+                       
+                       /*if(adp.floodlight){
                             for(key in adp.floodlight){
                                 if(key === 'TO_OFP'){
                                     for(ky in adp.floodlight.TO_OFP){
-                                    Floodlight.TO_OFP[ky] = adp.floodlight.TO_OFP[ky]; //use this.TO_OFP
+                                    Floodlight.TO_OFP[ky] = adp.floodlight.TO_OFP[ky]; //use this.TO_OFP   
                                     }
                                 }
                                 else{
@@ -231,7 +183,7 @@ function injectPluginModels(pluginModels, cb) {
                                 Opendaylight[key] = adp.opendaylight[key];
                                 }
                             }   
-                        }
+                        }*/
                     }
                 
                 //Views are moved into their folders for the restart
@@ -289,10 +241,11 @@ function injectPluginModels(pluginModels, cb) {
           // customize for your use case
           var pluginModels = _.pluck(plugins, 'models');
           var pluginControllers = _.pluck(plugins, 'controllers');
+          var pluginAdapters = _.pluck(plugins, 'adapters');
+           
           injectPluginModels(pluginModels, cb);
-          mountBlueprintsForModels(pluginModels, pluginControllers);
-          //console.log(sails.models);
-              //console.log(files);
+          mountBlueprintsForModels(pluginModels, pluginControllers);      
+                
             });
 
     });

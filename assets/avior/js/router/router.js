@@ -391,12 +391,12 @@ define([
 			else if(this.switchCollection.models.length > 0 && this.hostCollection.models.length > 0 && this.topology === undefined){
 				this.topology = new TopologyView(self.switchCollection, self.hostCollection);
 				this.topology.render;
-				this.secondaryPanel("topology");
+				//this.secondaryPanel("topology");
 			}
 			 
 			else if (this.topology != undefined){
 				this.topology.render();
-                this.secondaryPanel("topology");
+                //this.secondaryPanel("topology");
 			}
 				
 				
@@ -406,7 +406,7 @@ define([
 				this.hostview.listenTo(this.hostview.collection, "sync", function () {
 					this.topology = new TopologyView(self.switchCollection, self.hostCollection);
 					this.topology.render;
-                    this.secondaryPanel("topology");
+                    //this.secondaryPanel("topology");
 				});
 			}
 			
@@ -425,7 +425,7 @@ define([
 					self.topology = new TopologyView(self.switchCollection, self.hostCollection);										
 					self.topology.render();
 					
-                    this.secondaryPanel("topology");
+                   // this.secondaryPanel("topology");
 						
 			}
         },

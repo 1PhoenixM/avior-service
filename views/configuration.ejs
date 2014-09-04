@@ -77,9 +77,9 @@
 <h2> Avior Configuration </h2>
 <h4> Secondary Panels </h4>
 <h4> Here, you can customize Avior by choosing which panels will show up on the right of the main panel. </h4>
-<form>
+
 	<label for="controller_main" class="select">Controller Page: </label>
-    <select id="controller_main">
+    <select name="controller_main" id="controller_main">
         <option value="host_view">Hosts</option>
         <option value="switch_view">Switches</option>
         <option value="topology_view" selected="selected">Topology</option>
@@ -87,7 +87,7 @@
     </select>
     
     <label for="host_main" class="select">Host Page: </label>
-    <select id="host_main">
+    <select name="host_main" id="host_main">
         <option value="controller_view">Controller</option>
         <option value="switch_view">Switches</option>
         <option value="topology_view" selected="selected">Topology</option>
@@ -95,7 +95,7 @@
     </select>
     
     <label for="switch_main" class="select">Switch Page: </label>
-    <select id="switch_main">
+    <select name="switch_main" id="switch_main">
          <option value="controller_view">Controller</option>
         <option value="host_view">Hosts</option>
         <option value="topology_view" selected="selected">Topology</option>
@@ -103,7 +103,7 @@
     </select>
     
     <label for="topology_main" class="select">Topology Page: </label>
-    <select id="topology_main">
+    <select name="topology_main" id="topology_main" disabled>
         <option value="controller_view">Controller</option></option>
         <option value="host_view" selected="selected">Hosts</option>
         <option value="switch_view">Switches</option>
@@ -111,14 +111,14 @@
     </select>
     
     <label for="flow_main" class="select">Flow Editor Page: </label>
-    <select id="flow_main">
+    <select name="flow_main" id="flow_main">
         <option value="controller_view">Controller</option>
         <option value="host_view">Hosts</option>
         <option value="switch_view" selected="selected">Switches</option>
         <option value="topology_view">Topology</option>
     </select>
     
-</form>
+
 
 <button name="config_send" id="config_send" onclick="config_send();">Set</button>
 </div>

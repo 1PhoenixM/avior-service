@@ -336,6 +336,7 @@ module.exports = {
     dpid: '',
     
 	identity: 'floodlight',
+    
 
         registerConnection: function (conn, coll, cb) {
                 if (!conn.port) { conn.port = 8080; }
@@ -350,6 +351,7 @@ module.exports = {
         },
 
         find: function (conn, coll, options, cb) {
+            //console.log(this);
             switch (coll){   
                 //core
                 case 'flow': return this.getFlows({args:['all'],call:coll},cb);
@@ -705,7 +707,6 @@ module.exports = {
     delFlow: restCall('DELETE','/wm/staticflowentrypusher/json'),
     postFirewallRule: restCall('POST','/wm/firewall/rules/json'),
     deleteFirewallRule: restCall('DELETE','/wm/firewall/rules/json'),
-    
     
 	//////////////// PLACEHOLDER FOR VIRTUAL NETWORK CALLS
     //Firewall is unused for now
