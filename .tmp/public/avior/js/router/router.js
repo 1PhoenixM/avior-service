@@ -97,6 +97,10 @@ define([
             
         },
 		
+        /*intialize: function() {
+            //Load plugin routes here? 
+        },*/
+        
 		/*initialize: function(collec, display, state) {
 			this.toggleCount = 0;
 			console.log(window.innerHeight);
@@ -108,9 +112,9 @@ define([
 			// body...
 			if (display)
 				this.render();
-		}
+		}*/
 
-		render: function() {
+		/*render: function() {
 			$('#content').empty();
 			this.$el.html(this.template3({coll: this.collection.toJSON()})).trigger('create');
 			// body...

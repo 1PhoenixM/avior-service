@@ -6,7 +6,7 @@ define([
 	"text!template/login.html",
 	"text!template/content.html",
 	"layout/frontpage",
-    "router/pluginrouter",
+    "router/pluginrouter"
 ], function($, _, Backbone, Router, loginTpl, contentTpl, FrontPage, PluginRouter){
 	return { 
 		Router: Router,
@@ -14,7 +14,11 @@ define([
 
 		template: _.template(loginTpl),
 		template2: _.template(contentTpl),
-
+        
+        test: function(){
+            return true;   
+        },
+        
 		initialize: function(){
 			//console.log(window.innerHeight);
 			//console.log(window.outerHeight);
@@ -76,7 +80,9 @@ define([
                             document.getElementById("leftpanel3").style.display='block';
                             document.getElementById("logout").style.display='block';
                             var router = new Router();
-                            var pluginRouter = new PluginRouter();
+                            if(pluginRouter){
+                                var pluginRouter = new PluginRouter();
+                            }
                             Backbone.history.start();
                         }
   				}

@@ -15,10 +15,153 @@ module.exports.bootstrap = function(cb) {
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
   
   //Plugin integration continues here from /api/hooks/plugins/index.js  
-  var Floodlight = require('../api/adapters/FloodlightAdapter');
-  var Opendaylight = require('../api/adapters/OpenDaylightAdapter');    
+  //var Floodlight = require('../api/adapters/FloodlightAdapter');
+  //var Opendaylight = require('../api/adapters/OpenDaylightAdapter');    
+  
+    /*var AdapterArray = [];
+  var fs = require('fs');
+  var plugins = fs.readdirSync('./api/hooks/plugins/files/');
+  for(var i=0; i<plugins.length; i++){
+      if (plugins[i].search('.') === -1){ //No extension, so it's a directory
+         var pluginfiles = fs.readdirSync('./api/hooks/plugins/files/' + plugins[i]); 
+         for(var j=0; j<pluginfiles.length; j++){
+            if(pluginfiles[j].search("Adapter.js") !== -1){
+                var adapter = require('./api/hooks/plugins/files/' + pluginfiles[j]);
+                AdapterArray.push(adapter);
+            }
+         }
+      }
+  }*/
+  
+  
     
-  /*var adp = require('../api/hooks/plugins/files/FloodlightRole/AviorAdapter');
+    
+            var fs = require('fs');
+              
+            var path = require('path');  
+
+            //var plugins = fs.readdirSync('./api/hooks/plugins/models');
+              
+            var recursive = require('recursive-readdir');
+              
+            recursive('./api/hooks/plugins/files', function (err, files) {
+              // Files is an array of filename
+                
+            arr = [];
+                
+            var Floodlight = sails.adapters.floodlight;
+            var Opendaylight = sails.adapters.opendaylight;   
+                
+            for(var g=0; g<files.length; g++){
+                    var file = files[g];
+                    /*var modindex = file.search(/Model.js$/); //change to identify files in the Model folder
+                    if(modindex !== -1){
+                        var model = files[g];
+                        var model = '../' + model;
+                        mod = require(model);
+                        obj = {};
+                        obj.models = mod;
+                        obj.controllers = {};
+                        obj.adapters = {};
+                        arr.push(obj);
+                    }*/
+                    /*var ctlrindex = file.search(/Controller.js$/);
+                    if(ctlrindex !== -1){
+                        var controller = files[g].substr(17, files[g].length);
+                        var controller = '.' + controller;
+                        ctr = require(controller);
+                        obj = {};
+                        obj.controllers = ctr;
+                        obj.models = {}; //all objects must have a controllers prop and a models prop
+                        obj.adapters = {};
+                        arr.push(obj);
+                    }*/
+                   var adapterindex = file.search(/Adapter.js$/); //regex
+                   if(adapterindex !== -1){
+                        var adapter = files[g];
+                        var adapter = '../' + adapter;
+                        adp = require(adapter);
+                        sails.config.plugin = adp;
+                        
+                       obj = {};
+                       obj.models = {};
+                       obj.controllers = {};
+                       obj.adapters = adp;
+                       arr.push(obj);
+                       
+                       if(adp.floodlight){
+                            for(key in adp.floodlight){
+                                if(key === 'TO_OFP'){
+                                    for(ky in adp.floodlight.TO_OFP){
+                                    Floodlight.TO_OFP[ky] = adp.floodlight.TO_OFP[ky]; //use this.TO_OFP   
+                                    }
+                                }
+                                else{
+                                Floodlight[key] = adp.floodlight[key];
+                                }
+                            }    
+                        }
+                        
+                        if(adp.opendaylight){
+                             for(key in adp.opendaylight){
+                                if(key === 'TO_OFP'){
+                                    for(ky in adp.opendaylight.TO_OFP){
+                                    Opendaylight.TO_OFP[ky] = adp.opendaylight.TO_OFP[ky]; //use this.TO_OFP
+                                    }
+                                }
+                                else{
+                                Opendaylight[key] = adp.opendaylight[key];
+                                }
+                            }   
+                        }
+                    }
+                
+                //Views are moved into their folders for the restart
+                //To handle: Python scripts folder
+                var apindex = file.search(/API.js$/);
+                if(apindex !== -1){
+                    var API = files[g].substr(24, files[g].length);
+                    var APIName = path.basename(API);
+                    fs.renameSync('./api/hooks/plugins/files/' + API, './assets/avior/js/floodlight/' + APIName);
+                }
+                var modelfindex = file.search(/ModelF.js$/);
+                if(modelfindex !== -1){
+                    var ModelF = files[g].substr(24, files[g].length);
+                    var ModelFName = path.basename(ModelF);
+                    fs.renameSync('./api/hooks/plugins/files/' + ModelF, './assets/avior/js/model/' + ModelFName);
+                }
+                var collectionindex = file.search(/Collection.js$/);
+                if(collectionindex !== -1){
+                    var Collection = files[g].substr(24, files[g].length);
+                    var CollectionName = path.basename(Collection);
+                    fs.renameSync('./api/hooks/plugins/files/' + Collection, './assets/avior/js/collection/' + CollectionName);
+                }
+                var viewindex = file.search(/View.js$/);
+                if(viewindex !== -1){
+                    var View = files[g].substr(24, files[g].length);
+                    var ViewName = path.basename(View);
+                    fs.renameSync('./api/hooks/plugins/files/' + View, './assets/avior/js/view/' + ViewName);
+                }
+                var tplindex = file.search(/tpl.html$/);
+                if(tplindex !== -1){
+                    var Template = files[g].substr(24, files[g].length);
+                    var TemplateName = path.basename(Template);
+                    fs.renameSync('./api/hooks/plugins/files/' + Template, './assets/avior/tpl/' + TemplateName);
+                }
+                var routeindex = file.search(/Router.js$/);
+                if(routeindex !== -1){
+                    var Router = files[g].substr(24, files[g].length);
+                    var RouterName = path.basename(Router);
+                    fs.renameSync('./api/hooks/plugins/files/' + Router, './assets/avior/js/router/' + RouterName); //change to pluginrouter
+                }
+            }
+
+            cb();    
+                
+            });
+    
+  /*var adp = AdapterArray[0];
+  var adp = require('../api/hooks/plugins/files/FloodlightRole/AviorAdapter');
     
                         if(adp.floodlight){
                             for(key in adp.floodlight){
@@ -47,5 +190,5 @@ module.exports.bootstrap = function(cb) {
                             }   
                         }*/
     
-  cb();
+  //cb();
 };

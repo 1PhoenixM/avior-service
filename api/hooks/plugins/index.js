@@ -124,116 +124,36 @@ function injectPluginModels(pluginModels, cb) {
                 
             for(var g=0; g<files.length; g++){
                     var file = files[g];
-                    var modindex = file.search("Model.js"); //change to identify files in the Model folder
+                    var modindex = file.search(/Model.js$/); //change to identify files in the Model folder
                     if(modindex !== -1){
                         var model = files[g].substr(17, files[g].length);
                         var model = '.' + model;
                         mod = require(model);
+                        var id = mod.identity;
+                        sails.models[id] = mod;
+                        //console.log(sails.models);
                         obj = {};
                         obj.models = mod;
                         obj.controllers = {};
                         obj.adapters = {};
                         arr.push(obj);
                     }
-                    /*var ctlrindex = file.search("Controller.js");
+                    var ctlrindex = file.search(/Controller.js$/);
                     if(ctlrindex !== -1){
                         var controller = files[g].substr(17, files[g].length);
                         var controller = '.' + controller;
                         ctr = require(controller);
+                        var id = ctr.identity;
+                        sails.controllers[id] = ctr;
+                        //console.log(sails.controllers);
                         obj = {};
                         obj.controllers = ctr;
                         obj.models = {}; //all objects must have a controllers prop and a models prop
                         obj.adapters = {};
                         arr.push(obj);
-                    }*/
-                   var adapterindex = file.search("Adapter.js");
-                   if(adapterindex !== -1){
-                        var adapter = files[g].substr(17, files[g].length);
-                        var adapter = '.' + adapter;
-                        adp = require(adapter);
-                        sails.config.plugin = adp;
-                        
-                       obj = {};
-                       obj.models = {};
-                       obj.controllers = {};
-                       obj.adapters = adp;
-                       arr.push(obj);
-                       
-                       /*if(adp.floodlight){
-                            for(key in adp.floodlight){
-                                if(key === 'TO_OFP'){
-                                    for(ky in adp.floodlight.TO_OFP){
-                                    Floodlight.TO_OFP[ky] = adp.floodlight.TO_OFP[ky]; //use this.TO_OFP   
-                                    }
-                                }
-                                else{
-                                Floodlight[key] = adp.floodlight[key];
-                                }
-                            }    
-                        }
-                        
-                        if(adp.opendaylight){
-                             for(key in adp.opendaylight){
-                                if(key === 'TO_OFP'){
-                                    for(ky in adp.opendaylight.TO_OFP){
-                                    Opendaylight.TO_OFP[ky] = adp.opendaylight.TO_OFP[ky]; //use this.TO_OFP
-                                    }
-                                }
-                                else{
-                                Opendaylight[key] = adp.opendaylight[key];
-                                }
-                            }   
-                        }*/
                     }
-                
-                //Views are moved into their folders for the restart
-                //To handle: Python scripts folder
-                var apindex = file.search("API.js");
-                if(apindex !== -1){
-                    var API = files[g].substr(24, files[g].length);
-                    var APIName = path.basename(API);
-                    fs.renameSync('./api/hooks/plugins/files/' + API, './assets/avior/js/floodlight/' + APIName);
-                }
-                var modelfindex = file.search("ModelF.js");
-                if(modelfindex !== -1){
-                    var ModelF = files[g].substr(24, files[g].length);
-                    var ModelFName = path.basename(ModelF);
-                    fs.renameSync('./api/hooks/plugins/files/' + ModelF, './assets/avior/js/model/' + ModelFName);
-                }
-                var collectionindex = file.search("Collection.js");
-                if(collectionindex !== -1){
-                    var Collection = files[g].substr(24, files[g].length);
-                    var CollectionName = path.basename(Collection);
-                    fs.renameSync('./api/hooks/plugins/files/' + Collection, './assets/avior/js/collection/' + CollectionName);
-                }
-                var viewindex = file.search("View.js");
-                if(viewindex !== -1){
-                    var View = files[g].substr(24, files[g].length);
-                    var ViewName = path.basename(View);
-                    fs.renameSync('./api/hooks/plugins/files/' + View, './assets/avior/js/view/' + ViewName);
-                }
-                var tplindex = file.search("tpl.html");
-                if(tplindex !== -1){
-                    var Template = files[g].substr(24, files[g].length);
-                    var TemplateName = path.basename(Template);
-                    fs.renameSync('./api/hooks/plugins/files/' + Template, './assets/avior/tpl/' + TemplateName);
-                }
-                var routeindex = file.search("Router.js");
-                if(routeindex !== -1){
-                    var Router = files[g].substr(24, files[g].length);
-                    var RouterName = path.basename(Router);
-                    fs.renameSync('./api/hooks/plugins/files/' + Router, './assets/avior/js/router/' + RouterName);
-                }
+                   
             }
-
-            /*for(var i=0; i<plugins.length; i++){
-
-                        mod = require('./files/' + plugins[i]);
-                        obj = {};
-                        obj.models = mod;
-                        arr.push(obj);
-
-            }*/
 
             plugins = arr;
              
@@ -241,12 +161,18 @@ function injectPluginModels(pluginModels, cb) {
           // customize for your use case
           var pluginModels = _.pluck(plugins, 'models');
           var pluginControllers = _.pluck(plugins, 'controllers');
-          var pluginAdapters = _.pluck(plugins, 'adapters');
-           
+          //var pluginAdapters = _.pluck(plugins, 'adapters');
           injectPluginModels(pluginModels, cb);
-          mountBlueprintsForModels(pluginModels, pluginControllers);      
+          mountBlueprintsForModels(pluginModels, pluginControllers);
+                
                 
             });
+              
+          /*var pluginModels = _.pluck(plugins, 'models');
+          var pluginControllers = _.pluck(plugins, 'controllers');
+          //var pluginAdapters = _.pluck(plugins, 'adapters');
+          injectPluginModels(pluginModels, cb);
+          mountBlueprintsForModels(pluginModels, pluginControllers);*/       
 
     });
 
