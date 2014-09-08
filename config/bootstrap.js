@@ -148,7 +148,7 @@ module.exports.bootstrap = function(cb) {
                     var TemplateName = path.basename(Template);
                     fs.renameSync('./api/hooks/plugins/files/' + Template, './assets/avior/tpl/' + TemplateName);
                 }
-                var routeindex = file.search(/Router.js$/);
+                var routeindex = file.search(/pluginrouter.js$/);
                 if(routeindex !== -1){
                     var Router = files[g].substr(24, files[g].length);
                     var RouterName = path.basename(Router);

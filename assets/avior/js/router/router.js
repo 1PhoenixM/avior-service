@@ -97,9 +97,22 @@ define([
             
         },
 		
-        /*intialize: function() {
-            //Load plugin routes here? 
-        },*/
+        initialize: function() {
+            //Load plugin routes here?
+            /*if(pluginRoutes){
+                for(key in pluginRoutes){
+                    console.log(key);
+                   if(key === "routes"){
+                    for(ky in pluginRoutes.routes){
+                        this.routes.ky = pluginRoutes.routes.ky;  
+                    }
+                   }
+                   else{    
+                    this.key = pluginRoutes.key;
+                   }
+                }
+            }*/
+        },
         
 		/*initialize: function(collec, display, state) {
 			this.toggleCount = 0;

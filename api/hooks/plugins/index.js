@@ -126,8 +126,13 @@ function injectPluginModels(pluginModels, cb) {
                     var file = files[g];
                     var modindex = file.search(/Model.js$/); //change to identify files in the Model folder
                     if(modindex !== -1){
-                        var model = files[g].substr(17, files[g].length);
-                        var model = '.' + model;
+                        var model = files[g].substr(23, files[g].length);
+                        console.log(model);
+                        
+                        var ModelName = path.basename(model);
+                        fs.renameSync('./api/hooks/plugins/files/' + model, './api/models/' + ModelName);
+                        
+                        /*var model = '.' + model;
                         mod = require(model);
                         var id = mod.identity;
                         sails.models[id] = mod;
@@ -136,12 +141,18 @@ function injectPluginModels(pluginModels, cb) {
                         obj.models = mod;
                         obj.controllers = {};
                         obj.adapters = {};
-                        arr.push(obj);
+                        arr.push(obj);*/
                     }
                     var ctlrindex = file.search(/Controller.js$/);
                     if(ctlrindex !== -1){
-                        var controller = files[g].substr(17, files[g].length);
-                        var controller = '.' + controller;
+                        var controller = files[g].substr(23, files[g].length);
+                        console.log(controller);
+                        
+                        var ControllerName = path.basename(controller);
+                        fs.renameSync('./api/hooks/plugins/files/' + controller, './api/controllers/' + ControllerName);
+                        
+                        
+                        /*var controller = '.' + controller;
                         ctr = require(controller);
                         var id = ctr.identity;
                         sails.controllers[id] = ctr;
@@ -150,7 +161,7 @@ function injectPluginModels(pluginModels, cb) {
                         obj.controllers = ctr;
                         obj.models = {}; //all objects must have a controllers prop and a models prop
                         obj.adapters = {};
-                        arr.push(obj);
+                        arr.push(obj);*/
                     }
                    
             }

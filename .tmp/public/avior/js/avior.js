@@ -5,12 +5,10 @@ define([
 	"router/router",
 	"text!template/login.html",
 	"text!template/content.html",
-	"layout/frontpage",
-    "router/pluginrouter"
-], function($, _, Backbone, Router, loginTpl, contentTpl, FrontPage, PluginRouter){
+	"layout/frontpage"
+], function($, _, Backbone, Router, loginTpl, contentTpl, FrontPage){
 	return { 
 		Router: Router,
-        PluginRouter: PluginRouter,
 
 		template: _.template(loginTpl),
 		template2: _.template(contentTpl),
@@ -68,7 +66,15 @@ define([
                         document.getElementById("leftpanel3").style.display='block';
                         document.getElementById("logout").style.display='block';
                         var router = new Router();
-                        Backbone.history.start();
+                        
+                        require(['../js/router/pluginrouter'], function (pluginrouter) {
+                                var PluginRouter = pluginrouter;
+                                var pluginRouter = new PluginRouter();
+                                Backbone.history.start();
+                            });
+                        
+                            Backbone.history.start();    
+                        
                         } else {
                             $(document).bind('pageinit');
                             $(function() { $("#some-div").show(); });
@@ -80,9 +86,13 @@ define([
                             document.getElementById("leftpanel3").style.display='block';
                             document.getElementById("logout").style.display='block';
                             var router = new Router();
-                            if(pluginRouter){
+                           
+                            require(['../js/router/pluginrouter'], function (pluginrouter) {
+                                var PluginRouter = pluginrouter;
                                 var pluginRouter = new PluginRouter();
-                            }
+                                Backbone.history.start();
+                            });
+                            
                             Backbone.history.start();
                         }
   				}
@@ -118,8 +128,16 @@ define([
 				$('#content').empty();
 				document.getElementById("leftpanel3").style.display='block';
 				document.getElementById("logout").style.display='block';
-				var router = new Router(); 
-				Backbone.history.start();
+				var router = new Router();
+                
+                require(['../js/router/pluginrouter'], function (pluginrouter) {
+                                var PluginRouter = pluginrouter;
+                                var pluginRouter = new PluginRouter();
+                                Backbone.history.start();
+                            });
+                
+                Backbone.history.start();
+				
 				window.location.href = "/avior/index.html#controllers";
 				localStorage.loggedIn = true;
 			}

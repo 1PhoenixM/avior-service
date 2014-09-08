@@ -454,9 +454,13 @@ module.exports = {
                          break;
                 case 'nodecluster': return this.getNodeCluster({args:['default'],call:coll},cb);
                          break;
-		        default: return cb(); //return this.get + coll + ({args:['default'],call:coll},cb); //for plugin routes
+		        default: this.pluginFind(conn, coll, options, cb); //return this.get + coll + ({args:['default'],call:coll},cb); //for plugin routes
                         break;
                 }
+        },
+    
+        pluginFind: function(conn, coll, options, cb){
+            return cb();
         },
     
         create: function (conn, coll, options, cb) {

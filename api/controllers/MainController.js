@@ -38,9 +38,13 @@ module.exports = {
             else if(jsonObj.sdncontroller === 'opendaylight'){
             jsonObj.icon = '/avior/img/opendaylight-icon.png';    
             }
+            else if(jsonObj.sdncontroller === 'ryu'){
+            jsonObj.icon = '/avior/img/ryu-icon.png';    
+            }
             else{
             jsonObj.icon = '';    
             }
+            //jsonObj.icon = '/avior/img/' + jsonObj.sdncontroller '-icon.png';
         res.json(jsonObj);
         }
         else if(sails.config.models.connection !== 'util'){
@@ -51,6 +55,9 @@ module.exports = {
             }
             else if(jsonObj.sdncontroller === 'opendaylight'){
             jsonObj.icon = '/avior/img/opendaylight-icon.png';    
+            }
+            else if(jsonObj.sdncontroller === 'ryu'){
+            jsonObj.icon = '/avior/img/ryu-icon.png';    
             }
             else{
             jsonObj.icon = '';    

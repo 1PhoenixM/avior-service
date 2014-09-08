@@ -19,7 +19,7 @@ module.exports = {
         //console.log(files);
         //base dir: /avior-service
 	   //console.log(fs.readdirSync('./.tmp/uploads'));
-         var fs = require('fs');  
+         var fs = require('fs');
     if(files[0].type === "application/zip"){
         console.log(".zip file found, starting integration...");
         fs.renameSync('./.tmp/uploads/' + files[0].filename, './api/hooks/plugins/zipped/' + files[0].filename);

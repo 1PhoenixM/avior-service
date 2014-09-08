@@ -1,5 +1,6 @@
 var Floodlight = require('./FloodlightAdapter');
 var OpenDaylight = require('./OpenDaylightAdapter');
+var Ryu = require('./RyuAdapter');
 
 module.exports = {
 	identity: 'util',
@@ -48,6 +49,9 @@ module.exports = {
              case 'opendaylight':
                     //console.log(sails.controllers.main.sdncontroller);
                     OpenDaylight.find(conn, coll, options, cb);
+                    break;
+            case 'ryu':
+                    Ryu.find(conn, coll, options, cb);
                     break;
             default:
                     console.log("Error: No valid controller was provided.");

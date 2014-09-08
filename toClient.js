@@ -169,7 +169,7 @@ module.exports = function (ctlr,call,postData,cb) {
                                 var normalizedObject = ctlr.normalize(newObject);
                             }
 
-                            else{
+                            else if(ctlr.nodeParse){
                                 var newObject = ctlr.nodeParse(call, responseObject, null);
 
                                 var normalizedObject = ctlr.normalize(newObject);
@@ -179,6 +179,13 @@ module.exports = function (ctlr,call,postData,cb) {
                                 else{
                                     normalizedObject = normalizedObject;
                                 }   
+                            }
+                            
+                            else if(ctlr.dpParse){
+                                var newObject = ctlr.dpParse(call, responseObject);
+                                //console.log(newObject);
+                                var normalizedObject = ctlr.normalize(newObject); 
+                                //console.log(normalizedObject);
                             }
                             
                             if(ctlr.dpid){
