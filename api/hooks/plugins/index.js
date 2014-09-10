@@ -8,7 +8,7 @@
 var Waterline = require('waterline');
 
 module.exports = function(sails) {
-
+    
 function injectPluginModels(pluginModels, cb) {
   // copy sails/lib/hooks/orm/loadUserModules to make it accessible here
     
@@ -99,6 +99,7 @@ function injectPluginModels(pluginModels, cb) {
     }
 
   return {
+      
 
     initialize: function(cb) {
        var Floodlight = require('../../adapters/FloodlightAdapter');  
@@ -127,7 +128,7 @@ function injectPluginModels(pluginModels, cb) {
                     var modindex = file.search(/Model.js$/); //change to identify files in the Model folder
                     if(modindex !== -1){
                         var model = files[g].substr(23, files[g].length);
-                        console.log(model);
+                        //console.log(model);
                         
                         var ModelName = path.basename(model);
                         fs.renameSync('./api/hooks/plugins/files/' + model, './api/models/' + ModelName);
@@ -146,7 +147,7 @@ function injectPluginModels(pluginModels, cb) {
                     var ctlrindex = file.search(/Controller.js$/);
                     if(ctlrindex !== -1){
                         var controller = files[g].substr(23, files[g].length);
-                        console.log(controller);
+                        //console.log(controller);
                         
                         var ControllerName = path.basename(controller);
                         fs.renameSync('./api/hooks/plugins/files/' + controller, './api/controllers/' + ControllerName);

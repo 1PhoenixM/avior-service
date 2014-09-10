@@ -34,7 +34,7 @@ module.exports.bootstrap = function(cb) {
   }*/
   
   
-    
+            sails.config.plugins = [];
     
             var fs = require('fs');
               
@@ -82,7 +82,13 @@ module.exports.bootstrap = function(cb) {
                         var adapter = '../' + adapter;
                         adp = require(adapter);
                         sails.config.plugin = adp;
-                        
+                       
+                       //Plugin registering: depends on adapter being in top-level directory.
+                       var endOfName = adapter.lastIndexOf("/"); //Essentially getting the folder name for that plugin.
+                       var pluginName = adapter.substring(27, endOfName);
+                       //console.log(pluginName);
+                       sails.config.plugins.push(pluginName);
+                       
                        obj = {};
                        obj.models = {};
                        obj.controllers = {};

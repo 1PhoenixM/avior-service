@@ -446,6 +446,11 @@ module.exports = function (ctlr,call,postData,cb) {
             
         }
         
+        else if(ctlr.dpParse && (call === 'flowstats' || call === 'switchports' || call === 'switchdesc')){
+           console.log(normalizedObject);
+            cb(null,normalizedObject);
+        }
+        
                      
         else{
             cb(null,normalizedObject);

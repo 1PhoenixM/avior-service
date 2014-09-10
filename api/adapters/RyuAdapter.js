@@ -22,19 +22,33 @@ var restCall = function(apiMethod,apiPath){
                     res.on('end', function(){
                         //console.log(responseString);
                         var alldps = JSON.parse(responseString);
-                        var rawPath = apiPath;     
-                        if (options.args){
-                                    for (arg in options.args){
-                                            apiPath = apiPath.replace(/:[A-Za-z]+:/, options.args[arg]);
+                        if(options.args){
+                            for(var i=0; i<alldps.length; i++){
+                                options.args[0] = alldps[i];
+                                var rawPath = apiPath;     
+                                if (options.args){
+                                            for (arg in options.args){
+                                                    apiPath = apiPath.replace(/:[A-Za-z]+:/, options.args[arg]);
+                                            }
                                     }
+                                opts = {method:apiMethod,hostname:'localhost',port:8080,path:apiPath};
+                                req = http.request(opts, toClient(self,options.call,null,cb));
+                                if (options.data) {
+                                        req.write(JSON.stringify(options.data));
+                                }
+                                apiPath = rawPath;
+                                req.end();
                             }
-                            opts = {method:apiMethod,hostname:'localhost',port:8080,path:apiPath};
-                            req = http.request(opts, toClient(self,options.call,null,cb));
-                            if (options.data) {
-                                    req.write(JSON.stringify(options.data));
-                            }
-                            apiPath = rawPath;
-                            req.end(); 
+                        }
+                        else{
+                                opts = {method:apiMethod,hostname:'localhost',port:8080,path:apiPath};
+                                req = http.request(opts, toClient(self,options.call,null,cb));
+                                if (options.data) {
+                                        req.write(JSON.stringify(options.data));
+                                }
+                               
+                                req.end();
+                        }
                     });
                       
                 });
@@ -101,6 +115,12 @@ module.exports = {
             //Topology
             src: "Source",
             dst: "Destination",
+            SourcePortNum: "SourcePortNum",
+            DestinationPortNum: "DestinationPortNum",
+            SourceDPID: "SourceDPID",
+            DestinationDPID: "DestinationDPID",
+            
+            DPID: "DPID",
         },
 
         registerConnection: function (conn, coll, cb) {
@@ -123,9 +143,9 @@ module.exports = {
                         break;
                 case 'switchports': return this.getSwitchPorts({args:[1],call:coll},cb);
                         break; 
-                case 'switch': return this.getSwitches({args:[],call:coll},cb);
+                case 'switch': return this.getSwitches({call:coll},cb);
                         break;
-                case 'topology': return this.getTopologyLinks({args:[],call:coll},cb);
+                case 'topology': return this.getTopologyLinks({call:coll},cb);
                         break;
                 //case 'flow': return this.getFlows({args:['all'],call:coll},cb);
                         //break;
@@ -183,10 +203,53 @@ module.exports = {
                 
                 arr = [];
             
-                return obj;
-        
-        
+                switch(current){
+                case 'switchdesc':
+                        for(key in obj){
+                        newObj = obj[key];
+                        newObj.dpid = key;
+                        }
+                        arr.push(newObj);
+                        return arr;
+                        break;
+                case 'flowstats': 
+                        for(key in obj){
+                        newObj = obj[key];
+                        newObj.dpid = key;
+                        }
+                        arr.push(newObj);
+                        return arr;
+                        break;
+                case 'switchports': 
+                        for(key in obj){
+                        newObj = obj[key];
+                        newObj.dpid = key;
+                        }
+                        arr.push(newObj);
+                        return arr;
+                        break; 
+                case 'switch': return obj;
+                        break;
+                case 'topology':
+                        for(var i=0; i<obj.length; i++){
+                            newObj = {};
+                            newObj.SourcePortNum = parseInt(obj[i].src.port_no);
+                            newObj.DestinationPortNum = parseInt(obj[i].dst.port_no);
+                            newObj.SourceDPID = this.dpidize(obj[i].src.dpid);
+                            newObj.DestinationDPID = this.dpidize(obj[i].dst.dpid);
+                            arr.push(newObj);
+                        }
+                        return arr;
+                        break;        
+                default: return obj;
+                        break;
+                }
         },
+    
+    dpidize: function(dpid){
+        var actualDPID = dpid[0,1].concat(':', dpid[2,3], ':', dpid[4,5], ':', dpid[6,7], ':', dpid[8,9], ':', dpid[10,11], ':', dpid[12,13], ':', dpid[14,15]);
+        return actualDPID;
+    },
   
     //getFlows: restCall('GET',''), 
     

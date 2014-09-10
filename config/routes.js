@@ -38,7 +38,7 @@ module.exports.routes = {
     '/files': {
      view: 'plugins'    
     },
-    
+        
   '/sdncontroller': 'MainController.setinfo',
     
   '/unzip': 'MainController.unzip',

@@ -83,6 +83,11 @@
             //window.URL.revokeObjectURL(pluginURL);
         //}
     }
+    
+    function uninstaller(plugin){
+        window.location = "/plugin/uninstall/" + plugin;
+    }
+    
 </script>
 
 <header>
@@ -93,15 +98,21 @@
 
 <div id="check" style="text-align:center;"> 
 <h2> Plugin Manager </h2>
-<h4> << Link to Avior plugin guide and template. >></h4>
-<p> <<  List of all currently loaded plugins. >> </p>
+<h4> <a href="https://github.com/1PhoenixM/avior-plugin-template"> This guide and template will explain the file structure and required code for an Avior plugin. </a> </h4>
+<p> <b>Currently active plugins:</b> </p>
+<p> <%= plugins %> </p>
+<p> <% _.each(plugins, function(plugin) {
+    plugin = plugin.toString();
+    %> 
+    <button onclick="uninstaller('EnhancedFloodlightRole');">Remove <%= plugin %></button>
+    <% }) %></p>
 <h4> Please upload your plugin package below. </h4>
 <p>The only file extension currently accepted by Avior is .zip </p>
 <p id="warning"> To use your new plugin, it is necessary to restart the Avior backend server after you upload and validate your file. </p>
-<form action="/upload" enctype="multipart/form-data" method="post">    
+<!--form action="/upload" enctype="multipart/form-data" method="post">    
 <input id="plugin_file" type="file" name="unzip" multiple="multiple">
 <input type="submit" value="Upload">
-</form>
+</form-->
     
 <form action="http://localhost:1337/file/upload" enctype="multipart/form-data" method="post">
     <input type="text" name="title"><br>

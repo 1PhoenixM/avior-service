@@ -41,6 +41,8 @@ Dependencies: node.js, sails.js (via npm)
 (https://raw.githubusercontent.com/1PhoenixM/avior-service/master/assets/avior/img/floodlight-icon.png) (full support)
   * OpenDaylight ![Opendaylight Logo]
 (https://raw.githubusercontent.com/1PhoenixM/avior-service/master/assets/avior/img/opendaylight-icon.png) (full support)
+  * Ryu ![Ryu Logo]
+(https://raw.githubusercontent.com/1PhoenixM/avior-service/master/assets/avior/img/ryu-icon.png) (support coming soon)
   * And more...
     
 6. Enter the IP address of your controller and click "Start Avior". 
