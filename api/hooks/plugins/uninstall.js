@@ -10,7 +10,7 @@ module.exports = {
                     for(var g=0; g<sails.config.plugins.length; g++){
                         if(sails.config.plugins[g] === pluginName){
                             sails.config.plugins.splice(g, 1);
-                            console.log(sails.config.plugins);
+                            //console.log(sails.config.plugins);
                         }
                     }
                 }
@@ -32,7 +32,32 @@ module.exports = {
                        }
                     }
                 }
-                fs.renameSync('./api/hooks/plugins/files/' + pluginName, './.tmp/pluginstore/' + pluginName);
+                //Todo: separate plugins to be removed as selected.
+                //fs.renameSync('./api/hooks/plugins/files/' + pluginName, './.tmp/pluginstore/' + pluginName);
+                fs.readFile('./api/hooks/plugins/names.txt', {encoding: 'utf-8'}, function (err, data) {
+                    if (err) throw err;
+                    //console.log(data);
+                    var nameArray = data.split("\n");
+                    //console.log(nameArray);
+                    
+                    nameArray.pop();
+                    
+                    var counter  = 0;
+                        for(var i=0; i<nameArray.length; i++){
+                        fs.unlink(nameArray[i], function (err) {
+                            if (err) throw err;
+                            //console.log('Successfully deleted ' + nameArray[i]);
+                            counter++;
+                        });
+                        if(counter === nameArray.length - 1){ //todo: fix to clear out old names.
+                            fs.writeFile('./api/hooks/plugins/names.js', '', function (err) {
+                              if (err) throw err;
+                              console.log('names.txt was cleared out.');
+                            });
+                        }
+                        }
+                    });
+                
             }
             else{
                 console.log("Error: Plugin: " + pluginName + " was not found.");   

@@ -40,3 +40,8 @@
 .sailsView{
     text-align:center;
 }
+
+#activePlugins{
+    background-color: #c2c2d6; 
+    min-height: 100px;
+}

@@ -36,6 +36,7 @@ module.exports.bootstrap = function(cb) {
   
             sails.config.plugins = [];
     
+    
             var fs = require('fs');
               
             var path = require('path');  
@@ -79,6 +80,7 @@ module.exports.bootstrap = function(cb) {
                    var adapterindex = file.search(/Adapter.js$/); //regex
                    if(adapterindex !== -1){
                         var adapter = files[g];
+                       //fs.appendFileSync('./api/hooks/plugins/names.js', adapter + ',', {encoding: 'utf-8'});
                         var adapter = '../' + adapter;
                         adp = require(adapter);
                         sails.config.plugin = adp;
@@ -88,6 +90,9 @@ module.exports.bootstrap = function(cb) {
                        var pluginName = adapter.substring(27, endOfName);
                        //console.log(pluginName);
                        sails.config.plugins.push(pluginName);
+                       //can't delete dirs
+                       //fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './api/hooks/plugins/files/' + pluginName + '' + ',', {encoding: 'utf-8'});
+                      // fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './api/hooks/plugins/zipped/' + pluginName + '.zip' + '\n', {encoding: 'utf-8'});
                        
                        obj = {};
                        obj.models = {};
@@ -129,36 +134,42 @@ module.exports.bootstrap = function(cb) {
                     var API = files[g].substr(24, files[g].length);
                     var APIName = path.basename(API);
                     fs.renameSync('./api/hooks/plugins/files/' + API, './assets/avior/js/floodlight/' + APIName);
+                    fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './assets/avior/js/floodlight/' + APIName + '' + '\n', {encoding: 'utf-8'});
                 }
                 var modelfindex = file.search(/ModelF.js$/);
                 if(modelfindex !== -1){
                     var ModelF = files[g].substr(24, files[g].length);
                     var ModelFName = path.basename(ModelF);
                     fs.renameSync('./api/hooks/plugins/files/' + ModelF, './assets/avior/js/model/' + ModelFName);
+                    fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './assets/avior/js/model/' + ModelFName + '' + '\n', {encoding: 'utf-8'});
                 }
                 var collectionindex = file.search(/Collection.js$/);
                 if(collectionindex !== -1){
                     var Collection = files[g].substr(24, files[g].length);
                     var CollectionName = path.basename(Collection);
                     fs.renameSync('./api/hooks/plugins/files/' + Collection, './assets/avior/js/collection/' + CollectionName);
+                    fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './assets/avior/js/collection/' + CollectionName + '' + '\n', {encoding: 'utf-8'});
                 }
                 var viewindex = file.search(/View.js$/);
                 if(viewindex !== -1){
                     var View = files[g].substr(24, files[g].length);
                     var ViewName = path.basename(View);
                     fs.renameSync('./api/hooks/plugins/files/' + View, './assets/avior/js/view/' + ViewName);
+                    fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './assets/avior/js/view/' + ViewName + '' + '\n', {encoding: 'utf-8'});
                 }
                 var tplindex = file.search(/tpl.html$/);
                 if(tplindex !== -1){
                     var Template = files[g].substr(24, files[g].length);
                     var TemplateName = path.basename(Template);
                     fs.renameSync('./api/hooks/plugins/files/' + Template, './assets/avior/tpl/' + TemplateName);
+                    fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './assets/avior/tpl/' + TemplateName + '' + '\n', {encoding: 'utf-8'});
                 }
                 var routeindex = file.search(/pluginrouter.js$/);
                 if(routeindex !== -1){
                     var Router = files[g].substr(24, files[g].length);
                     var RouterName = path.basename(Router);
                     fs.renameSync('./api/hooks/plugins/files/' + Router, './assets/avior/js/router/' + RouterName); //change to pluginrouter
+                    fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './assets/avior/js/router/' + RouterName + '' + '\n', {encoding: 'utf-8'});
                 }
             }
 

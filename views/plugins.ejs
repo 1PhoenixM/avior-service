@@ -41,7 +41,13 @@
     }
     
     function uninstaller(plugin){
-        window.location = "/plugin/uninstall/" + plugin;
+        //Confirm whether the user wants to remove the plugin
+        if(confirm("Are you sure you want to completely remove " + plugin + "?") === true){
+                window.location = "/plugin/uninstall/" + plugin;
+        }
+        else{
+                return;  
+        }
     }
     
 </script>
@@ -61,13 +67,17 @@
     
     <p> <b>Currently active plugins:</b> </p>
     
-    <p> <%= plugins %> </p>
-    
-    <p> <%_.each(plugins, function(plugin) { %>
-        <button onclick="uninstaller('EnhancedFloodlightRole');">Remove <%= plugin %></button>
-        <% })  %>
+    <div id="activePlugins"> 
         
-    </p>
+        <p> <%= plugins %> </p> 
+    
+        <p> <%_.each(plugins, function(plugin) { %>
+            <button onclick="uninstaller('FinalFLRole');">Remove <%= plugin %></button>
+            <% })  %>
+
+        </p>
+        
+    </div>    
     
     <h4> Please upload your plugin package below. </h4>
     

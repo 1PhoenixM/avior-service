@@ -104,8 +104,8 @@ function injectPluginModels(pluginModels, cb) {
     initialize: function(cb) {
        var Floodlight = require('../../adapters/FloodlightAdapter');  
               
-       var Opendaylight = require('../../adapters/OpenDaylightAdapter');    
-    
+       var Opendaylight = require('../../adapters/OpenDaylightAdapter');
+           
         sails.after('hook:orm:loaded', function() {
           pluginLoader(function(err, plugins) {
             //plugins = [RolePlugin];  
@@ -117,6 +117,8 @@ function injectPluginModels(pluginModels, cb) {
             //var plugins = fs.readdirSync('./api/hooks/plugins/models');
               
             var recursive = require('recursive-readdir');
+              
+            sails.config.pluggedInFileNames = [];
               
             recursive('./api/hooks/plugins/files', function (err, files) {
               // Files is an array of filename
@@ -132,7 +134,7 @@ function injectPluginModels(pluginModels, cb) {
                         
                         var ModelName = path.basename(model);
                         fs.renameSync('./api/hooks/plugins/files/' + model, './api/models/' + ModelName);
-                        
+                        fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './api/models/' + ModelName + '' + '\n', {encoding: 'utf-8'});
                         /*var model = '.' + model;
                         mod = require(model);
                         var id = mod.identity;
@@ -151,8 +153,7 @@ function injectPluginModels(pluginModels, cb) {
                         
                         var ControllerName = path.basename(controller);
                         fs.renameSync('./api/hooks/plugins/files/' + controller, './api/controllers/' + ControllerName);
-                        
-                        
+                        fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './api/controllers/' + ControllerName + '' + '\n', {encoding: 'utf-8'});
                         /*var controller = '.' + controller;
                         ctr = require(controller);
                         var id = ctr.identity;
