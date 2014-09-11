@@ -29,7 +29,7 @@ module.exports.routes = {
   // (Alternatively, remove this and add an `index.html` file in your `assets` directory)
   '/': {
     view: 'controllercheck' //original: 'homepage'
-  }, //flash of unstyled content, not with plugins, only here?
+  }, //flash of unstyled content
     
   '/plugins': {
     view: 'plugins'

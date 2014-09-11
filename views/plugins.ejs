@@ -1,47 +1,3 @@
-<style>
-    
-.aviorHeader {
-  position:relative;
-}
-
-.headerIMG {
-  margin:auto;
-  position:absolute;
-  top:0;bottom:0;
-  left:0;right:0;
-}
-
-.headerIMG {
-  max-height:100%;
-  max-width: 100%;
-}
-
-.innerPageLoader{
-    display:none;
-  position:absolute;
-  vertical-align:center;
-  margin:auto;
-  top:40.5%; 
-  left:0;right:0;
-  //left:47.40%;
-  //top:45.35%;
-}
-    
-.ui-loader{
-    display:none;
-}
-
-.ui-icon-loading{
-    display:none;   
-}
-    
-#warning{
-    color: #b20000;   
-}
-  
-</style>
-
-
 <script>
     function validate(){
         //window.URL = window.URL || window.webkitURL;
@@ -96,29 +52,40 @@
 	</div>
 </header>
 
-<div id="check" style="text-align:center;"> 
-<h2> Plugin Manager </h2>
-<h4> <a href="https://github.com/1PhoenixM/avior-plugin-template"> This guide and template will explain the file structure and required code for an Avior plugin. </a> </h4>
-<p> <b>Currently active plugins:</b> </p>
-<p> <%= plugins %> </p>
-<p> <% _.each(plugins, function(plugin) {
-    plugin = plugin.toString();
-    %> 
-    <button onclick="uninstaller('EnhancedFloodlightRole');">Remove <%= plugin %></button>
-    <% }) %></p>
-<h4> Please upload your plugin package below. </h4>
-<p>The only file extension currently accepted by Avior is .zip </p>
-<p id="warning"> To use your new plugin, it is necessary to restart the Avior backend server after you upload and validate your file. </p>
-<!--form action="/upload" enctype="multipart/form-data" method="post">    
-<input id="plugin_file" type="file" name="unzip" multiple="multiple">
-<input type="submit" value="Upload">
-</form-->
+
+<div class="sailsView"> 
     
-<form action="http://localhost:1337/file/upload" enctype="multipart/form-data" method="post">
-    <input type="text" name="title"><br>
-    <input type="file" name="avatar" multiple="multiple"><br>
+    <h2> Plugin Manager </h2>
+    
+    <h4> <a href="https://github.com/1PhoenixM/avior-plugin-template"> This guide and template will explain the file structure and required code for an Avior plugin. </a> </h4>
+    
+    <p> <b>Currently active plugins:</b> </p>
+    
+    <p> <%= plugins %> </p>
+    
+    <p> <%_.each(plugins, function(plugin) { %>
+        <button onclick="uninstaller('EnhancedFloodlightRole');">Remove <%= plugin %></button>
+        <% })  %>
+        
+    </p>
+    
+    <h4> Please upload your plugin package below. </h4>
+    
+    <p>The only file extension currently accepted by Avior is .zip </p>
+    
+    <p id="warning"> To use your new plugin, it is necessary to restart the Avior backend server after you upload and validate your file. </p>
+    
+    <!--form action="/upload" enctype="multipart/form-data" method="post">    
+    <input id="plugin_file" type="file" name="unzip" multiple="multiple">
     <input type="submit" value="Upload">
+    </form-->
+
+    <form action="http://localhost:1337/file/upload" enctype="multipart/form-data" method="post">
+        <input type="text" name="title"><br>
+        <input type="file" name="avatar" multiple="multiple"><br>
+        <input type="submit" value="Upload">
     </form>  
+
+    <button name="validation" id="validate" class="small-6 columns" onclick="validate();">Submit New Plugin</button>
     
-<button name="validation" id="validate" class="small-6 columns" onclick="validate();">Submit New Plugin</button>
 </div>

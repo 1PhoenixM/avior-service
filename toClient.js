@@ -1,3 +1,7 @@
+//This is the callback which occurs after we have obtained data from the controller.
+//The calling of cb(); sends normalized data up to the Sails API and thus and to the browser client.
+//This file is only invoked for GET requests. POST/PUT/DELETE are handled within the api/controllers files and in the adapters' create, update and destroy functions.
+
 module.exports = function (ctlr,call,postData,cb) {
 	return function (res) {
 		//console.log(res);
@@ -240,17 +244,17 @@ module.exports = function (ctlr,call,postData,cb) {
 
 
                 opts.headers = {'Host': opts.hostname + ':' + opts.port, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-'Accept-Encoding': 'gzip,deflate,sdch',
-'Accept-Language':'en-US,en;q=0.8',
-'Cache-Control':'max-age=0',
-'Connection':'keep-alive',
-'Content-Length':33,
-'Content-Type':'application/x-www-form-urlencoded',                                
-'Cookie': ctlr.cookie,
-'Host':'localhost:8080',
-'Origin':'http://localhost:8080',
-'Referer':'http://localhost:8080/',
-'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'}; //spoofing for now, will fix
+                'Accept-Encoding': 'gzip,deflate,sdch',
+                'Accept-Language':'en-US,en;q=0.8',
+                'Cache-Control':'max-age=0',
+                'Connection':'keep-alive',
+                'Content-Length':33,
+                'Content-Type':'application/x-www-form-urlencoded',                                
+                'Cookie': ctlr.cookie,
+                'Host':'localhost:8080',
+                'Origin':'http://localhost:8080',
+                'Referer':'http://localhost:8080/',
+                'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'}; //spoofing for now, will fix
             
                 var http = require('http');            
                             
@@ -386,13 +390,13 @@ module.exports = function (ctlr,call,postData,cb) {
                 
                 
                 options.headers = {'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-'Accept-Encoding': 'gzip,deflate,sdch',
-'Accept-Language':'en-US,en;q=0.8',
-'Cache-Control':'max-age=0',
-'Connection':'keep-alive',
-'Cookie': ctlr.cookie,
-                               'Host':'localhost:8080',
-'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'};
+                'Accept-Encoding': 'gzip,deflate,sdch',
+                'Accept-Language':'en-US,en;q=0.8',
+                'Cache-Control':'max-age=0',
+                'Connection':'keep-alive',
+                'Cookie': ctlr.cookie,
+                                               'Host':'localhost:8080',
+                'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'};
 
                 //console.log(options.headers);
                 
