@@ -364,8 +364,8 @@ module.exports = {
                         break;
                 case 'host': return this.getHosts({call:coll},cb);
                         break;
-                case 'switchfeatures': return this.getSwitchFeatures({args:['all'],call:coll},cb);
-                        break;
+                //case 'switchfeatures': return this.getSwitchFeatures({args:['all'],call:coll},cb);
+                        //break;
                 case 'flowstats': return this.getFlowStats({args:['all'],call:coll},cb);
                         break;
                 case 'switchdesc': return this.getSwitchDesc({args:['all'],call:coll},cb);
