@@ -185,13 +185,14 @@ var restCall = function(apiMethod,apiPath){
                 if(sails.controllers.main.hostname){
                   var host = sails.controllers.main.hostname;
                 }
+            
+                var username = 'admin';
+                var password = 'admin';
+                var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
 
                 opts = {method:apiMethod,hostname:host,port:8080,path:apiPath, auth:auth}; //TODO: mask auth //auth:'admin:admin'
                 //if(options.call === 'switchdesc'){opts.auth = new Buffer(opts.auth).toString('base64');} //calls outside of rest api need encoded to base64
                 //console.log(apiPath);
-                var username = 'admin';
-                var password = 'admin';
-                var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
 
                 // auth is: 'Basic VGVzdDoxMjM='
 
