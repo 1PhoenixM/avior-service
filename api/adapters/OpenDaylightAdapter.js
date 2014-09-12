@@ -186,7 +186,7 @@ var restCall = function(apiMethod,apiPath){
                   var host = sails.controllers.main.hostname;
                 }
 
-                opts = {method:apiMethod,hostname:host,port:8080,path:apiPath}; //TODO: mask auth //auth:'admin:admin'
+                opts = {method:apiMethod,hostname:host,port:8080,path:apiPath, auth:auth}; //TODO: mask auth //auth:'admin:admin'
                 //if(options.call === 'switchdesc'){opts.auth = new Buffer(opts.auth).toString('base64');} //calls outside of rest api need encoded to base64
                 //console.log(apiPath);
                 var username = 'admin';
@@ -196,22 +196,22 @@ var restCall = function(apiMethod,apiPath){
                 // auth is: 'Basic VGVzdDoxMjM='
 
                 opts.headers = {'Host': opts.hostname + ':' + opts.port, 'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-'Accept-Encoding': 'gzip,deflate,sdch',
-'Accept-Language':'en-US,en;q=0.8',
-'Cache-Control':'max-age=0',
-'Connection':'keep-alive',
-'Cookie':'',
-'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'}; //spoofing for now, will fix
+                    'Accept-Encoding': 'gzip,deflate,sdch',
+                    'Accept-Language':'en-US,en;q=0.8',
+                    'Cache-Control':'max-age=0',
+                    'Connection':'keep-alive',
+                    'Cookie':'',
+                    'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'}; //spoofing for now, will fix
             
                 if(this.cookie){
                     opts.headers = {'Cookie': this.cookie, 'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-'Accept-Encoding': 'gzip,deflate,sdch',
-'Accept-Language':'en-US,en;q=0.8',
-'Cache-Control':'max-age=0',
-'Connection':'keep-alive',
-'Cookie':'',
-                               'Host': opts.hostname + ':' + opts.port,
-'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'};
+                    'Accept-Encoding': 'gzip,deflate,sdch',
+                    'Accept-Language':'en-US,en;q=0.8',
+                    'Cache-Control':'max-age=0',
+                    'Connection':'keep-alive',
+                    'Cookie':'',
+                    'Host': opts.hostname + ':' + opts.port,
+                    'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'};
                     //console.log(this.cookie);
                 }
                 req = http.request(opts, toClient(this,options.call,null,cb));
