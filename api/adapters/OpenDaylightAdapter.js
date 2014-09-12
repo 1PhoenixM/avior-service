@@ -186,11 +186,11 @@ var restCall = function(apiMethod,apiPath){
                   var host = sails.controllers.main.hostname;
                 }
 
-                opts = {method:apiMethod,hostname:host,port:8080,path:apiPath}; //TODO: mask auth //auth:'avior:avior'
+                opts = {method:apiMethod,hostname:host,port:8080,path:apiPath}; //TODO: mask auth //auth:'admin:admin'
                 //if(options.call === 'switchdesc'){opts.auth = new Buffer(opts.auth).toString('base64');} //calls outside of rest api need encoded to base64
                 //console.log(apiPath);
-                var username = 'avior';
-                var password = 'avior';
+                var username = 'admin';
+                var password = 'admin';
                 var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
 
                 // auth is: 'Basic VGVzdDoxMjM='
@@ -503,8 +503,8 @@ module.exports = {
                         if(sails.controllers.main.hostname){
                                   var host = sails.controllers.main.hostname;
                                 }
-                        var username = 'avior';
-                        var password = 'avior';
+                        var username = 'admin';
+                        var password = 'admin';
                         var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
                         var opts = {method:'PUT',hostname:host,port:8080,path:'/controller/nb/v2/flowprogrammer/default/node/OF/' + unparsed.switch +  '/staticFlow/' + unparsed.name +'',auth:auth};
                         console.log(opts.path);
@@ -567,7 +567,7 @@ module.exports = {
                         if(sails.controllers.main.hostname){
                                   var host = sails.controllers.main.hostname;
                                 }
-                        var opts = {method:'DELETE',hostname:host,port:8080,path:'http://localhost:8080/controller/nb/v2/flowprogrammer/default/node/OF/' + parsed.switch +  '/staticFlow/' + parsed.name +'',auth:'avior:avior'};
+                        var opts = {method:'DELETE',hostname:host,port:8080,path:'http://localhost:8080/controller/nb/v2/flowprogrammer/default/node/OF/' + parsed.switch +  '/staticFlow/' + parsed.name +'',auth:'admin:admin'};
                         console.log(opts.path);
                         var requ = http.request(opts,  function(res) {
                           console.log('STATUS: ' + res.statusCode);
