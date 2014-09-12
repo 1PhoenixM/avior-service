@@ -236,9 +236,6 @@ module.exports = function (ctlr,call,postData,cb) {
                             if(sails.controllers.main.hostname){
                               var host = sails.controllers.main.hostname;
                             }
-                            else{
-                              var host = 'localhost';
-                            }
             
                             opts = {method:'POST',hostname:host,port:8080,path:'/j_security_check?j_username=admin&j_password=admin',data:'j_username=admin&j_password=admin',auth:auth}; //TODO: mask auth //auth:'admin:admin'
 
@@ -303,9 +300,6 @@ module.exports = function (ctlr,call,postData,cb) {
                 
                 if(sails.controllers.main.hostname){
                   var host = sails.controllers.main.hostname;
-                }
-                else{
-                  var host = 'localhost';
                 }
                 
                 var options = {
@@ -375,9 +369,6 @@ module.exports = function (ctlr,call,postData,cb) {
                 
                 if(sails.controllers.main.hostname){
                   var host = sails.controllers.main.hostname;
-                }
-                else{
-                  var host = 'localhost';
                 }
 
                 var options = {
