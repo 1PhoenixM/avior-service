@@ -432,8 +432,8 @@ module.exports = {
                 case 'flowspec': return this.getFlowSpecs({args:['default'],call:coll},cb);
                          break;
                         
-                case 'switchfeatures': this.find(conn, 'switch', options, cb); //close to the same call, but fix later. //this recursion may be causing socket issues?
-                         break;
+                //case 'switchfeatures': this.find(conn, 'switch', options, cb); //close to the same call, but fix later. //this recursion may be causing socket issues?
+                  //       break;
                 case 'flowstats': this.find(conn, 'flow', options, cb);
                          break;
                 //case 'flows': return this.find(conn, 'flow', options, cb);
