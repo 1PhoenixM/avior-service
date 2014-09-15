@@ -4,7 +4,6 @@ define([
 	"backbone",
 	"marionette",
 	"collection/topologyCollection",
-	"floodlight/firewallModFl",
 	"floodlight/switch",
 	"view/switchDetail",
     "floodlight/config",
@@ -22,7 +21,6 @@ define([
 	"view/statusview",
 	"view/uptimeview",
 	"view/flowEditor",
-	"view/firewallEditor",
 	"view/hostview",
 	"view/topologyView",
 	"view/testView",
@@ -31,7 +29,7 @@ define([
 	"text!template/login.html",
 	"text!template/controller.html",
 	"text!template/content.html",
-], function($, _, Backbone, Marionette, TopologyCollection, FirewallMod, Switch, SwitchDetail, Config, Controller, Memory, Modules, Status, Uptime, Host, Test, Topo, FrontPage, MemoryView, ModulesView, StatusView, UptimeView, FlowEditor, FirewallEditor, HostView, TopologyView, TestView, ControllerView, ActiveView, loginTpl, controllerTpl, contentTpl){
+], function($, _, Backbone, Marionette, TopologyCollection, Switch, SwitchDetail, Config, Controller, Memory, Modules, Status, Uptime, Host, Test, Topo, FrontPage, MemoryView, ModulesView, StatusView, UptimeView, FlowEditor, HostView, TopologyView, TestView, ControllerView, ActiveView, loginTpl, controllerTpl, contentTpl){
 	/* Structure used to navigate through views */
 	var Router = Marionette.AppRouter.extend({
 		template: _.template(controllerTpl),
@@ -44,7 +42,6 @@ define([
 			"hosts": "hostRoute",
 			"switches": "switchRoute",
 			"floweditor": "staticFlowRoute",
-			"firewall": "firewallRoute",
 			"topology": "topologyRoute",
 			"ADVAlanche": "ADVAlancheRoute",
 			"qos": "qosRoute",
@@ -225,7 +222,7 @@ define([
 	
 			//moved toggle button stuff back to firewallEditor.js.
 			//the third parameter here indicates whether or not the buttonUpdating function in firewallEditor should be called. check initialize
-			new FirewallEditor(this.switchCollection, false, true);
+			//new FirewallEditor(this.switchCollection, false, true);
 		
 			document.title = 'Avior - Controllers';
 			//refactor titleChange to a function that takes in the new title as parameter
@@ -345,34 +342,6 @@ define([
                 this.secondaryPanel("flowed");
         },
         
-        firewallRoute: function() {
-        	$('#content').empty();
-        	$('#leftPanel').empty();
-			$('#rightPanel').empty();
-			$('#content').prepend('<img class="innerPageLoader" src="img/ajax-loader.gif" />');
-
-			// Clears out any previous intervals
-			clearInterval(this.interval);
-			
-			document.title = 'Avior - Firewall';
-			
-			if (this.switchCollection === undefined){
-				var switchDetail = new SwitchDetail({model: new Switch});
-				switchDetail.delegateEvents(switchDetail.events);
-				switchDetail.listenTo(switchDetail.switchStats, "sync", function () {new FirewallEditor(switchDetail.collection, true);});
-			}
-			else
-				new FirewallEditor(this.switchCollection, true, false);
-			$('#content').append(this.template3).trigger('create');
-			layout = new FrontPage();
-			//layout.controllerShow();
-            //layout.hostShow();
-            //layout.switchShow();
-            layout.topologyShow();
-            //layout.staticFlowShow();
-			
-            //not customizable yet because it will soon be a plugin
-        },
         
         topologyRoute: function () {
         	

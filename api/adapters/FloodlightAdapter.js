@@ -389,18 +389,7 @@ module.exports = {
                         break;
                 case 'topologyexternallinks':return this.getTopologyExternalLinks({args:['all'],call:coll},cb);
                         break;
-                case 'firewallstatus':return this.getFirewallStatus({args:[],call:coll},cb);
-                        break;
-                case 'disablefirewall':return this.disableFirewall({args:[],call:coll},cb);
-                         break;
-                case 'enablefirewall':return this.enableFirewall({args:[],call:coll},cb);
-                         break;
-                case 'getFirewallStorageRules':return this.getFirewallStorageRules({args:['all'],call:coll},cb);
-                         break;
-                case 'getFirewallSubnetMask':return this.getFirewallSubnetMask({args:['all'],call:coll},cb);
-                         break;
-                case 'firewallrules':return this.getFirewallRules({args:['all'],call:coll},cb); 
-                         break;
+               
                 case 'clearflows':return this.clearFlows({args:['all'],call:coll},cb);
                          break;
                 case 'modules':return this.getModules({args:[],call:coll},cb);
@@ -444,54 +433,67 @@ module.exports = {
                         requ.write(JSON.stringify(flowData));
                         requ.end();
                         break;
-		        default: return cb();
+		        default: return this.pluginCreate(conn, coll, options, cb);
                 }
         },
     
+        pluginCreate: function(conn, coll, options, cb){
+            return cb(); //if no plugins, default behavior
+        },
+    
         update: function (conn, coll, options, cb) {
-                
+            return this.pluginUpdate(conn, coll, options, cb);    
+        },
+    
+        pluginUpdate: function(conn, coll, options, cb){
+            return cb(); //if no plugins, default behavior
         },
     
         destroy: function (conn, coll, options, cb) {
-         console.log("DELETED DATA: ");
-            switch(coll){
-            case 'alterflow':
-            case 'flow':
-            var flowData = options.data;
-        if(sails.controllers.main.hostname){
-          var host = sails.controllers.main.hostname;
-        }
-        var res = res;
-        var options = {
-            hostname:host, 
-            port:8080, 
-            path:'/wm/staticflowentrypusher/json',
-            method:'DELETE'};
-        
-        var req = http.request(options, function(res) {
-          console.log('\n' + 'STATUS: ' + res.statusCode + '\n');
-          console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
-          res.setEncoding('utf8');
-          res.on('data', function (chunk) {
-            console.log('BODY: ' + chunk + '\n');
-          });
-        });
-        
-        req.on('error', function(e) {
-          console.log('problem with request: ' + e.message + '\n');
-        });
-        
-        var realData; //temporary fix until find out what front-end parsing is doing
-        for(realData in flowData){
-            break;
-        }
-        
-        console.log(realData);
-        req.write(realData);
-        req.end(); 
-        break;
-            default: return cb();
+             console.log("DELETED DATA: ");
+                switch(coll){
+                case 'alterflow':
+                case 'flow':
+                var flowData = options.data;
+            if(sails.controllers.main.hostname){
+              var host = sails.controllers.main.hostname;
             }
+            var res = res;
+            var options = {
+                hostname:host, 
+                port:8080, 
+                path:'/wm/staticflowentrypusher/json',
+                method:'DELETE'};
+
+            var req = http.request(options, function(res) {
+              console.log('\n' + 'STATUS: ' + res.statusCode + '\n');
+              console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
+              res.setEncoding('utf8');
+              res.on('data', function (chunk) {
+                console.log('BODY: ' + chunk + '\n');
+              });
+            });
+
+            req.on('error', function(e) {
+              console.log('problem with request: ' + e.message + '\n');
+            });
+
+            var realData; //temporary fix until find out what front-end parsing is doing
+            for(realData in flowData){
+                break;
+            }
+
+            console.log(realData);
+            req.write(realData);
+            req.end(); 
+            break;
+                default:  return this.pluginDestroy(conn, coll, options, cb);
+                }
+        },
+    
+    
+        pluginDestroy: function(conn, coll, options, cb){
+            return cb(); //if no plugins, default behavior
         },
     
         normalize: function (obj) {
@@ -523,6 +525,7 @@ module.exports = {
                 }
                 return normalizedObj;
         },
+    
     
         dpidParse: function (current, obj) {
             /*if(current === 'switchports' || current === 'queue' || current === 'flowstats' || current === 'aggregate' || current === 'switchdesc' || current === 'tablestats'                 || current === 'switchfeatures' || current === 'flow')*/
@@ -694,24 +697,15 @@ module.exports = {
     getUptime: restCall('GET','/wm/core/system/uptime/json'), //one unnamed object containing uptime
     getMemory: restCall('GET','/wm/core/memory/json'), //an unnamed object with memory
     getHealth: restCall('GET','/wm/core/health/json'), //an unnamed object with health
-    getFirewallStatus: restCall('GET','/wm/firewall/module/status/json'), //single object with status
-    enableFirewall: restCall('GET','/wm/firewall/module/enable/json'), //single object with success/failure
-    disableFirewall: restCall('GET','/wm/firewall/module/disable/json'), //single object with success/failure
-    
     getTopologyExternalLinks: restCall('GET','/wm/topology/external-links/json'), //unknown
-    getFirewallStorageRules: restCall('GET','/wm/firewall/module/storageRules/json'), //unknown
-    getFirewallRules: restCall('GET','/wm/firewall/rules/json'), //unknown
     clearFlows: restCall('GET','/wm/staticflowentrypusher/clear/:arg:/json'), //unknown
     
     postFlow: restCall('POST','/wm/staticflowentrypusher/json'),
     delFlow: restCall('DELETE','/wm/staticflowentrypusher/json'),
-    postFirewallRule: restCall('POST','/wm/firewall/rules/json'),
-    deleteFirewallRule: restCall('DELETE','/wm/firewall/rules/json'),
+    
     
 	//////////////// PLACEHOLDER FOR VIRTUAL NETWORK CALLS
-    //Firewall is unused for now
     
-    getFirewallSubnetMask: restCall('GET','/wm/firewall/module/subnet-mask/json'), //not an object, just a subnet.
     getModules: restCall('GET','/wm/core/module/loaded/json'),
 
 }
