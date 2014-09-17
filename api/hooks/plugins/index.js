@@ -121,7 +121,7 @@ function injectPluginModels(pluginModels, cb) {
             sails.config.pluggedInFileNames = [];
               
             recursive('./api/hooks/plugins/files', function (err, files) {
-              // Files is an array of filename
+              // Files is an array of filename    
                 
             arr = [];
                 

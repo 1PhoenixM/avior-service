@@ -72,7 +72,7 @@
         <p> <%= plugins %> </p> 
     
         <p> <%_.each(plugins, function(plugin) { %>
-            <button onclick="uninstaller('FirewallPlugin');">Remove <%= plugin %></button>
+            <button onclick="uninstaller('<%=plugin%>');">Remove <%= plugin %></button>
             <% })  %>
 
         </p>

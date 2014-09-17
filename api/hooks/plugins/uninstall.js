@@ -1,5 +1,22 @@
 module.exports = {
+    
+    deleteFolderRecursive: function deleteFolderRecursive(path) {
+     var fs = require('fs'); 
+     if( fs.existsSync(path) ) {
+        fs.readdirSync(path).forEach(function(file,index){
+          var curPath = path + "/" + file;
+          if(fs.lstatSync(curPath).isDirectory()) { // recurse
+            deleteFolderRecursive(curPath);
+          } else { // delete file
+            fs.unlinkSync(curPath);
+          }
+        });
+        fs.rmdirSync(path);
+      }
+    },
+    
     uninstall: function uninstall(pluginName){
+            var self = this;
             //Will need to restart
             var Floodlight = require('../../adapters/FloodlightAdapter');  
             var Opendaylight = require('../../adapters/OpenDaylightAdapter');    
@@ -44,13 +61,21 @@ module.exports = {
                     
                     var counter  = 0;
                         for(var i=0; i<nameArray.length; i++){
-                        fs.unlink(nameArray[i], function (err) {
-                            if (err) throw err;
-                            //console.log('Successfully deleted ' + nameArray[i]);
-                            counter++;
-                        });
+                        
+                        if(fs.lstatSync(nameArray[i]).isDirectory()){
+                           self.deleteFolderRecursive(nameArray[i]); 
+                        }
+                            
+                        else{    
+                            fs.unlink(nameArray[i], function (err) {
+                                if (err) throw err;
+                                //console.log('Successfully deleted ' + nameArray[i]);
+                                counter++;
+                            });
+                        }
+                            
                         if(counter === nameArray.length - 1){ //todo: fix to clear out old names.
-                            fs.writeFile('./api/hooks/plugins/names.js', '', function (err) {
+                            fs.writeFile('./api/hooks/plugins/names.txt', '', function (err) {
                               if (err) throw err;
                               console.log('names.txt was cleared out.');
                             });
