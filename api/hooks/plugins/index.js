@@ -114,6 +114,24 @@ function injectPluginModels(pluginModels, cb) {
               
             var path = require('path');  
 
+              
+            fs.readdir('./api/hooks/plugins/zipped', function(err, files){
+                for (var k=0; k<files.length; k++){
+                    var file = files[k];
+                    var zipIndex = file.search(/.zip$/);
+                    if(zipIndex !== -1){
+                        zip = file;
+                        //var zipName = path.basename(zip);
+                        fs.renameSync('./api/hooks/plugins/zipped/' + zip, './api/hooks/plugins/files/' + zip);
+                        fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './api/hooks/plugins/files/' + zip + '' + '\n', {encoding: 'utf-8'});
+                        var unzipped =  zip.substr(0, zip.length - 4);
+                        //var unzippedName = path.basename(unzipped);
+                        fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './api/hooks/plugins/files/' + unzipped + '' + '\n', {encoding: 'utf-8'});
+                    }
+                }
+            });
+              
+            
             //var plugins = fs.readdirSync('./api/hooks/plugins/models');
               
             var recursive = require('recursive-readdir');
@@ -127,6 +145,7 @@ function injectPluginModels(pluginModels, cb) {
                 
             for(var g=0; g<files.length; g++){
                     var file = files[g];
+                   
                     var modindex = file.search(/Model.js$/); //change to identify files in the Model folder
                     if(modindex !== -1){
                         var model = files[g].substr(23, files[g].length);

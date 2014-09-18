@@ -71,15 +71,15 @@ module.exports = {
                                 if (err) throw err;
                                 //console.log('Successfully deleted ' + nameArray[i]);
                                 counter++;
+                                if(counter === nameArray.length - 1){ //todo: fix to clear out old names.
+                                fs.writeFile('./api/hooks/plugins/names.txt', '', function (err) {
+                                  if (err) throw err;
+                                  console.log('names.txt was cleared out.');
+                                    });
+                                }
                             });
                         }
-                            
-                        if(counter === nameArray.length - 1){ //todo: fix to clear out old names.
-                            fs.writeFile('./api/hooks/plugins/names.txt', '', function (err) {
-                              if (err) throw err;
-                              console.log('names.txt was cleared out.');
-                            });
-                        }
+                           
                         }
                     });
                 

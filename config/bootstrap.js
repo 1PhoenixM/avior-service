@@ -170,6 +170,7 @@ module.exports.bootstrap = function(cb) {
                     var RouterName = path.basename(Router);
                     fs.renameSync('./api/hooks/plugins/files/' + Router, './assets/avior/js/router/' + RouterName); //change to pluginrouter
                     fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './assets/avior/js/router/' + RouterName + '' + '\n', {encoding: 'utf-8'});
+                
                 }
             }
 
