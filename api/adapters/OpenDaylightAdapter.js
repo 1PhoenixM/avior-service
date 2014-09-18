@@ -530,15 +530,23 @@ module.exports = {
                         requ.write(JSON.stringify(flowData));
                         requ.end();
                         break;
-		        default: return cb();
+		        default: return this.pluginCreate(conn, coll, options, cb);
                 }
+        },
+    
+        pluginCreate: function(conn, coll, options, cb){
+            return cb();
         },
     
         update: function (conn, coll, options, cb) {
                 switch (coll){
                 
-		        default: return cb();
+		        default: return this.pluginUpdate(conn, coll, options, cb);
                 }
+        },
+    
+        pluginUpdate: function(conn, coll, options, cb){
+            return cb();
         },
     
         destroy: function (conn, coll, options, cb) {
@@ -584,8 +592,12 @@ module.exports = {
                         //requ.write(JSON.stringify(flowData));
                         requ.end();
                         break;
-		        default: return cb();
+		        default: return this.pluginDestroy(conn, coll, options, cb);
                 }
+        },
+    
+     pluginDestroy: function(conn, coll, options, cb){
+            return cb();
         },
     
     
