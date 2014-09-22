@@ -15,6 +15,7 @@ module.exports.bootstrap = function(cb) {
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
   
   //Plugin integration continues here from /api/hooks/plugins/index.js  
+    
   //var Floodlight = require('../api/adapters/FloodlightAdapter');
   //var Opendaylight = require('../api/adapters/OpenDaylightAdapter');    
   

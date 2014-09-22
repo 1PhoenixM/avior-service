@@ -101,6 +101,8 @@ module.exports.connections = {
       //engine : require('someCacheEngine')
     //}
   },
+    
+  //Note: These defaults should be changed.    
 
   floodlight: {
     adapter: 'floodlight',
@@ -116,6 +118,7 @@ module.exports.connections = {
    password: 'admin'
   }, //TODO: mask auth
 
+  //Util only delegates between floodlight and opendaylight.    
   util: {
    adapter: 'util',   
    hostname: '10.11.17.40',

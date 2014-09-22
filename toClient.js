@@ -19,6 +19,7 @@ module.exports = function (ctlr,call,postData,cb) {
         res.on('end', function() {
                         //console.log(res);
                         //console.log('/////////////////');
+                        
             
                         if(ctlr.nodeParse && ctlr.cookieGet === false){
                             

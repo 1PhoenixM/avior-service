@@ -1,7 +1,7 @@
 module.exports = {
 
   index: function (req,res){
-
+    
     res.writeHead(200, {'content-type': 'text/html'});
     res.end(
             '<style>'+
@@ -45,6 +45,15 @@ module.exports = {
 
         '</style>'+
 
+        
+        '<link rel="stylesheet" href="/styles/css/junaid.css">'+
+        '<link rel="stylesheet" href="/styles/css/junaid.css/flipscroll.css">'+
+        '<link rel="stylesheet" href="/styles/css/junaid.css/jqm-docs.css">'+
+        '<link rel="stylesheet" href="/styles/css/junaid.css/jquery.mobile-1.3.2.min.css">'+
+        '<link rel="stylesheet" href="/styles/css/junaid.css/responsive-tables.css">'+
+        '<link rel="stylesheet" href="/styles/css/junaid.css/reveal.css">'+
+        '<link rel="stylesheet" href="/styles/header.css">'+
+        '<link rel="stylesheet" href="/styles/importer.css">'+
 
         '<script>'+
             'function validate(){'+

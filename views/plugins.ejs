@@ -1,3 +1,5 @@
+<!-- This is the view that is used to manage active plugins. You may upload, delete, and view plugins from here.  -->
+
 <script>
     function validate(){
         //window.URL = window.URL || window.webkitURL;
@@ -90,7 +92,7 @@
     <input type="submit" value="Upload">
     </form-->
 
-    <form action="http://localhost:1337/file/upload" enctype="multipart/form-data" method="post">
+    <form action="/file/upload" enctype="multipart/form-data" method="post">
         <input type="text" name="title"><br>
         <input type="file" name="avatar" multiple="multiple"><br>
         <input type="submit" value="Upload">
