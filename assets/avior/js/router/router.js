@@ -218,6 +218,8 @@ define([
 			$('#statusview').append(this.statusview.render().el);
 			$('#memoryview').append(this.memoryview.render().el);
 			$('#modulesview').append(this.modulesview.render().el);
+            
+            
              
 			//$('#hostview').append(this.hostview.render().el);
 	

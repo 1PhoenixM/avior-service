@@ -70,8 +70,8 @@ module.exports = {
         return;
       }
       req.logIn(user, function(err){
-        if (err) res.redirect('#login');
-        return res.redirect('#controllers');
+        if (err) res.redirect('/login');
+        return res.redirect('/avior/#controllers');
       });
     })(req, res);
   },

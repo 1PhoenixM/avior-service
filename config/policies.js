@@ -36,4 +36,9 @@ module.exports.policies = {
 		// before letting any users feed our rabbits
 		// feed : ['isNiceToAnimals', 'hasRabbitFood']
 	// }
+    
+    AlterFlowController: {
+        create : 'controllerSet',
+        destroy : 'controllerSet'
+    }
 };

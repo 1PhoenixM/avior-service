@@ -151,6 +151,7 @@ module.exports = function (ctlr,call,postData,cb) {
                             
                             //console.log(res.statusCode);
                             if(res.statusCode === 401){
+                                    console.log("Another auth error.");
                                    ctlr.find('util', call, { where: null, limit: 30, skip: 0, recursive: 'yes', autherror: 'yes' }, cb);
                             }
                             
