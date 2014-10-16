@@ -52,7 +52,8 @@ module.exports.bootstrap = function(cb) {
             arr = [];
                 
             var Floodlight = sails.adapters.floodlight;
-            var Opendaylight = sails.adapters.opendaylight;   
+            var Opendaylight = sails.adapters.opendaylight;
+            var toClient = sails.adapters.util;   //for now
                 
             for(var g=0; g<files.length; g++){
                     var file = files[g];
@@ -126,6 +127,19 @@ module.exports.bootstrap = function(cb) {
                                 }
                             }   
                         }
+                    }
+                 var callbackindex = file.search(/Callback.js$/); //regex
+                   if(callbackindex !== -1){
+                        var callback = files[g];
+                       //fs.appendFileSync('./api/hooks/plugins/names.js', adapter + ',', {encoding: 'utf-8'});
+                        var callback = '../' + callback;
+                        cbk = require(callback);
+                          
+                        
+                             for(key in cbk){
+                                toClient[key] = cbk[key];   
+                            }   
+                        
                     }
                 
                 //Views are moved into their folders for the restart

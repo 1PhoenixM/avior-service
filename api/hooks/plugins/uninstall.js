@@ -47,6 +47,13 @@ module.exports = {
                                 }
                            }
                        }
+                        if(adp.opendaylight){
+                            for(key in adp.opendaylight){
+                                if(Opendaylight[key]){
+                                    delete Opendaylight[key];
+                                }
+                           }
+                       }
                     }
                 }
                 //Todo: separate plugins to be removed as selected.

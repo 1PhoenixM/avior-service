@@ -215,7 +215,7 @@ var restCall = function(apiMethod,apiPath){
                     'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'};
                     //console.log(this.cookie);
                 }
-                req = http.request(opts, toClient(this,options.call,null,cb));
+                req = http.request(opts, toClient(this,options.call,options,cb));
                 
                 if (options.data) {
                         req.write(JSON.stringify(options.data));
@@ -425,7 +425,12 @@ module.exports = {
                          break;
                 case 'host': return this.getHosts({args:['default'],call:coll},cb);
                          break;
-                case 'alterflow': return this.getFlows({args:['default'],call:coll},cb);
+                case 'alterflow': if(options.action){ 
+                                return this.getFlows({args:['default'],call:coll,action:options.action},cb);
+                                }
+                                else{
+                                return this.getFlows({args:['default'],call:coll},cb);    
+                                }
                          break;
                 case 'switch': return this.getNodes({args:['default'],call:coll},cb);
                          break;

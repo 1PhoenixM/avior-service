@@ -201,7 +201,9 @@ module.exports = function (ctlr,call,postData,cb) {
                             //console.log(normalizedObject);
 
                             //ctlr.response.send(normalizedObject);
-
+                            //console.log(postData);
+                            normalizedObject = sails.adapters.util.pluginCallback(call, postData, normalizedObject); //See if plugins have any callback parsing to do
+                            
                             finalCheckForSubsequentData(normalizedObject);    
 
                             //cb(null,normalizedObject);
@@ -359,8 +361,8 @@ module.exports = function (ctlr,call,postData,cb) {
             //If trying to contact /switchdesc/find before /switch/find, will return "Not Found".
             DescArr = [];
             
-            for(var i=0; i<normalizedObject.length; i++){
-                    var DPID = normalizedObject[i].DPID;
+            /*for(var i=0; i<normalizedObject.length; i++){
+                var DPID = normalizedObject[i].DPID;
                     
                 
                 var username = 'admin';
@@ -382,7 +384,8 @@ module.exports = function (ctlr,call,postData,cb) {
                 };
                 
                 
-                options.headers = {'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                options.headers = {'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/
+                                   /**;q=0.8',
                 'Accept-Encoding': 'gzip,deflate,sdch',
                 'Accept-Language':'en-US,en;q=0.8',
                 'Cache-Control':'max-age=0',
@@ -436,11 +439,16 @@ module.exports = function (ctlr,call,postData,cb) {
                   });
                 }).on('error', function(e) {
                   console.log("Got error: " + e.message);
-                }); 
+                });
                 
+            }*/
+            for(var i=0; i<normalizedObject.length; i++){
+                 normalizedObject[i].Manufacturer = 'Not found';
+                 normalizedObject[i].Hardware = 'Not found';
+                 normalizedObject[i].Software = 'Not found';
+                 normalizedObject[i].SerialNum = 'Not found';
             }
-            
-            
+            cb(null,normalizedObject);
         }
         
         else if(ctlr.dpParse && (call === 'flowstats' || call === 'switchports' || call === 'switchdesc')){

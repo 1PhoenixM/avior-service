@@ -14,6 +14,11 @@ var util = require('util')
 var bcrypt = require('bcrypt');
 module.exports = {
   attributes: {
+    id: {
+      type: 'string',
+      unique: true,
+      primaryKey: true
+    },
     username: {
       type: 'string',
       required: true,

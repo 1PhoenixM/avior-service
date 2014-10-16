@@ -117,4 +117,9 @@ module.exports = {
             }*/        
         },
     
+        pluginCallback: function(call, options, obj){
+              
+            //empty
+            return obj;
+        },
 }

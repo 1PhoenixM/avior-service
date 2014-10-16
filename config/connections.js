@@ -126,6 +126,15 @@ module.exports.connections = {
    //user: 'admin',
    //password: 'admin',
   },
+
+  mongo: {
+    adapter: 'sails-mongo',
+    host: 'localhost',
+    port: 27017,
+    user: '',
+    password: '',
+    database: 'Users'
+  }
   // More adapters:
   // https://github.com/balderdashy/sails
 

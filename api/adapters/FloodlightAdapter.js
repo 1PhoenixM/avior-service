@@ -190,7 +190,7 @@ var restCall = function(apiMethod,apiPath){
                 }
                 opts = {method:apiMethod,hostname:host,port:8080,path:apiPath};
                 
-                req = http.request(opts, toClient(this,options.call,options.data,cb));
+                req = http.request(opts, toClient(this,options.call,options,cb));
                 if (options.data) {
                         req.write(JSON.stringify(options.data));
                         console.log("DATA: " + options);
