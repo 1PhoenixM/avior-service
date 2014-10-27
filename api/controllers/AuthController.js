@@ -1,84 +1,113 @@
 /**
- * AuthController
+ * AuthController.js
  *
- * @module      :: Controller
- * @description	:: A set of functions called `actions`.
- *
- *                 Actions contain code telling Sails how to respond to a certain type of request.
- *                 (i.e. do stuff, then send some JSON, show an HTML page, or redirect to another URL)
- *
- *                 You can configure the blueprint URLs which trigger these actions (`config/controllers.js`)
- *                 and/or override them with custom routes (`config/routes.js`)
- *
- *                 NOTE: The code you write here supports both HTTP and Socket.io automatically.
- *
+ * @description ::
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
-/*module.exports = {
-    
-  
-
-
-  /**
-   * Overrides for the settings in `config/controllers.js`
-   * (specific to AuthController)
-   * /
-  _config: {}
-
-  
-};*/
-/*
 var passport = require('passport');
-var AuthController = {
 
-  login: passport.authenticate('local', {
-    successRedirect: '/auth/login/success',
-    failureRedirect: '/auth/login/failure'
-  }),
-
-  loginSuccess: function(req, res){
-    res.json({
-      success: true,
-      user: req.session.passport.user
-    });
-  },
-
-  loginFailure: function(req, res){
-    res.json({
-      success:false,
-      message: 'Invalid username or password.'
-    });
-  },
-
-  logout: function(req, res){
-    req.logout();
-    res.end();
-  },
-};*/
-
-var passport = require("passport");
 module.exports = {
-  login: function(req,res){
-    res.view("auth/login");
+    
+    identity: 'auth',
+
+  index: function(req, res) {
+    res.view();
   },
 
-  process: function(req,res){
-    passport.authenticate('local', function(err, user, info){
-      if ((err) || (!user)) {
-        res.redirect('/login');
+  logout: function(req, res) {
+    req.logout();
+      res.send('{ logout successful }');
+    //res.redirect('/');
+  },
+
+  // http://developer.github.com/v3/
+  // http://developer.github.com/v3/oauth/#scopes
+  github: function(req, res) {
+    passport.authenticate('github', { failureRedirect: '/login' }, function(err, user) {
+      req.logIn(user, function(err) {
+        if (err) {
+          console.log(err);
+          res.view('500');
+          return;
+        }
+
+        res.redirect('/');
         return;
-      }
-      req.logIn(user, function(err){
-        if (err) res.redirect('/login');
-        return res.redirect('/avior/#controllers');
       });
     })(req, res);
   },
 
-  logout: function (req,res){
-    req.logout();
-    res.send('logout successful');
+  // https://developers.facebook.com/docs/
+  // https://developers.facebook.com/docs/reference/login/
+  facebook: function(req, res) {
+    passport.authenticate('facebook', { failureRedirect: '/login', scope: ['email'] }, function(err, user) {
+      req.logIn(user, function(err) {
+        if (err) {
+          console.log(err);
+          res.view('500');
+          return;
+        }
+
+        res.redirect('/');
+        return;
+      });
+    })(req, res);
   },
-  _config: {}
+
+  // https://developers.google.com/
+  // https://developers.google.com/accounts/docs/OAuth2Login#scope-param
+  google: function(req, res) {
+    passport.authenticate('google', { failureRedirect: '/login', scope: ['https://www.googleapis.com/auth/plus.login', 'https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'] }, function(err, user) {
+      req.logIn(user, function(err) {
+        if (err) {
+          console.log(err);
+          res.view('500');
+          return;
+        }
+
+        res.redirect('/');
+        return;
+      });
+    })(req, res);
+  },
+
+  // https://apps.twitter.com/
+  // https://apps.twitter.com/app/new
+  twitter: function(req, res) {
+    passport.authenticate('twitter', { failureRedirect: '/login' }, function(err, user) {
+      req.logIn(user, function(err) {
+        if (err) {
+          console.log(err);
+          res.view('500');
+          return;
+        }
+
+        res.redirect('/');
+        return;
+      });
+    })(req, res);
+  },
+    
+  local: function(req, res) {
+    passport.authenticate('local', function(err, user, info){
+      if ((err) || (!user)) res.send(err);
+      req.logIn(user, function(err){
+        if (err) res.send(err);
+        res.send({ message: 'login successful' });
+        return;
+      });
+    })(req, res);
+  },
+ login: function(req, res){
+    passport.authenticate('local', function(err, user, info){
+    if ((err) || (!user)) res.send(err);
+    req.logIn(user, function(err){
+    if (err) res.send(err);
+         
+    return res.send({ message: 'login successful' });
+    });
+    })(req, res);
+    },
+    
 };

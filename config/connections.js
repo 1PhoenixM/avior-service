@@ -133,7 +133,7 @@ module.exports.connections = {
     port: 27017,
     user: '',
     password: '',
-    database: 'Users'
+    database: 'aviorUsers'
   }
   // More adapters:
   // https://github.com/balderdashy/sails

@@ -30,6 +30,8 @@ module.exports.views = {
   engine: 'ejs',
   
 
+  //for auto-bind routes to views    
+  //routes: true,    
 
   // Layouts are simply top-level HTML templates you can use as wrappers
   // for your server-side views.  If you're using ejs or jade, you can take advantage of

@@ -40,5 +40,13 @@ module.exports.policies = {
     AlterFlowController: {
         create : 'controllerSet',
         destroy : 'controllerSet'
-    }
+    },
+    UserController: {
+	 	'*': 'authenticated',
+	 	'create': true
+	},
+	AuthController: {
+		'post login': true,
+		'get logout': 'authenticated'
+	}
 };

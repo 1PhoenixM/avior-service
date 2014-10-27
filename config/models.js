@@ -15,5 +15,7 @@ module.exports.models = {
   // (defaults to localDiskDb)
     
   //Note: util delegates between SDN controllers. Until one is set, UtilAdapter defaults to Floodlight.
-  connection: 'util',
+  //connection: 'util',
+    connection: 'mongo',
+    migrate: 'alter'
 };

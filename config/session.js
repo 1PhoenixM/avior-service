@@ -26,6 +26,12 @@ module.exports.session = {
   // cookie: {
   //   maxAge: 24 * 60 * 60 * 1000
   // }
+    
+  adapter: 'mongo',
+  host: 'localhost',
+  port: 27017,
+  db: 'aviorUsers',
+  collection: 'sessions',
 
 
   // In production, uncomment the following lines to set up a shared redis session store
