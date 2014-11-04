@@ -1,180 +1,8 @@
 var toClient = require('../../toClient.js');
 var http = require('http');
 
-/*var FROM_OFP = {
-	// name-in-models: name-in-opendaylight
-	MAC_Address: 'dataLayerAddress',
-	IP_Address: 'networkAddress',
-	VLAN_ID: 'vlan',
-	DPID: 'nodeId',
-	Port: 'nodeConnectorId',
-    Priority: 'priority', 
-    IdleTimeout: 'idleTimeout', 
-    HardTimeout: 'hardTimeout', 
-    ID: 'id',  //flow id and dpid are both id.
-    TableID: 'tableId',
-    DurationSeconds:'durationSeconds', 
-    DurationNanoSeconds:'durationNanoseconds',
-    PacketCount:'packetCount',
-    ByteCount:'byteCount',
-    RXPackets:'receivePackets',
-    TXPackets:'transmitPackets',
-    RXBytes:'receiveBytes',
-    TXBytes:'transmitBytes', 
-    RXDrops:'receiveDrops', 
-    TXDrops:'transmitDrops', 
-    RXErrors:'receiveErrors',
-    TXErrors:'transmitErrors', 
-    RXFrameErr:'receiveFrameError',
-    RXOverrunErr:'receiveOverRunError',
-    RXCrcErr:'receiveCrcError',
-    Collisions:'collisionCount', 
-};*/
-
-/*var TO_OFP = {
-	// name-in-opendaylight: name-in-models
-	dataLayerAddress: 'MAC_Address',
-	networkAddress: 'IP_Address',
-	vlan: 'VLAN_ID',
-	nodeId: 'DPID',
-	nodeConnectorId: 'Port',
-    //ODL includes many object/array labels that FL doesn't, such as the below.
-    hostConfig: 'Stats',
-    flowStatistics: 'Stats',
-    //node: 'AttachedTo',
-    flowStatistic: 'Stats',
-    flow: 'Stats',
-    match: 'Match',
-    matchField: 'MatchField',
-    type: 'Type', //switch type or match type?
-    value: 'Value', //this is used a lot
-    actions: 'Actions',
-    port: 'Port',
-    priority: 'Priority',
-    idleTimeout: 'IdleTimeout',
-    hardTimeout: 'HardTimeout',
-    //id: 'ID', //flow id and dpid are both id.
-    tableId: 'TableID',
-    durationSeconds: 'DurationSeconds',
-    durationNanoseconds: 'DurationNanoSeconds',
-    packetCount: 'PacketCount',
-    byteCount: 'ByteCount',
-    portStatistics: 'Stats',
-    portStatistic: 'Stats',
-    //nodeConnector: 'Port',
-    receivePackets: 'RXPackets',
-    transmitPackets: 'TXPackets',
-    receiveBytes: 'RXBytes',
-    transmitBytes: 'TXBytes',
-    receiveDrops: 'RXDrops',
-    transmitDrops: 'TXDrops',
-    receiveErrors: 'RXErrors',
-    transmitErrors: 'TXErrors',
-    receiveFrameError: 'RXFrameErr',
-    receiveOverRunError: 'RXOverrunErr',
-    receiveCrcError: 'RXCrcErr',
-    collisionCount: 'Collisions',
-    properties: 'Stats',
-    tables: 'Tables',
-    actions: 'Actions',
-    macAddress: 'MAC_Address',
-    capabilities: 'Capabilities',
-    buffers: 'Buffers',
-    tableStatistics: 'Stats',
-    tableStatistic: 'Stats',
-    activeCount: 'ActiveCount',
-    lookupCount: 'LookupCount',
-    matchedCount: 'MatchedCount',
-    maximumEntries: 'MaxEntries', 
-    nodeProperties: '',
-    //topology
-    edgeProperties: 'Stats',
-    edge: 'Stats',
-    tailNodeConnector: 'Stats',
-    headNodeConnector: 'Stats',
-    node: 'Stats',
-    id: 'PortNum', //other ids?
-    properties: 'Port',
-    state: 'State', 
-    config: 'Config',
-    //timestamp
-    //bandwidth
-    name: 'PortName',
-    // topology modified by nodeparse, not odl
-    SourceDPID: 'SourceDPID',
-    SourcePortNum: 'SourcePortNum',
-    DestinationDPID: 'DestinationDPID',
-    DestinationPortNum: 'DestinationPortNum',
-    Stats: 'Stats',
-    MAC_Address: 'MAC_Address', 
-    IP_Address: 'IP_Address',
-    VLAN_ID: 'VLAN_ID',
-    Attached_To: 'Attached_To',
-    DPID: 'DPID',
-    PortNum: 'PortNum',
-    Actions: 'Actions',
-    Buffers: 'Buffers',
-    Capabilities: 'Capabilities',
-    Connected_Since: 'Connected_Since',
-    Ports: 'Ports',
-    Flows: 'Flows',
-    Manufacturer: 'Manufacturer',
-    Software: 'Software',
-    Hardware: 'Hardware',
-    SerialNum: 'SerialNum',
-    PortName: 'PortName',
-    PortState: 'PortState',
-    CurrentFeatures: 'CurrentFeatures',
-    AdvertisedFeatures: 'AdvertisedFeatures',
-    SupportedFeatures: 'SupportedFeatures',
-    PeerFeatures: 'PeerFeatures',
-    Config: 'Config',
-    HardwareAddress: 'HardwareAddress',
-    
-    upTime: 'Uptime_msec',
-    Uptime_msec: 'Uptime_msec',
-    TotalMemory: 'TotalMemory', //total is mem_free + mem_used & note that this is JVM mem, not just the controller.
-    mem_free: 'FreeMemory',
-    
-    IdleTimeout: 'IdleTimeout', 
-    HardTimeout: 'HardTimeout',
-    Actions: 'Actions',
-    Match: 'Match',
-    Cookie: 'Cookie',
-    Priority: 'Priority',
-    Flow: "Flow",
-    Actions: "Actions",
-    Buffers: "Buffers",
-    Capabilities: "Capabilities",
-    Connected_Since: "Connected_Since",
-    
-    DurationSeconds: 'DurationSeconds',
-    DurationNanoSeconds: 'DurationNanoSeconds',
-    PacketCount: 'PacketCount',
-    ByteCount: 'ByteCount',
-    
-    Wildcards: "Wildcards",
-    DataLayerDestination: "DataLayerDestination",
-    DataLayerSource:      "DataLayerSource",
-    DataLayerType:      "DataLayerType",
-    DataLayerVLAN:      "DataLayerVLAN",
-     DataLayerVLAN_PCP:     "DataLayerVLAN_PCP",
-     InputPort:     "InputPort",
-      NetworkDestination:    "NetworkDestination",
-    NetworkDestinationMaskLen:      "NetworkDestinationMaskLen",
-      NetworkProtocol:    "NetworkProtocol",
-      NetworkSource:    "NetworkSource",
-      NetworkSourceMaskLen:    "NetworkSourceMaskLen",
-    NetworkTOS:      "NetworkTOS",
-      TransportDestination:    "TransportDestination",
-      TransportSource:    "TransportSource",
-    
-    Type: "Type",
-};*/
-
-// Creates a function that, when called, will make a REST API call
+// Function calls the REST API depending on the call that is chosen from the find, create, and destroy switch case clauses below.
 var restCall = function(apiMethod,apiPath){
-        //var self = this;
         return function(options,cb){
                 var rawPath = apiPath;
                 if (options.args){ 
@@ -191,11 +19,6 @@ var restCall = function(apiMethod,apiPath){
                 var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
 
                 opts = {method:apiMethod,hostname:host,port:8080,path:apiPath, auth:auth}; //TODO: mask auth //auth:'admin:admin'
-                //if(options.call === 'switchdesc'){opts.auth = new Buffer(opts.auth).toString('base64');} //calls outside of rest api need encoded to base64
-                //console.log(apiPath);
-
-                // auth is: 'Basic VGVzdDoxMjM='
-
                 opts.headers = {'Host': opts.hostname + ':' + opts.port, 'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                     'Accept-Encoding': 'gzip,deflate,sdch',
                     'Accept-Language':'en-US,en;q=0.8',
@@ -391,12 +214,6 @@ module.exports = {
         },
 
         find: function (conn, coll, options, cb) {
-                
-            //console.log(conn);
-            //console.log(coll);
-            //console.log(options);
-            //console.log(cb);
-            
             switch (coll){
                 
                 //fake calls for front-end
@@ -473,23 +290,6 @@ module.exports = {
                 switch (coll){
                 case 'flow': 
                         console.log(" odl POSTED DATA: " + JSON.stringify(options.data) + '\n');
-                        /*options.data = {
-                        "installInHw":"true",
-                        "name":"flow1",
-                        "node":{
-                        "id":"00:00:00:00:00:00:00:01",
-                        "type":"OF"
-                        },
-                        "ingressPort":"1",
-                        "priority":"500",
-                        "etherType":"0x800",
-                        "nwSrc":"9.9.1.1",
-                        "actions":[
-                        "OUTPUT=2"
-                        ]
-                        };*/
-                        
-                        //Todo: parse/normalize the flow data
                         unparsed = options.data;
                         flowData = {};
                         flowData.node = {};
@@ -500,7 +300,6 @@ module.exports = {
                         flowData.actions = [];
                         flowData.actions.push(unparsed.actions.toUpperCase());
                         
-                        //flowData = options.data;
                         string = JSON.stringify(flowData);
                         parsed = JSON.parse(string);
                         parsed.switch = flowData.node.id;
@@ -558,17 +357,6 @@ module.exports = {
                 switch (coll){
                 case 'flow': 
                         console.log("DELETED DATA: " + options.data + '\n')
-                        
-                        //Todo: parse/normalize the flow data
-                        /*unparsed = options.data;
-                        flowData = {};
-                        flowData.node = {};
-                        flowData.node.id = unparsed.switch;
-                        flowData.node.type = 'OF';
-                        flowData.name = unparsed.name;
-                        flowData.ingressPort = unparsed.ingress_port;
-                        flowData.actions = [];
-                        flowData.actions.push(unparsed.actions);*/
                         flowData = options.data;
                         var realData;
                         for (realData in flowData){
@@ -777,15 +565,6 @@ module.exports = {
 	                        	normalizedObj[toField] = this.normalize(obj[fromField]);
 				}
 			}
-			/* NOT CURRENTLY USED - REVERTED BACK TO TO_OFP APPROACH
-			for (toField in FROM_OFP) {
-                	        fromField = FROM_OFP[toField];
-				if (obj[fromField]) {
-	                        	normalizedObj[toField] = this.normalize(obj[fromField]);
-				}
-			}*/
-                }
-                //parse out unnessecary fields? Make all hostConfig, flowStatistic etc. equal to "Stats", then parse that in toClient.
                 return normalizedObj;
         },
     
@@ -1054,36 +833,6 @@ module.exports = {
                      innerArr[j].SerialNum = obj.serialNumber;
                      }
                  }  
-                /* 
-                innerArr[obj.counter].Manufacturer = obj.manufacturer;
-                innerArr[obj.counter].Hardware = obj.hardware;
-                innerArr[obj.counter].Software = obj.software;
-                innerArr[obj.counter].SerialNum = obj.serialNumber;
-                */
-                /*for(var j=0; j<innerArr.length; j++){
-                     if(!innerArr[j].Manufacturer){
-                     innerArr[j].Manufacturer = obj.manufacturer;
-                     }
-                     if(!innerArr[j].Hardware){
-                     innerArr[j].Hardware = obj.hardware;
-                     }
-                     if(!innerArr[j].Software){
-                     innerArr[j].Software = obj.software;
-                     }
-                     if(!innerArr[j].SerialNum){
-                     innerArr[j].SerialNum = obj.serialNumber;
-                     }
-                 }*/         
-                
-                /*for (var i=0; i<obj.nodeProperties.length; i++){
-                 newObj = {};
-                 newObj.DPID = obj.nodeProperties[i].node.id;
-                 newObj.Manufacturer = "Not found"; 
-                 newObj.Hardware = "Not found";
-                 newObj.Software = "Not found";
-                 newObj.SerialNum = "Not found";
-                 arr.push(newObj);  
-                 }*/
                 return innerArr;
                 break;
             

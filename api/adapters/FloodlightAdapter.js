@@ -1,180 +1,7 @@
 var toClient = require('../../toClient.js');
 var http = require('http');
 
-/*var FROM_OFP = {
-	// name-in-models: name-in-floodlight
-	//Hosts Information    
-    MAC_Address: 'mac',
-	IP_Address: 'ipv4',
-	VLAN_ID: 'vlan',
-	Attached_To: 'attachmentPoint',
-	DPID: 'switchDPID',
-	Port: 'port',
-    IdleTimeout: 'idleTimeout', 
-    HardTimeout: 'hardTimeout',
-    TableID: 'tableId',
-    DurationSeconds:'durationSeconds', 
-    DurationNanoSeconds:'durationNanoseconds',
-    PacketCount:'packetCount',
-    ByteCount:'byteCount',
-	Last_Seen: 'lastSeen',
-    //Uptime Information
-    Uptime_msec: 'systemUptimeMsec',
-    //Switch Description Information(Shortened to Desc in files)
-    Manufacturer:'manufacturerDescription',
-    Hardware:'hardwareDescription',
-    Software:'softwareDescription',
-    SerialNum:'serialNumber',
-    //Switch Port information
-    PortNum: "portNumber",
-    RXPackets: "receivePackets",
-    TXPackets: "transmitPackets",
-    RXBytes: "receiveBytes",
-    TXBytes:"transmitBytes",
-    RXErrors: "receiveErrors",
-    TXErrors: "transmitErrors",
-    RXFrameErr: "receiveFrameErrors",
-    RXOverrunErr: "receiveOverrunErrors",
-    RXCrcErr: "receiveCRCErrors",
-    Collisions: "collisions",
-    //Switch Port Information
-    //I assume that this will use PortNum from switch features above
-    PortName: "name",
-    //Keep in mind that it seems that a state of 512 means that the port is up and a state of 513 means that the port is down
-    PortState: "state",
-    TotalMemory: "total",
-    FreeMemory: "free",
-    Health: "healthy"
-    
-};*/
-
-/*var TO_OFP = {
-	// name-in-floodlight: name-in-models
-	//Hosts Information
-    Stats: 'Stats',
-    DPID: 'DPID',
-    mac: 'MAC_Address',
-	ipv4: 'IP_Address',
-	vlan: 'VLAN_ID',
-	attachmentPoint: 'Attached_To',
-	switchDPID: 'DPID',
-	port: 'Port',
-    idleTimeout: 'IdleTimeout', 
-    hardTimeout: 'HardTimeout',
-    tableId: 'TableID',
-    durationSeconds:'DurationSeconds', 
-    durationNanoseconds:'DurationNanoSeconds',
-    packetCount:'PacketCount',
-    byteCount:'ByteCount',
-    flowCount:'FlowCount',
-	lastSeen: 'Last_Seen',
-    //Uptime Information
-    systemUptimeMsec: 'Uptime_msec',
-    //Switch Description Information(Shortened to Desc in files)
-    manufacturerDescription:'Manufacturer',
-    hardwareDescription:'Hardware',
-    softwareDescription:'Software',
-    serialNumber:'SerialNum',
-    //Switch Features information
-    portNumber: "PortNum",
-    receivePackets: "RXPackets",
-    transmitPackets: "TXPackets",
-    receiveBytes: "RXBytes",
-    transmitBytes:"TXBytes",
-    receiveDropped:"RXDrops",
-    transmitDropped:"TXDrops",
-    receiveErrors: "RXErrors",
-    transmitErrors: "TXErrors",
-    receiveFrameErrors: "RXFrameErr",
-    receiveOverrunErrors: "RXOverrunErr",
-    receiveCRCErrors: "RXCrcErr",
-    collisions: "Collisions",
-    //Switch Port Information
-    //I assume that this will use PortNum from switch features above
-    name: "PortName",
-    //Keep in mind that it seems that a state of 512 means that the port is up and a state of 513 means that the port is down
-    state: "PortState",
-    currentFeatures: "CurrentFeatures",
-    advertisedFeatures: "AdvertisedFeatures",
-    supportedFeatures: "SupportedFeatures",
-    peerFeatures: "PeerFeatures",
-    config: "Config",
-    hardwareAddress: "HardwareAddress",
-    //TableStats
-    activeCount: "ActiveCount",
-    wildcards: "Wildcards",
-    tableId: "TableID",
-    maximumEntries: "MaxEntries",
-    lookupCount: "LookupCount",
-    matchedCount: "MatchedCount",
-    //name: "Name",
-    //Topology
-    "src-switch": "SourceDPID",
-    "src-port": "SourcePortNum",
-    "src-port-state": "SourcePortState",
-    "dst-switch": "DestinationDPID",
-    "dst-port": "DestinationPortNum",
-    "dst-port-state": "DestinationPortState",
-    total: "TotalMemory",
-    free: "FreeMemory",
-    healthy: "Health",
-    type: "Type",
-    //SwitchFeatures
-    connectedSince: "Connected_Since",
-    actions: "Actions",
-    buffers: "Buffers",
-    capabilities: "Capabilities",
-    datapathId: "Datapath",
-    ports: "Ports",
-    dpid: "DPID",
-    healthy: "Healthy",
-    //type: "LinkType",
-    total: "TotalMemory",
-    free: "FreeMemory",
-    healthy: "Health",
-    //Match Criteria
-    match: "Match",
-    dataLayerDestination: "DataLayerDestination",
-    dataLayerSource: "DataLayerSource",
-    dataLayerType: "DataLayerType",
-    dataLayerVirtualLan: "DataLayerVLAN",
-    dataLayerVirtualLanPriorityCodePoint: "DataLayerVLAN_PCP",
-    inputPort: "InputPort",
-    networkDestination: "NetworkDestination",
-    networkDestinationMaskLen: "NetworkDestinationMaskLen",
-    networkProtocol: "NetworkProtocol",
-    networkSource: "NetworkSource",
-    networkSourceMaskLen: "NetworkSourceMaskLen",
-    networkTypeOfService: "NetworkTOS",
-    transportDestination: "TransportDestination",
-    transportSource: "TransportSource",
-    wildcards: "Wildcards",
-    //Ports
-    Ports: 'Ports',
-    //Flows
-    Link: 'Link',
-    bufferId: 'BufferID',
-    cookie: 'Cookie',
-    idleTimeout: 'IdleTimeout',
-    hardTimeout: 'HardTimeout',
-    //command: 
-    outPort: 'OutPort',
-    actions: 'Actions',
-    port: 'PortNum',
-    priority: 'Priority',
-    flags: 'Flags',
-    Flow: "Flow",
-    Flows: "Flows",
-    result: "Result",
-    status: "Status",
-    details: "Details",
-    Name: "Name",
-    loaded: "Loaded",
-    provides: "Provides",
-    depends: "Depends"
-};*/
-
-// Creates a function that, when called, will make a REST API call
+// Function calls the REST API depending on the call that is chosen from the find, create, and destroy switch case clauses below.
 var restCall = function(apiMethod,apiPath){
         var self = this;
         return function(options,cb){
@@ -350,8 +177,7 @@ module.exports = {
           cb();
         },
 
-        find: function (conn, coll, options, cb) {
-            //console.log(this);
+        find: function (conn, coll, options, cb) { // Holds all of the REST calls that return data
             switch (coll){   
                 //core
                 case 'flow': return this.getFlows({args:['all'],call:coll},cb);
@@ -408,7 +234,7 @@ module.exports = {
         },
     
         
-        create: function (conn, coll, options, cb) {
+        create: function (conn, coll, options, cb) { //The Rest Call that will be called if a flow is being created
             console.log("POSTED DATA: " + JSON.stringify(options.data) + '\n')
                 switch (coll){
                 case 'alterflow': // fall-through!
@@ -449,7 +275,7 @@ module.exports = {
             return cb(); //if no plugins, default behavior
         },
     
-        destroy: function (conn, coll, options, cb) {
+        destroy: function (conn, coll, options, cb) {// Rest Call that will be called if there is a delete flow
              console.log("DELETED DATA: ");
                 switch(coll){
                 case 'alterflow':
@@ -496,7 +322,7 @@ module.exports = {
             return cb(); //if no plugins, default behavior
         },
     
-        normalize: function (obj) {
+        normalize: function (obj) {// This is taking in the returned input from the controller and returning it in a manner that aviors interface will understand wel enough to output to the front end.
                 var normalizedField;
                 var normalizedObj;
                 if (!obj){ return 0; } //to fix: this applies to both "null" and "0" responses.
@@ -515,21 +341,12 @@ module.exports = {
 	                           normalizedObj[toField] = this.normalize(obj[fromField]); //Nested structs? Probably handled recursively
 				        }
 			         }
-			/* NOT CURRENTLY USED - REVERTED BACK TO TO_OFP APPROACH
-			for (toField in FROM_OFP) {
-                	        fromField = FROM_OFP[toField];
-				if (obj[fromField]) {
-	                        	normalizedObj[toField] = this.normalize(obj[fromField]); //Nested structs? Probably handled recursively
-				}
-			}*/
                 }
                 return normalizedObj;
         },
     
     
-        dpidParse: function (current, obj) {
-            /*if(current === 'switchports' || current === 'queue' || current === 'flowstats' || current === 'aggregate' || current === 'switchdesc' || current === 'tablestats'                 || current === 'switchfeatures' || current === 'flow')*/
-                
+        dpidParse: function (current, obj) { //This function will fix a parsing issue that occurs when the DPID is given to us as a property name. Since to display the information we need to have the name of the property. To fix this this function take the DPID and sets it as the property and set DPID as the property name. Giving us a static property name no matter what the DPID
                 arr = [];
                     
                 if(current === 'switchports'){   
@@ -588,25 +405,6 @@ module.exports = {
                     }
                     return arr;
              }
-            
-            /*else if(current === 'flow'){
-                for (dpid in obj){
-                innerObj = {};
-                innerObj.DPID = dpid;
-                Flows = [];
-                flows = obj[dpid];
-                  for (link in flows){
-                    flowObj = {};
-                    flowObj.Link = link;
-                      for(key in flows[link]){
-                        flowObj[key] = flows[link][key];
-                      }
-                    Flows.push(flowObj);
-                  }
-                 arr.push(innerObj);    
-                }
-                return arr;
-            }*/
 
             else if(current === 'flow' || current === 'alterflow'){
                  for (dpid in obj){

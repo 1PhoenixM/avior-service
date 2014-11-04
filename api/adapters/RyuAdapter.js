@@ -5,7 +5,7 @@ var http = require('http');
 	// name-in-ryu: name-in-models
 };*/
 
-// Creates a function that, when called, will make a REST API call
+// Function calls the REST API depending on the call that is chosen from the find, create, and destroy switch case clauses below.
 var restCall = function(apiMethod,apiPath){
         //var self = this;
         return function(options,cb){
