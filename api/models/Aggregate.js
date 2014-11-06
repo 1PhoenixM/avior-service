@@ -1,9 +1,9 @@
 //Aggregate stats
 
-module.export = {
+module.exports = {
 	identity: 'aggregate',
 
-	connection: 'util',
+	connection: ['util'],
 
 	attributes: {
         DPID: {

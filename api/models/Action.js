@@ -1,9 +1,9 @@
 //A flow action.
 
-module.export = {
+module.exports = {
 	identity: 'action',
 
-	connection: 'util',
+	connection: ['util'],
 
 	attributes: {
         ActionType: {

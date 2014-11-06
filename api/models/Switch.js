@@ -10,7 +10,7 @@ module.exports = {
     
     identity: 'switch',
 
-	connection: 'util',
+	connection: ['util'],
 
 
   attributes: {

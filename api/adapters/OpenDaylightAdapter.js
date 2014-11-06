@@ -193,6 +193,11 @@ module.exports = {
     
 	identity: 'opendaylight',
     
+     drop: function() {
+        
+        
+     },
+    
         dpid: '00:00:00:00:00:00:00:0e',
     
     
@@ -565,8 +570,9 @@ module.exports = {
 	                        	normalizedObj[toField] = this.normalize(obj[fromField]);
 				}
 			}
+            }
                 return normalizedObj;
-        },
+    },
     
     
     //This function parses ODL data into the format of the Avior API

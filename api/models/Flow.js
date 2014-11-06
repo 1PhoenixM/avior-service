@@ -1,14 +1,14 @@
 //A flow structure
 
-module.export = {
+module.exports = {
 	identity: 'flow',
 
-	connection: 'util',
+	connection: ['util'],
 
 	attributes: {
 		
         Action: {
-			model: 'array',
+			type: 'array',
 			required: true
 		},
         HardTimeout: {

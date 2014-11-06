@@ -29,6 +29,7 @@ module.exports = {
 
 		'.': ['backend','gruntfile', 'frontend'],
 		'./.gitignore': { copy: 'gitignore' },
+		'./.editorconfig': { copy: 'editorconfig.template' },
 		'./README.md': { template: './README.md' },
 		'./package.json': { jsonfile: packageJSON },
 		'./.sailsrc': { jsonfile: sailsrc },

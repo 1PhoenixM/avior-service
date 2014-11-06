@@ -8,12 +8,111 @@
 var Waterline = require('waterline');
 
 module.exports = function(sails) {
+    return function(cb) {
+     var Floodlight = require('../../adapters/FloodlightAdapter');  
+              
+       var Opendaylight = require('../../adapters/OpenDaylightAdapter');
+           
+        sails.after('hook:orm:loaded', function() {
+          pluginLoader(function(err, plugins) {
+            //plugins = [RolePlugin];  
+
+            var fs = require('fs');
+              
+            var path = require('path');  
+
+              
+            fs.readdir('./api/hooks/plugins/zipped', function(err, files){
+                for (var k=0; k<files.length; k++){
+                    var file = files[k];
+                    var zipIndex = file.search(/.zip$/);
+                    if(zipIndex !== -1){
+                        zip = file;
+                        //var zipName = path.basename(zip);
+                        fs.renameSync('./api/hooks/plugins/zipped/' + zip, './api/hooks/plugins/files/' + zip);
+                        fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './api/hooks/plugins/files/' + zip + '' + '\n', {encoding: 'utf-8'});
+                        var unzipped =  zip.substr(0, zip.length - 4);
+                        //var unzippedName = path.basename(unzipped);
+                        fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './api/hooks/plugins/files/' + unzipped + '' + '\n', {encoding: 'utf-8'});
+                    }
+                }
+            });
+              
+            
+            //var plugins = fs.readdirSync('./api/hooks/plugins/models');
+              
+            var recursive = require('recursive-readdir');
+              
+            sails.config.pluggedInFileNames = [];
+              
+            recursive('./api/hooks/plugins/files', function (err, files) {
+              // Files is an array of filename    
+                
+            arr = [];
+                
+            for(var g=0; g<files.length; g++){
+                    var file = files[g];
+                   
+                    var modindex = file.search(/Model.js$/); //change to identify files in the Model folder
+                    if(modindex !== -1){
+                        var model = files[g].substr(23, files[g].length);
+                        //console.log(model);
+                        
+                        var ModelName = path.basename(model);
+                        fs.renameSync('./api/hooks/plugins/files/' + model, './api/models/' + ModelName);
+                        fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './api/models/' + ModelName + '' + '\n', {encoding: 'utf-8'});
+                        var model = '.' + model;
+                        mod = require(model);
+                        var id = mod.identity;
+                        sails.models[id] = mod;
+                        //console.log(sails.models);
+                        obj = {};
+                        obj.models = mod;
+                        obj.controllers = {};
+                        obj.adapters = {};
+                        arr.push(obj);
+                    }
+                    var ctlrindex = file.search(/Controller.js$/);
+                    if(ctlrindex !== -1){
+                        var controller = files[g].substr(23, files[g].length);
+                        //console.log(controller);
+                        
+                        var ControllerName = path.basename(controller);
+                        fs.renameSync('./api/hooks/plugins/files/' + controller, './api/controllers/' + ControllerName);
+                        fs.appendFileSync('./api/hooks/plugins/names.txt', '' + './api/controllers/' + ControllerName + '' + '\n', {encoding: 'utf-8'});
+                        var controller = '.' + controller;
+                        ctr = require(controller);
+                        var id = ctr.identity;
+                        sails.controllers[id] = ctr;
+                        //console.log(sails.controllers);
+                        obj = {};
+                        obj.controllers = ctr;
+                        obj.models = {}; //all objects must have a controllers prop and a models prop
+                        obj.adapters = {};
+                        arr.push(obj);
+                    }
+                   
+            }
+
+                
+            cb();
+
+            });
+              
+          });
+            
+        });
+    }
+}
     
-function injectPluginModels(pluginModels, cb) {
+
+    
+    
+/*function injectPluginModels(pluginModels, cb) {
   // copy sails/lib/hooks/orm/loadUserModules to make it accessible here
     
   var loadUserModelsAndAdapters = require('./loadUserModules')(sails);
-    
+     
   async.auto({
     // 1. load api/models, api/adapters
     _loadModules: loadUserModelsAndAdapters,
@@ -62,6 +161,7 @@ function injectPluginModels(pluginModels, cb) {
       });
     }],
  
+      
     // 7. Expose initialized models to global scope and sails
     _prepareModels: ['instantiatedCollections', sails.hooks.orm.prepareModels]
 
@@ -163,7 +263,7 @@ function injectPluginModels(pluginModels, cb) {
                         obj.models = mod;
                         obj.controllers = {};
                         obj.adapters = {};
-                        arr.push(obj);*/
+                        arr.push(obj);
                     }
                     var ctlrindex = file.search(/Controller.js$/);
                     if(ctlrindex !== -1){
@@ -182,7 +282,7 @@ function injectPluginModels(pluginModels, cb) {
                         obj.controllers = ctr;
                         obj.models = {}; //all objects must have a controllers prop and a models prop
                         obj.adapters = {};
-                        arr.push(obj);*/
+                        arr.push(obj);
                     }
                    
             }
@@ -204,7 +304,7 @@ function injectPluginModels(pluginModels, cb) {
           var pluginControllers = _.pluck(plugins, 'controllers');
           //var pluginAdapters = _.pluck(plugins, 'adapters');
           injectPluginModels(pluginModels, cb);
-          mountBlueprintsForModels(pluginModels, pluginControllers);*/       
+          mountBlueprintsForModels(pluginModels, pluginControllers);       
 
     });
 
@@ -212,6 +312,5 @@ function injectPluginModels(pluginModels, cb) {
 
       
     }
-  }
+  }*/
   
-}

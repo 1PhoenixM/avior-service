@@ -1,9 +1,9 @@
 //A flow match.
 
-module.export = {
+module.exports = {
 	identity: 'match',
 
-	connection: 'floodlight',
+	connection: ['floodlight'],
     
     types: {
         openflow_match_1_0_0: function(MatchType){

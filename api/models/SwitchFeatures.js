@@ -1,9 +1,9 @@
 //Switch features
 
-module.export = {
+module.exports = {
 	identity: 'switchfeatures',
 
-	connection: 'util',
+	connection: ['util'],
 
 	attributes: {
          DPID: {

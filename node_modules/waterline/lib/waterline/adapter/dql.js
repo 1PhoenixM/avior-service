@@ -198,7 +198,9 @@ module.exports = {
     if(hasOwnProperty(adapter, 'count')) return adapter.count(connName, this.collection, criteria, cb);
 
     this.find(criteria, function(err, models) {
-      cb(err, models.length);
+      if(err) return cb(err);
+      var count = models && models.length || 0;
+      cb(err, count);
     });
   },
 
@@ -255,8 +257,6 @@ module.exports = {
     // Normalize Arguments
     cb = normalize.callback(cb);
     criteria = normalize.criteria(criteria);
-
-    if(!criteria) return cb(new Error('No criteria or id specified!'));
 
     // Build Default Error Message
     var err = 'No destroy() method defined in adapter!';

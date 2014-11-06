@@ -1,7 +1,7 @@
-module.export = {
+module.exports = {
 	identity: 'switchflows',
 
-	connection: 'floodlight',
+	connection: ['floodlight'],
 
 	attributes: {
 		Cookie:'integer',

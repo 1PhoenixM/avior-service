@@ -59,6 +59,12 @@ var restCall = function(apiMethod,apiPath){
 module.exports = {
 	   identity: 'ryu',
     
+    
+         drop: function() {
+        
+        
+        },
+    
         TO_OFP: {
             //Desc
             sw_desc: "Software",

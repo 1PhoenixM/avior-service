@@ -1,9 +1,9 @@
 //A queue structure.
 
-module.export = {
+module.exports = {
 	identity: 'queue',
 
-	connection: 'opendaylight',
+	connection: ['opendaylight'],
 
 	attributes: {
 		QueueID: {

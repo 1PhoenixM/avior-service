@@ -43,7 +43,6 @@ module.exports = function(criteria, cb) {
 
   var usage = utils.capitalize(this.identity) + '.destroy([options], callback)';
 
-  if(!criteria) return usageError('No options were defined!', usage, cb);
   if(typeof cb !== 'function') return usageError('Invalid callback specified!', usage, cb);
 
   callbacks.beforeDestroy(self, criteria, function(err) {
@@ -92,7 +91,10 @@ module.exports = function(criteria, cb) {
         var mappedValues = result.map(function(vals) { return vals[pk]; });
         var criteria = {};
 
-        criteria[refKey] = mappedValues;
+        if(mappedValues.length > 0) {
+          criteria[refKey] = mappedValues;
+        }
+
         collection.destroy(criteria).exec(next);
       }
 

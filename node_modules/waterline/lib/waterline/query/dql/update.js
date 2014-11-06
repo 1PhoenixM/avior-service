@@ -10,7 +10,7 @@ var normalize = require('../../utils/normalize');
 var Deferred = require('../deferred');
 var callbacks = require('../../utils/callbacksRunner');
 var nestedOperations = require('../../utils/nestedOperations');
-var hasOwnProperty = utils.object.hasOwnProperty;
+var hop = utils.object.hasOwnProperty;
 
 
 /**
@@ -103,18 +103,24 @@ function createBelongsTo(valuesObject, cb) {
     // Check if value is an object. If not don't try and create it.
     if(!_.isPlainObject(valuesObject.values[item])) return next();
 
-    var attribute = self._schema.schema[item];
+    // Check for any transformations
+    var attrName = hop(self._transformer._transformations, item) ? self._transformer._transformations[item] : item;
+
+    var attribute = self._schema.schema[attrName];
     var modelName;
 
-    if(hasOwnProperty(attribute, 'collection')) modelName = attribute.collection;
-    if(hasOwnProperty(attribute, 'model')) modelName = attribute.model;
+    if(hop(attribute, 'collection')) modelName = attribute.collection;
+    if(hop(attribute, 'model')) modelName = attribute.model;
     if(!modelName) return next();
 
     var model = self.waterline.collections[modelName];
     var pkValue = valuesObject.originalValues[item][model.primaryKey];
 
     var criteria = {};
-    criteria[model.primaryKey] = pkValue;
+
+    var pkField = hop(model._transformer._transformations, model.primaryKey) ? model._transformer._transformations[model.primaryKey] : model.primaryKey;
+
+    criteria[pkField] = pkValue;
 
     // If a pkValue if found, do a findOrCreate and look for a record matching the pk.
     var query;

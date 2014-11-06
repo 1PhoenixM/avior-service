@@ -1,9 +1,9 @@
 //TableStats
 
-module.export = {
+module.exports = {
 	identity: 'tablestats',
 
-	connection: 'floodlight',
+	connection: ['floodlight'],
 
 	attributes: {
 		DPID: {

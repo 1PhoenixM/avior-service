@@ -1,9 +1,9 @@
 //A test struct for uptime
 
-module.export = {
+module.exports = {
 	identity: 'uptime',
 
-	connection: 'floodlight',
+	connection: ['util'],
 
 	attributes: {
 		Uptime_msec: {

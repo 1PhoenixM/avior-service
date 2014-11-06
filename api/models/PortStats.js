@@ -1,9 +1,9 @@
 //PortStats
 
-module.export = {
+module.exports = {
 	identity: 'portstats',
 
-	connection: 'util',
+	connection: ['util'],
 
 	attributes: {
         PortNum: {

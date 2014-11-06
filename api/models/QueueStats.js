@@ -1,9 +1,9 @@
 //QueueStats
 
-module.export = {
+module.exports = {
 	identity: 'queuestats',
 
-	connection: 'opendaylight',
+	connection: ['opendaylight'],
 
 	attributes: {
         DPID: {

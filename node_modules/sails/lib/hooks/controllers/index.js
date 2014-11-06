@@ -22,7 +22,7 @@ module.exports = function(sails) {
 
 		defaults: {},
 
-		// Don't allow sails to lift until ready 
+		// Don't allow sails to lift until ready
 		// is explicitly set below
 		ready: false,
 
@@ -42,6 +42,7 @@ module.exports = function(sails) {
 			this.loadAndRegisterControllers(cb);
 		},
 
+    explicitActions: {},
 
 		/**
 		 * Wipe everything and (re)load middleware from controllers
@@ -69,13 +70,13 @@ module.exports = function(sails) {
 
 					// Mix in middleware from blueprints
 					// ----removed----
-					// 
+					//
 					// TODO: MAKE SURE THIS IS OK
 					// self.middleware[controllerId].find = Controller.find;
 					// self.middleware[controllerId].create = Controller.create;
 					// self.middleware[controllerId].update = Controller.update;
 					// self.middleware[controllerId].destroy = Controller.destroy;
-					// 
+					//
 					// -----/removed------
 
 
@@ -94,7 +95,7 @@ module.exports = function(sails) {
 						}
 
 						// Ignore non-actions (special properties)
-						// 
+						//
 						// TODO:
 						// Some of these properties are injected by `moduleloader`
 						// They should be hidden in the prototype or omitted instead.
@@ -103,7 +104,11 @@ module.exports = function(sails) {
 						}
 
 						// Otherwise mix it in (this will override CRUD blueprints from above)
+            action._middlewareType = 'ACTION: '+controllerId+'/'+actionId;
 						self.middleware[controllerId][actionId] = action;
+            self.explicitActions[controllerId] = self.explicitActions[controllerId] || {};
+            self.explicitActions[controllerId][actionId] = true;
+
 					});
 
 				});

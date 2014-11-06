@@ -32,6 +32,10 @@ module.exports = function before (scope, sb) {
 		website: util.format('http://github.com/%s', scope.github.username)
 	});
 
+	if (scope.frontend === false) {
+  		scope.modules['frontend'] = scope.modules['gruntfile'] = false;
+  	}
+
 	// Make changes to the rootPath where the sails project will be created
 	scope.rootPath = path.resolve(process.cwd(), args0 || '');
 

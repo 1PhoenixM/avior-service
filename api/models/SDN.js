@@ -1,9 +1,9 @@
 //Controller summary
 
-module.export = {
+module.exports = {
 	identity: 'sdn',
 
-	connection: 'util',
+	connection: ['util'],
 
 	attributes: {
      Data:{

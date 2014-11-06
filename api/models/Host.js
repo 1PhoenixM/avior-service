@@ -1,9 +1,9 @@
 //A host (not OpenFlow-defined)
 
-module.export = {
+module.exports = {
 	identity: 'host',
 
-	connection: 'util',
+	connection: ['util'],
   
 	attributes: {
 		MAC_Address: {

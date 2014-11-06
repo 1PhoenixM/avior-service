@@ -8,7 +8,7 @@
 
 module.exports = {
   identity: "modules",
-  
+   connection: ['util'],
   attributes: {
     Name: {
         type: "string",

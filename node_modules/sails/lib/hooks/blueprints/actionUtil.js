@@ -119,6 +119,8 @@ module.exports = {
     //  in the absence of `id`.)
     // See coercePK for reference (although be aware it is not currently in use)
 
+    // exclude criteria on id field
+    pk = _.isPlainObject(pk) ? undefined : pk;
     return pk;
   },
 
@@ -228,7 +230,7 @@ module.exports = {
     }
 
     // Prune params which aren't fit to be used as `values`
-    values = req.params.all();
+    var values = req.params.all();
 
     // Omit built-in runtime config (like query modifiers)
     values = _.omit(values, blacklist || []);

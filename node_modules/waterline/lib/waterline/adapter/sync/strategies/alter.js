@@ -33,11 +33,32 @@ module.exports = function(cb) {
 
   // Check that collection exists--
   self.describe(function afterDescribe(err, attrs) {
+
     if(err) return cb(err);
 
     // if it doesn't go ahead and add it and get out
     if(!attrs) return self.define(cb);
 
+    var collectionName = _.find(self.query.waterline.schema, {tableName: self.collection}).identity;
+
+    // Create a mapping of column names -> attribute names
+    var columnNamesMap = _.reduce(self.query.waterline.schema[collectionName].attributes, function(memo, val, key) {
+      // If the attribute has a custom column name, use it as the key for the mapping
+      if (val.columnName) {
+        memo[val.columnName] = key;
+      }
+      // Otherwise just use the attribute name
+      else {
+        memo[key] = key;
+      }
+      return memo;
+    }, {});
+
+    // Transform column names into attribute names using the columnNamesMap,
+    // removing attributes that no longer exist (they will be dropped)
+    attrs = _.compact(_.keys(attrs).map(function(key) {
+      return columnNamesMap[key];
+    }));
 
     //
     // TODO:
@@ -58,7 +79,12 @@ module.exports = function(cb) {
     // If this doesn't work, crash to avoid corrupting any data.
     // (see `waterline/lib/adapter/ddl/README.md` for more info about this)
     //
-    self.find({}, function (err, existingData) {
+    // Make sure we only select the existing keys for the schema.
+    // The default "find all" will select each attribute in the schema, which
+    // now includes attributes that haven't been added to the table yet, so
+    // on SQL databases the query will fail with "unknown field" error.
+    self.find({select: attrs}, function (err, existingData) {
+
       if (err) {
         //
         // TODO:
@@ -67,9 +93,6 @@ module.exports = function(cb) {
         //
         return cb(err);
       }
-
-      // If the collection exists but is empty, then do nothing.
-      if (existingData.length === 0) return cb();
 
       //
       // From this point forward, we must be very careful.

@@ -55,7 +55,7 @@ Schema.prototype.initialize = function(attrs, hasSchema, reservedAttributes) {
   // Build normal attributes
   Object.keys(attrs).forEach(function(key) {
     if(hasOwnProperty(attrs[key], 'collection')) return;
-    self.schema[key] = self.objectAttribute(attrs[key]);
+    self.schema[key] = self.objectAttribute(key, attrs[key]);
   });
 
   // Build Reserved Attributes
@@ -79,7 +79,7 @@ Schema.prototype.initialize = function(attrs, hasSchema, reservedAttributes) {
  * @return {Object}
  */
 
-Schema.prototype.objectAttribute = function(value) {
+Schema.prototype.objectAttribute = function(attrName, value) {
   var attr = {};
 
   for(var key in value) {
@@ -159,13 +159,16 @@ Schema.prototype.objectAttribute = function(value) {
         var attrs = this.context.waterline.schema[value[key].toLowerCase()].attributes;
 
         for(var attribute in attrs) {
-          if(!hasOwnProperty(attrs[attribute], 'primaryKey')) continue;
-          type = attrs[attribute].type;
+          if(hasOwnProperty(attrs[attribute], 'primaryKey') && attrs[attribute].primaryKey) {
+            type = attrs[attribute].type;
+            break;
+          }
         }
 
         attr.type = type.toLowerCase();
         attr.model = value[key].toLowerCase();
         attr.foreignKey = true;
+        attr.alias = attrName;
         break;
     }
   }

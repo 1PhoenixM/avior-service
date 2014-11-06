@@ -19,8 +19,8 @@ module.exports = function (ctlr,call,postData,cb) {
         res.on('end', function() {
                         //console.log(res);
                         //console.log('/////////////////');
-                        
-            
+                        responseString = responseString.trim();
+                                   
                         if(ctlr.nodeParse && ctlr.cookieGet === false){
                             
                             //console.log(res.headers["set-cookie"]);
@@ -51,7 +51,6 @@ module.exports = function (ctlr,call,postData,cb) {
                         //Error catching, parse expects a string of JSON. This
                         //catch keeps Avior from crashing when it gets unexpected input
                         */
-            
                 
                         if(call === 'memory' && ctlr.nodeParse){
                             //unexpected end of input
@@ -165,7 +164,7 @@ module.exports = function (ctlr,call,postData,cb) {
                             if (responseString === ''){
                                 responseString = '{}';
                             }
-
+  
                             var responseObject = JSON.parse(responseString);
 
                             if(ctlr.dpidParse){
@@ -177,7 +176,6 @@ module.exports = function (ctlr,call,postData,cb) {
 
                             else if(ctlr.nodeParse){
                                 var newObject = ctlr.nodeParse(call, responseObject, null);
-
                                 var normalizedObject = ctlr.normalize(newObject);
                                 if(normalizedObject.Stats){
                                     normalizedObject = normalizedObject.Stats; //ODL only

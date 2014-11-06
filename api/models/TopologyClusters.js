@@ -7,7 +7,7 @@
  */
 
 module.exports = {
-
+     connection: ['util'],
   attributes: {
   	
   	/* e.g.

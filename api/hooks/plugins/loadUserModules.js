@@ -1,50 +1,47 @@
-module.exports = function(sails) {
+/**
+ * Module dependencies.
+ */
+
+var _ = require('lodash');
+var async = require('async');
 
 
-	/**
-	 * Module dependencies.
-	 */
+module.exports = function howto_lookupUserModules (sails) {
 
+  return function lookupUserModules (cb) {
 
+    sails.log.verbose('Loading the app\'s models and adapters...');
+    async.auto({
 
-	return function (cb) {
+      models: function(cb) {
+        sails.log.verbose('Loading app models...');
 
-		/**
-		 * Expose Hook definition
-		 */
+        // sails.models = {};
 
-		sails.log.verbose('Loading the app\'s models and adapters...');
-		async.auto({
+        // Load app's model definitions
+        // Case-insensitive, using filename to determine identity
+        sails.modules.loadModels(function modulesLoaded(err, modules) {
+          if (err) return cb(err);
+          sails.models = _.extend(sails.models || {}, modules);
+          return cb();
+        });
+      },
 
-			models: function(cb) {
-				sails.log.verbose('Loading app models...');
+      adapters: function(cb) {
+        sails.log.verbose('Loading app adapters...');
 
-				sails.models = {};
+        // sails.adapters = {};
 
-				// Load app's model definitions
-				// Case-insensitive, using filename to determine identity
-				sails.modules.loadModels(function modulesLoaded (err, modules) {
-					if (err) return cb(err);
-					sails.models = modules;
-					return cb();
-				});
-			},
+        // Load custom adapters
+        // Case-insensitive, using filename to determine identity
+        sails.modules.loadAdapters(function modulesLoaded(err, modules) {
+          if (err) return cb(err);
+          sails.adapters = _.extend(sails.adapters || {}, modules);
+          return cb();
+        });
+      }
 
-			adapters: function (cb) {
-				sails.log.verbose('Loading app adapters...');
-
-				sails.adapters = {};
-
-				// Load custom adapters
-				// Case-insensitive, using filename to determine identity
-				sails.modules.loadAdapters(function modulesLoaded (err, modules) {
-					if (err) return cb(err);
-					sails.adapters = modules;
-					return cb();
-				});
-			}
-
-		}, cb);
-	};
+    }, cb);
+  };
 
 };

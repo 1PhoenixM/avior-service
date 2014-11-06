@@ -5,6 +5,11 @@ var Ryu = require('./RyuAdapter');
 module.exports = {
 	identity: 'util',
     
+    drop: function() {
+        
+        
+    },
+    
     registerConnection: function (conn, coll, cb) {
             if (!conn.hostname) { conn.hostname = '10.11.17.40'; }
             if (!conn.port) { conn.port = '8080'; }

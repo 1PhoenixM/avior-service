@@ -1,10 +1,10 @@
 //In opendaylight, port info can be found in the switch manager. Ports are the "node connectors".
 //A port structure.
 
-module.export = {
+module.exports = {
 	identity: 'port',
 
-	connection: 'util',
+	connection: ['util'],
 
 	attributes: {
 		PortNumber: {

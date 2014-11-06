@@ -16,9 +16,9 @@ module.exports = function (sails) {
 
 	/**
 	 * interpretRouteSyntax
-	 * 
+	 *
 	 * "Teach" router to understand references to controllers.
-	 * 
+	 *
 	 * @param  {[type]} route [description]
 	 * @return {[type]}       [description]
 	 * @api private
@@ -35,7 +35,7 @@ module.exports = function (sails) {
 			// Merge target into `options` to get hold of relevant
 			// route options:
 			options = _.merge(options, target);
-		
+
 			// Support { controller: 'FooController' } notation
 			if (!_.isUndefined(target.controller)) {
 				return bindController(path, target, verb, options);
@@ -55,7 +55,7 @@ module.exports = function (sails) {
 
 			// Lone action syntax, e.g.:
 			// '/someRoute': { action: 'find', model: 'foo' }
-			// 
+			//
 			// (useful for explicitly routing a URL to a blueprint action)
 			if ( !_.isUndefined(target.action) ) {
 
@@ -71,7 +71,7 @@ module.exports = function (sails) {
 
 			// Handle dot notation
 			var parsedTarget = target.match(/^([^.]+)\.?([^.]*)?$/);
-			
+
 			// If target matches a controller (or, if views hook enabled, a view)
 			// go ahead and assume that this is a dot notation route
 			var controllerId = util.normalizeControllerId(parsedTarget[1]);
@@ -100,7 +100,7 @@ module.exports = function (sails) {
 
 	/**
 	 * Bind route to a controller/action.
-	 * 
+	 *
 	 * @param  {[type]} path   [description]
 	 * @param  {[type]} target [description]
 	 * @param  {[type]} verb   [description]
@@ -123,7 +123,7 @@ module.exports = function (sails) {
 			controller = sails.middleware.views[controllerId];
 		}
 
-		// If a controller and/or action was specified, 
+		// If a controller and/or action was specified,
 		// but it's not a match, warn the user
 		if ( ! ( controller && _.isObject(controller) )) {
 			sails.after('lifted', function () {
@@ -144,14 +144,39 @@ module.exports = function (sails) {
 			return;
 		}
 
-
 		// (if unspecified, default actionId to 'index'
 		actionId = actionId || 'index';
 
 		// Merge the target controller/action into our route options:
 		options.controller = controllerId;
 		options.action = actionId;
-		
+
+
+    // Determine the model connected to this controller either by:
+    // -> on the routes config
+    // -> on the controller
+    var modelId = options.model || controllerId;
+
+    // If the orm hook is enabled, it has already been loaded by this time,
+    // so just double-check to see if the attached model exists in `sails.models`.
+    if (sails.hooks.orm && sails.models && sails.models[modelId]) {
+
+      // If a model with matching identity exists,
+      // extend route options with the id of the model.
+      options.model = modelId;
+
+      var Model = sails.models[modelId];
+
+      // Mix in the known associations for this model to the route options.
+      options = _.merge({ associations: _.cloneDeep(Model.associations) }, options);
+
+      // Mix in the relevant blueprint config
+      options = _.defaults(options, {
+        populate: sails.config.blueprints.populate,
+        defaultLimit: sails.config.blueprints.defaultLimit
+      });
+
+    }
 
 		// 1. Bind the specified `action`
 		var subTarget = controller[actionId];
@@ -161,7 +186,7 @@ module.exports = function (sails) {
 			});
 			return;
 		}
-		
+
 		// -- or --
 
 		// 2. Bind a controller which is actually a function to the destination route (rare)
@@ -176,12 +201,12 @@ module.exports = function (sails) {
 			if ( !_.isFunction(originalFn) ) {
 				sails.after('lifted', function () {
 					sails.log.error(
-						'In '+controllerId + '.' + actionId+', ignored invalid attempt to bind route to a non-function controller:', 
+						'In '+controllerId + '.' + actionId+', ignored invalid attempt to bind route to a non-function controller:',
 						originalFn, 'for path: ', path, verb ? ('and verb: ' + verb) : '');
 				});
 				return;
 			}
-			
+
 			// Bind intercepted middleware function to route
 			return originalFn;
 		}
@@ -192,7 +217,7 @@ module.exports = function (sails) {
 
 	/**
 	 * Bind specified blueprint action to the specified route.
-	 * 
+	 *
 	 * @param  {[type]} path              [description]
 	 * @param  {[type]} blueprintActionID [description]
 	 * @param  {[type]} verb              [description]

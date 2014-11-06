@@ -49,6 +49,9 @@ module.exports = {
     './config/locales/fr.json': { copy: 'config/locales/fr.json' },
     './config/locales/_README.md': { copy: 'config/locales/_README.md' },
 
+    './config/env/production.js': { copy: 'config/env/production.js' },
+    './config/env/development.js': { copy: 'config/env/development.js' },
+
     './api/policies/sessionAuth.js': { copy: 'api/policies/sessionAuth.js' },
 
     './api/responses/badRequest.js': { copy: 'api/responses/badRequest.js' },

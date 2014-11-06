@@ -16,4 +16,6 @@ module.exports.models = {
     
   //Note: util delegates between SDN controllers. Until one is set, UtilAdapter defaults to Floodlight.
   connection: 'util',
+
+  migrate: 'safe'
 };

@@ -8,7 +8,7 @@
 
 module.exports = {
   identity: "clearflows",
-    
+  connection: ['util'],
   attributes: {
   	
   	/* e.g.

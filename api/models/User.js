@@ -13,6 +13,7 @@ var util = require('util')
 
 var bcrypt = require('bcrypt');
 module.exports = {
+    connection: ['util'],
   attributes: {
     id: {
       type: 'string',

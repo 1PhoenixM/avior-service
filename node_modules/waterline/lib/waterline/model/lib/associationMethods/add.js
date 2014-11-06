@@ -61,8 +61,9 @@ Add.prototype.findPrimaryKey = function(attributes, values) {
   var primaryKey = null;
 
   for(var attribute in attributes) {
-    if(hasOwnProperty(attributes[attribute], 'primaryKey')) {
+    if(hasOwnProperty(attributes[attribute], 'primaryKey') && attributes[attribute].primaryKey) {
       primaryKey = attribute;
+      break;
     }
   }
 
@@ -120,7 +121,7 @@ Add.prototype.createAssociations = function(key, records, cb) {
 
     // If an object was passed in it should be created.
     // This allows new records to be created through the association interface
-    if(typeof association === 'object' && Object.keys(association).length > 0) {
+    if(association !== null && typeof association === 'object' && Object.keys(association).length > 0) {
 
       // Check if the record contains a primary key, if so just link the values
       if(hasOwnProperty(association, associatedCollection.primaryKey)) {

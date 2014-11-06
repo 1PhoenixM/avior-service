@@ -164,6 +164,10 @@ module.exports = {
     
 	identity: 'floodlight',
     
+     drop: function() {
+        
+        
+    },
 
         registerConnection: function (conn, coll, cb) {
                 if (!conn.port) { conn.port = 8080; }
