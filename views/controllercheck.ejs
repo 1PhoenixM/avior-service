@@ -10,10 +10,17 @@
         }
         var host=document.getElementById('sdn_controller_host').value;
         
+        var odls=document.getElementsByName('opendaylight_version');
+        for (var j=0; j < odls.length; j++){
+            if (odls[j].checked){
+                var odl_ver=odls[j].value;
+            }
+        }
+        
         if(host){
         $.post(
                 '/sdncontroller',
-                {connection:conn, hostname:host},
+                {connection:conn, hostname:host, odl_ver:odl_ver},
                 function () {
                    //alert("Sent");
                 }
@@ -52,6 +59,11 @@
 	<input type="radio" name="sdn_controller" value="juniper" id="juniper" disabled/><label for="juniper">Juniper</label>
 	<input type="radio" name="sdn_controller" value="maestro" id="maestro" disabled/><label for="maestro">Maestro</label>
 </form>
+<h4> If using Opendaylight, please choose the version you are using.</h4>
+<form>
+    <input type="radio" name="opendaylight_version" value="hydrogen" id="hydrogen" checked/><label for="hydrogen">Hydrogen</label>
+	<input type="radio" name="opendaylight_version" value="helium" id="helium" /><label for="helium">Helium</label>
+</form>    
 <h4> Please enter the IP address at which the controller is located. </h4>
 <input type="text" name="sdn_controller_host" id="sdn_controller_host" style="width:800px;position:relative;" value="" onKeydown="if(event.keyCode==13) sdn_info.click()">
 <button name="sdn_info_send" id="sdn_info" onclick="sdn_info_send();">Start Avior</button>

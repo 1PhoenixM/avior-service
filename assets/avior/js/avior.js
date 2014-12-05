@@ -27,6 +27,11 @@ define([
 				height = window.innerHeight * .811;
 				//document.getElementById('content').style.height = this.height+"px";
 			});*/
+            
+            //Uncomment for synchronous calls mode (may lock up browser)
+            //$.ajaxSetup({
+             // async: false
+            //    });
 			
 			$('#logout').click(function() {
 								 localStorage.loggedIn = false;

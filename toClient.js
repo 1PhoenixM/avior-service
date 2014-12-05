@@ -52,7 +52,7 @@ module.exports = function (ctlr,call,postData,cb) {
                         //catch keeps Avior from crashing when it gets unexpected input
                         */
                 
-                        if(call === 'memory' && ctlr.nodeParse){
+                        if(call === 'memory' && ctlr.nodeParse && sails.controllers.main.opendaylight_version === 'hydrogen'){
                             //unexpected end of input
                             var start = responseString.search("var statData = ");
                             var ctlrData = responseString.substr(start);
@@ -76,7 +76,7 @@ module.exports = function (ctlr,call,postData,cb) {
                             else{ ctlr.find('util', call, { where: null, limit: 30, skip: 0, recursive: 'yes' }, cb); } 
                         }
             
-                        else if(call === 'uptime' && ctlr.nodeParse){
+                        else if(call === 'uptime' && ctlr.nodeParse && sails.controllers.main.opendaylight_version === 'hydrogen'){
                             //unexpected end of input
                             var start = responseString.search("var statData = ");
                             var ctlrData = responseString.substr(start);
@@ -100,7 +100,7 @@ module.exports = function (ctlr,call,postData,cb) {
                             else{ ctlr.find('util', call, { where: null, limit: 30, skip: 0, recursive: 'yes' }, cb); } 
                         }
             
-                        else if(call === 'modules' && ctlr.nodeParse){
+                        else if(call === 'modules' && ctlr.nodeParse && sails.controllers.main.opendaylight_version === 'hydrogen'){
                             var start = responseString.search("<pre>"); 
                             start = start + 5;
                             var end = responseString.search("</pre>"); //not working?
@@ -164,9 +164,13 @@ module.exports = function (ctlr,call,postData,cb) {
                             if (responseString === ''){
                                 responseString = '{}';
                             }
-  
+                            
+                            //console.log(responseString);
+                            var fs = require('fs');
+                            //fs.appendFileSync('./api/adapters/apidata.txt', '' + responseString + '' + '\n', {encoding: 'utf-8'});
+                            
                             var responseObject = JSON.parse(responseString);
-
+                            
                             if(ctlr.dpidParse){
                                 //console.log('\n\n\n\n\n\n\n\n\n\n\n' + responseObject);
                                 var newObject = ctlr.dpidParse(call, responseObject);
@@ -213,7 +217,7 @@ module.exports = function (ctlr,call,postData,cb) {
     function finalCheckForSubsequentData(normalizedObject){
         var counter = 0;
     
-        if(ctlr.nodeParse && ctlr.cookieGet === false){
+        if(ctlr.nodeParse && ctlr.cookieGet === false && sails.controllers.main.opendaylight_version === 'hydrogen'){
                             //console.log(res.headers["set-cookie"]);
                             /*if(res.headers["set-cookie"]){
                                 ctlr.cookie = res.headers["set-cookie"];
@@ -273,8 +277,8 @@ module.exports = function (ctlr,call,postData,cb) {
                                                              });
                                                              res.on('end', function() {
                                                                 //console.log(res);
-                                                                 ctlr.cookie = res.headers["set-cookie"];
-                                                                 ctlr.cookie = ctlr.cookie[0];
+                                                                 //ctlr.cookie = res.headers["set-cookie"];
+                                                                 //ctlr.cookie = ctlr.cookie[0];
                                                                  finalCheckForSubsequentData(normalizedObject);
                                                                  //console.log('end: ' + resp);  
                                                              });
@@ -291,7 +295,7 @@ module.exports = function (ctlr,call,postData,cb) {
                         
                         }
         
-        if(call === 'switch' && ctlr.nodeParse){
+        if(call === 'switch' && ctlr.nodeParse &&  sails.controllers.main.opendaylight_version === 'hydrogen'){
            
             for(var i=0; i<normalizedObject.length; i++){
                     var DPID = normalizedObject[i].DPID;
@@ -353,7 +357,7 @@ module.exports = function (ctlr,call,postData,cb) {
            
         }
         
-        else if(call === 'switchdesc' && ctlr.nodeParse){
+        else if(call === 'switchdesc' && ctlr.nodeParse &&  sails.controllers.main.opendaylight_version === 'hydrogen'){
             
             //Note: correct cookie for web api is currently derived from the /switch/find call.
             //If trying to contact /switchdesc/find before /switch/find, will return "Not Found".

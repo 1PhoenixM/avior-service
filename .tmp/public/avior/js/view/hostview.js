@@ -47,8 +47,7 @@ define([
 			this.$('#rightPanel').html(this.template({hosts: this.collection.models})).trigger('create');
 			return this;
 			}*/
-            //console.log("Host Collec");
-            //console.log(this.collection.models);
+            
             this.$el.html(this.template({hosts: this.collection.models})).trigger('create');
 			return this;
         

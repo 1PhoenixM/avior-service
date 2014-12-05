@@ -44,7 +44,4 @@
 #activePlugins{
     background-color: #c2c2d6; 
     min-height: 100px;
-    width:300px;
-    -moz-border-radius-bottomright: 50px;
-    border-bottom-right-radius: 50px;
 }

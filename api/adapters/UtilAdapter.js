@@ -1,5 +1,6 @@
 var Floodlight = require('./FloodlightAdapter');
 var OpenDaylight = require('./OpenDaylightAdapter');
+var OpenDaylight_Helium = require('./OpenDaylightHelium');
 var Ryu = require('./RyuAdapter');
 
 module.exports = {
@@ -29,20 +30,25 @@ module.exports = {
         if(!sails.controllers.main.sdncontroller && sails.config.models.connection === 'util'){
             sails.controllers.main.sdncontroller = 'floodlight'; 
         }
-        switch(sails.controllers.main.sdncontroller){
-         case 'floodlight': 
-                Floodlight.find(conn, coll, options, cb);
-                break;
-         case 'opendaylight':
-                OpenDaylight.find(conn, coll, options, cb);
-                break;
-        case 'ryu':
-                Ryu.find(conn, coll, options, cb);
-                break;
-        default:
-                console.log("Error: No valid controller was provided.");
-                break;
-        } 
+        if(sails.controllers.main.sdncontroller === 'opendaylight' && sails.controllers.main.opendaylight_version === 'helium'){
+            OpenDaylight_Helium.find(conn, coll, options, cb);
+        }
+        else{
+            switch(sails.controllers.main.sdncontroller){
+             case 'floodlight': 
+                    Floodlight.find(conn, coll, options, cb);
+                    break;
+             case 'opendaylight':
+                    OpenDaylight.find(conn, coll, options, cb);
+                    break;
+            case 'ryu':
+                    Ryu.find(conn, coll, options, cb);
+                    break;
+            default:
+                    console.log("Error: No valid controller was provided.");
+                    break;
+            } 
+        }    
     },
 
 
@@ -50,17 +56,22 @@ module.exports = {
         if(!sails.controllers.main.sdncontroller && sails.config.models.connection === 'util'){
             sails.controllers.main.sdncontroller = 'floodlight';
         }
-        switch(sails.controllers.main.sdncontroller){
-         case 'floodlight': 
-                Floodlight.create(conn, coll, options, cb);
-                break;
-         case 'opendaylight':
-                OpenDaylight.create(conn, coll, options, cb);
-                break;
-        default:
-                console.log("Error: No valid controller was provided.");
-                break;
-        }     
+        if(sails.controllers.main.sdncontroller === 'opendaylight' && sails.controllers.main.opendaylight_version === 'helium'){
+            OpenDaylight_Helium.create(conn, coll, options, cb);
+        }
+        else{
+            switch(sails.controllers.main.sdncontroller){
+             case 'floodlight': 
+                    Floodlight.create(conn, coll, options, cb);
+                    break;
+             case 'opendaylight':
+                    OpenDaylight.create(conn, coll, options, cb);
+                    break;
+            default:
+                    console.log("Error: No valid controller was provided.");
+                    break;
+            } 
+        }
     },
 
     update: function (conn, coll, options, cb) {

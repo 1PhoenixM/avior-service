@@ -113,7 +113,6 @@ define([
 			switchList.appendTo(this.$('#rightPanel')).trigger('create');
 			}
             
-			
 			//switch details appending...move to specific 
 			//functions for description, ports, flows
 			_.forEach(self.collection.models, function(item) {

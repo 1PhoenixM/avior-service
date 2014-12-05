@@ -2,7 +2,7 @@ October 13, 2014 - Melissa Iori
 Avior 2.0 - github.com/1PhoenixM/avior-service
 
 Initial program written in Java by Jason Parraga, Ryan Wallner, Ryan Flaherty
-Local .jar file ran client. Not web-based. Only Floodlight's API is supported. Required the download of a pre-compiled .jar specific to operating system (i.e. different download for Windows, for Linux, etc.) Included:
+Local .jar file ran the client. Not web-based. Only Floodlight's API was supported. Required the download of a pre-compiled .jar specific to operating system (i.e. different download for Windows, for Linux, etc.) Included:
 
 -Controller
 -Devices (Hosts)
@@ -61,7 +61,7 @@ Now that we have OpenFlow, all that is needed is to have OpenFlow-compatible swi
 
 OpenFlow-compatible switches can all be managed with a piece of software called an SDN controller. SDN controllers were created as points of management. They store lots of data about what switches are on the network, the names of those switches, and the tables and rules on the switches. OpenFlow incorporates the concept of a "flow" which is essentially a rule for packet traffic. A sample flow tells a switch something along the lines of, "If a packet comes to you with this attribute, do that with it." On each switch is a "flow table" of these rules. The attributes to match on can be wildcards meaning "any" if omitted, or can be specified - you can check the headers of packets for source and destination MAC addresses, IP addresses, TCP/UDP data and many others.
 
-This functionality is extremely powerful. Best of all, it is made to be much easier to use for those who are not familiar with networking hardware. The two most popular controller softwares currently being used today are called "Floodlight" and "Opendaylight". Both offer many of the same features in line with the OpenFlow 1.0.0 specification. They each have their own browser-based web interface that simplifies interaction with the controller. They also each have a REST API available over http.
+This functionality is extremely powerful. Best of all, it is made to be much easier to use for those who are not familiar with networking hardware. The two most popular controller softwares currently being used today are called "Floodlight" and "Opendaylight". Both offer many of the same features in line with the OpenFlow 1.0.0 specification. They each have their own browser-based web interface that simplifies interaction with the controller. They also each have a REST API available over HTTP.
 
 If the controller software is running somewhere, say on a virtual machine with IP address 10.10.10.10, with the controller bound on port 8080, you would be able to access the REST API by simply visiting a URI in your browser like 10.10.10.10:8080/api. Visiting the URI will give you some information in a format called JSON. JSON objects essentially look like:
 
@@ -178,11 +178,11 @@ assets/ - Contains js and css libraries and dependencies, as well as the entire 
 
 config/ - Contains important Sails.js data and details, along with custom routes, connections to controllers, and authentication code.
 
-node_modules/ - Contains node.js dependencies. Probably not to be messed with.
+node_modules/ - Contains node.js dependencies. Probably not to be messed with. Run 'npm install <modulename>@latest' to update these.
 
 tasks/ - Code for the Grunt utility, no Avior source code here.
 
-views/ - Sails views that are used for controller choice, login, plugins, 404s and anything else that affects the back-end.
+views/ - Sails views (UIs) that are used for controller choice, login, plugins, 404s and anything else that affects the back-end.
   
 .gitignore - For Github, an excluded files list.
 
@@ -198,7 +198,7 @@ README.md - A light guide containing setup, API and other details.
 
 server.js - An Express dependency for the purpose of authentication.
 
-toClient.js  - A very important file to the Avior source code. Within this module is the callback function to be executed when the data has come back from the controller. This file is run no matter what controller is being used. It makes many checks for validation of the JSON, catches some errors, then calls .parse and .normalize for the controller when it is satisfied that the JSON is valid. Finally, it calls cb(), Sails' function to send the JSON up to the browser. This is only done for GET requests.
+toClient.js  - A very important file to the Avior source code. Within this module is the callback function to be executed when the data has come back from the controller. This file is run no matter what controller is being used. It makes many checks for validation of the JSON, catches some errors, then calls .parse and .normalize for the controller when it is satisfied that the JSON is valid. Finally, it calls cb(), the instantiation of Sails' function to send the JSON up to the browser. This is only done for GET requests.
 
 If you get stuck, Google and StackOverflow are your friends, as is the documentation on... everything! Avior is, of course, open source. I look forward to seeing it be developed even further.
 
