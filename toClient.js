@@ -167,7 +167,10 @@ module.exports = function (ctlr,call,postData,cb) {
                             
                             //console.log(responseString);
                             var fs = require('fs');
+                            
+                            //if(call === "switchports"){
                             //fs.appendFileSync('./api/adapters/apidata.txt', '' + responseString + '' + '\n', {encoding: 'utf-8'});
+                            //}
                             
                             var responseObject = JSON.parse(responseString);
                             

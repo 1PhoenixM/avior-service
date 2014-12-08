@@ -237,7 +237,7 @@ module.exports = {
                        break;
                 case 'flow': return this.getFlowStats({args:['default'],call:coll},cb);
                         break;
-                case 'switchports': return this.getPortStats({args:['default'],call:coll},cb);
+                case 'switchports': return this.getPortStats({args:['openflow:1'],call:coll},cb);
                          break;
                 case 'table': return this.getTableStats({args:['default'],call:coll},cb);
                          break;
@@ -245,7 +245,7 @@ module.exports = {
                          break;
                 case 'topologylinks': return this.getTopologyLinks({args:['default'],call:coll},cb);
                          break;
-                case 'host': return this.getHosts({args:['default'],call:coll},cb);
+                case 'host': return this.getHosts({args:['openflow:1'],call:coll},cb);
                          break;
                 case 'alterflow': if(options.action){ 
                                 return this.getFlows({args:['default'],call:coll,action:options.action},cb);
@@ -425,19 +425,26 @@ GET /config/network-topology:network-topology/topology/{topology-id}/node/{node-
 GET /config/network-topology:network-topology/topology/{topology-id}/link/{link-id}/ source or destination
 
 */
-     getTopology:restCall('GET', '/restconf/operational/network-topology:network-topology/topology/flow%3A1'), 
+//http://localhost:8181/restconf/operational/opendaylight-inventory:nodes/node/openflow:1
+//host and port
+//http://localhost:8181/restconf/operational/opendaylight-inventory:nodes/node/openflow:1/node-connector/openflow:1:1/opendaylight-port-statistics:flow-capable-node-connector-statistics/
+    
+    getTopology:restCall('GET', '/restconf/operational/network-topology:network-topology/topology/flow%3A1'), 
     
     getNodes: restCall('GET', '/restconf/operational/opendaylight-inventory:nodes'), 
     
+    getPortStats: restCall('GET', '/restconf/operational/opendaylight-inventory:nodes/node/:dpid:'),
     
+    getHosts: restCall('GET', '/restconf/operational/opendaylight-inventory:nodes/node/:dpid:'),
     
+    //Old
     
     //Statistics API
     getFlowStats: restCall('GET', '/controller/nb/v2/statistics/:containerName:/flow'),
             
     getFlowStatsByNode: restCall('GET', '/controller/nb/v2/statistics/:containerName:/flow/node/:nodeType:/:nodeId:'),
             
-    getPortStats: restCall('GET', '/controller/nb/v2/statistics/:containerName:/port'),
+   
             
     getPortStatsByNode: restCall('GET', '/controller/nb/v2/statistics/:containerName:/port/node/:nodeType:/:nodeId:'),
             
@@ -463,7 +470,7 @@ GET /config/network-topology:network-topology/topology/{topology-id}/link/{link-
             
     deleteHost: restCall('DELETE', '/controller/nb/v2/hosttracker/:containerName:/address/:networkAddress:'), 
             
-    getHosts: restCall('GET', '/controller/nb/v2/hosttracker/:containerName:/hosts/active'),
+    
    
     getInactiveHosts:restCall('GET', '/controller/nb/v2/hosttracker/:containerName:/hosts/inactive'),
     
@@ -611,18 +618,23 @@ GET /config/network-topology:network-topology/topology/{topology-id}/link/{link-
     //This function parses ODL data into the format of the Avior API
     // Test if Helium or Hydrogen: sails.controllers.main.opendaylight_version === 'helium'
     nodeParse: function(current, obj, innerArr) {
-    if(current === 'topology'){
-         var links = obj.topology[0].link;
+    if(current === 'topology'){ //Disabled until we figure it out.
+        //Returns hosts as topology elements.
+        //On the front end, hosts are automatically seen at their switch attachment points
+        //Hosts are not in topology.
+         /*var links = obj.topology[0].link;
          var parsed_links = [];
          for(var i = 0; i < links.length; i++){
              var link = {};
              link.SourceDPID =  links[i].source["source-node"];
-             link.SourcePortNum =  links[i].source["source-tp"];
+             var srcport = links[i].source["source-tp"].split(":");
+             link.SourcePortNum = parseInt(srcport[srcport.length-1]);
              link.DestinationDPID =  links[i].destination["dest-node"];
-             link.DestinationPortNum =  links[i].destination["dest-tp"];
+             var dstport = links[i].destination["dest-tp"].split(":");
+             link.DestinationPortNum = parseInt(dstport[dstport.length-1]);
              parsed_links.push(link);
-         }
-        return parsed_links;
+         }*/
+        return [];
      }
     //Note: This gets switches AND hosts
      else if(current === 'switch'){
@@ -631,19 +643,19 @@ GET /config/network-topology:network-topology/topology/{topology-id}/link/{link-
          for(var i = 0; i < nodes.length; i++){
              var node = {};
              node.DPID =  nodes[i].id;
-             node.Manufacturer = nodes[i]["flow-node-inventory:manufacturer"];
-             node.Hardware = nodes[i]["flow-node-inventory:hardware"];
-             node.Software = nodes[i]["flow-node-inventory:software"];
-             node.SerialNum = nodes[i]["flow-node-inventory:serial-number"];
+             //node.Manufacturer = nodes[i]["flow-node-inventory:manufacturer"];
+             //node.Hardware = nodes[i]["flow-node-inventory:hardware"];
+             //node.Software = nodes[i]["flow-node-inventory:software"];
+             //node.SerialNum = nodes[i]["flow-node-inventory:serial-number"];
              node.Buffers = nodes[i]["flow-node-inventory:switch-features"].max_buffers;
              node.Capabilities = nodes[i]["flow-node-inventory:switch-features"].capabilities.length;
-             node.SerialNum = nodes[i]["flow-node-inventory:serial-number"];
+             //node.SerialNum = nodes[i]["flow-node-inventory:serial-number"];
              var ports = nodes[i]["node-connector"];
              var parsed_ports = [];
              for(var j = 0; j < ports.length; j++){
                 var port = {};
                 port.DPID =  nodes[i].id;
-                port.PortNum = ports[j]["flow-node-inventory:port-number"];
+                port.PortNum = parseInt(ports[j]["flow-node-inventory:port-number"]);
                 port.PortName = ports[j]["flow-node-inventory:name"];
                 port.CurrentFeatures = ports[j]["flow-node-inventory:current-feature"];
                 port.AdvertisedFeatures = ports[j]["flow-node-inventory:advertised-feature"];
@@ -659,6 +671,84 @@ GET /config/network-topology:network-topology/topology/{topology-id}/link/{link-
          }
         return parsed_nodes;         
      }
+      else if(current === 'switchdesc'){
+         var nodes = obj.nodes.node;
+         var parsed_nodes = [];
+         for(var i = 0; i < nodes.length; i++){
+             var node = {};
+             node.DPID =  nodes[i].id;
+             node.Manufacturer = nodes[i]["flow-node-inventory:manufacturer"];
+             node.Hardware = nodes[i]["flow-node-inventory:hardware"];
+             node.Software = nodes[i]["flow-node-inventory:software"];
+             node.SerialNum = nodes[i]["flow-node-inventory:serial-number"];
+             parsed_nodes.push(node);
+         }
+        return parsed_nodes;         
+     } 
+    else if(current === 'switchports'){
+         var switch_ = obj.node;
+         var portstats = switch_[0]["node-connector"];
+         var dpid = obj.node[0].id;
+         var parsed_port_stats = [];
+         
+         newObj = {};
+         newObj.DPID = dpid;
+         newObj.Ports = [];
+        
+         for(var i = 0; i < portstats.length; i++){
+             var port_stats = {};
+             var inner_port = {};
+             inner_port.PortNum = parseInt(portstats[i]["flow-node-inventory:port-number"]);
+             inner_port.receivePackets = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["packets"]["received"]);
+             inner_port.transmitPackets = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["packets"]["received"]);
+             inner_port.receiveBytes = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["bytes"]["received"]);
+             inner_port.transmitBytes = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["bytes"]["transmitted"]);
+             inner_port.receiveDrops = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-drops"]);
+             inner_port.transmitDrops = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["transmit-drops"]);
+             inner_port.receiveErrors = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-errors"]);
+             inner_port.transmitErrors = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["transmit-errors"]);
+             inner_port.receiveFrameError  = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-frame-error"]);
+             inner_port.receiveOverRunError  = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-over-run-error"]);
+             inner_port.receiveCrcError = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-crc-error"]);
+             inner_port.collisionCount = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["collision-count"]);
+             newObj.Ports.push(inner_port);
+            
+         }
+        parsed_port_stats.push(newObj);
+        return parsed_port_stats;
+     } 
+     else if(current === 'host'){
+         var switch_ = obj.node;
+         var ports = switch_[0]["node-connector"];
+         var dpid = obj.node[0].id;
+         var parsed_hosts = [];
+         for(var i = 0; i < ports.length; i++){
+         if(ports[i]["address-tracker:addresses"]){   
+             
+             for(var j = 0; j < ports[i]["address-tracker:addresses"].length; j++){
+                 var host_data = ports[i]["address-tracker:addresses"][j];
+                 //console.log(host_data);
+                 var host = {};
+                 host.MAC_Address = [];
+                 host.MAC_Address.push(host_data["mac"]);
+                 host.IP_Address = [];
+                 host.IP_Address.push(host_data["ip"]);
+                 host.VLAN_ID = [];
+                 host.VLAN_ID.push("0");
+                 host.Attached_To = [];
+                 host.Last_Seen = [host_data["last-seen"]];
+                 var attach = {};
+                 attach.DPID = dpid;
+                 attach.PortNum = parseInt(ports[i]["flow-node-inventory:port-number"]); 
+                 host.Attached_To.push(attach);
+                 parsed_hosts.push(host);
+            }
+           
+         }
+        
+        }
+        return parsed_hosts;
+     }     
      else{
      return obj;
      }
