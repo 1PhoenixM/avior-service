@@ -1,1 +1,0 @@
-User interacts with the controllers to alter the models so all of the calls made in the adapters could also be made here. Since we are using multiple different controllers we do this in the adapter and are using blueprint in sails to create urls based on the controller and model names.

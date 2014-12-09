@@ -1,0 +1,350 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>Avior</title>
+	
+	<img class="loadingIMG" src="img/ajax-loader.gif" style="vertical-align: center; margin:auto; position:absolute; top:0;bottom:0; left:0;right:0;">
+	 
+    <!-- Mobile View -->
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<!-- Mobile View -->
+
+	<!-- CSS & JS for JQuery Mobile - Latest Stable Version 1.3.2 -->	
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+	<!-- /CSS & JS for JQuery Mobile - Latest Stable Version 1.3.2 -->
+
+	<!--Foundation 5 CSS -->
+	 <link rel="stylesheet" href="css/normalize.css"/>
+ 	 <link rel="stylesheet" href="css/foundation.css"/>	
+ 	 	
+  	<script src="js/vendor/jquery.js"></script>
+  	<script src="js/foundation.min.js"></script>
+  	<script>
+    	$(document).foundation();
+  	</script>
+  	<!--Foundation 5 CSS -->
+
+	<!-- CSS & JS for Top Menu Effects -->	
+	<link rel="stylesheet" href="css/junaid.css/jqm-docs.css" />	
+	<!-- /CSS & JS for Top Menu Effects -->
+
+	<!-- Cross-Platform Table Resize -->
+	<link type="text/css" media="screen" rel="stylesheet" href="css/junaid.css/responsive-tables.css" />
+	<!--<script type="text/javascript" src="js/junaid.js/responsive-tables.js"></script>-->
+	<!-- /Cross-Platform Table Resize -->
+    
+	<!-- JS for JQuery - Latest Stable Version 1.9.1  -->	
+   <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<!-- /JS for JQuery  - Latest Stable Version 1.9.1   -->	
+
+	<!-- JS for D3 -->
+	<script src="js/lib/d3.v3.js" charset="utf-8"></script>
+	<!-- JS for D3 -->
+
+	<!-- /Backbone Template Call -->
+	<script data-main="js/main" src="js/lib/require.js" type="text/javascript"></script>
+    <!--<script src="js/junaid.js/jqm-docs.js"></script>-->
+	<!-- /Backbone Template Call -->
+	
+	<style>
+	@media only screen and (max-width: 40em) { /*640*/
+.portTable { display: block; position: relative; width: 100%; }
+.portTable thead { display: block; float: left; }
+.portTable tbody { display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
+.portTable thead tr { display: block; }
+.portTable th { display: block; }
+.portTable tbody tr { display: inline-block; vertical-align: top; }
+.portTable td { display: block; min-height: 1.25em; }
+
+.flowTable { display: block; position: relative; width: 100%; }
+.flowTable thead { display: block; float: left; }
+.flowTable tbody { display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
+.flowTable thead tr { display: block; }
+.flowTable th { display: block; }
+.flowTable tbody tr { display: inline-block; vertical-align: top; }
+.flowTable td { display: block; min-height: 1.25em; }
+
+}
+
+.node {
+  cursor: move;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+
+.node.fixed {
+  font: 10px sans-serif;
+  stroke: #999;
+  stroke-width: 0.5px;
+  stroke-opacity: 1.0;
+}
+
+text {
+  font: 10px sans-serif;
+  stroke: #999;
+  stroke-width: 0.5px;
+  stroke-opacity: 1.0;
+  pointer-events: none;
+}
+
+.outer {
+    width: window.innerWidth;
+    height: window.innerHeight;
+    overflow: auto;
+}
+.inner {
+    //width: 1920px;
+    width: window.innerWidth;
+    //height: 800px;
+    height: window.innerHeight;
+}
+.mainSVG {
+  	display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.legend {
+    padding: 5px;
+    font: 10px sans-serif;
+    background: yellow;
+    box-shadow: 2px 2px 1px #888;
+ }
+        
+.border {
+  font: 10px sans-serif;
+  stroke: #999;
+  stroke-width: 0.5px;
+  stroke-opacity: 1.0;
+  pointer-events: none;
+}
+
+.background {
+  fill: none;
+  pointer-events: all;
+}
+
+.aviorHeader {
+  position:relative;
+}
+
+.headerIMG {
+  margin:auto;
+  position:absolute;
+  top:0;bottom:0;
+  left:0;right:0;
+}
+
+.headerIMG {
+  max-height:100%;
+  max-width: 100%;
+}
+
+.innerPageLoader{
+  position:absolute;
+  vertical-align:center;
+  margin:auto;
+  top:40.5%; 
+  left:0;right:0;
+  //left:47.40%;
+  //top:45.35%;
+}
+
+#mainmenu{
+	color:#FFFFFF;
+	text-shadow: none;
+}
+
+#logout{
+	color:#FFFFFF;
+	text-shadow: none;
+}
+
+aside{
+	text-shadow: none;
+	min-height:window.innerHeight;
+	overflow-y:visible;
+}
+
+.off-canvas-wrap{
+
+}
+
+.inner-wrap{
+
+}
+
+body,html{
+	height:100%;
+	width:100%;
+}
+
+#content{
+	height:100%;
+}
+
+	</style>
+</head> 
+
+<!-- Body -->
+<body id="body" style="font-family:sans-serif;">
+
+  
+<div id="some-div" style="display:none">
+<!-- Start of index page -->
+
+
+	<div data-role="page" class="responsive"> 
+
+<!-- Header 
+	<header>
+
+	<div class="aviorHeader" data-role="header" data-theme="a" style="max-height: 40px;">
+	<h1><img class="headerIMG" src="img/avior_logo_alt_trans.png"  height="40" width="120" style="vertical-align: top;"> </h1>
+	<h1>Avior</h1>
+	<a id="leftpanel3" href="#leftpanel3" data-icon="bars" data-iconpos="notext" data-direction="reverse" style="display: none;">Main Menu</a>
+	</div>
+	</header>
+ 
+ Header -->
+
+<div class="off-canvas-wrap">
+  <div class="inner-wrap">
+  <div style="display: none;" id="menuBar">
+   <nav class="tab-bar">
+      <section class="left-small" id="leftMenuIcon">
+        <a class="left-off-canvas-toggle" data-theme="a" data-role="button" data-icon="search" data-iconpos="notext" style="margin-left:7px;"></a>
+      </section>
+
+      <section class="right-small" id="rightMenuIcon">
+        <a class="right-off-canvas-toggle" data-theme="a" data-role="button" data-icon="gear" data-iconpos="notext" style="margin-left:7px;"></a>
+      </section>
+      
+        <section class="middle tab-bar-section">
+        <a id="logout" href="index.html" data-icon="gear" style="display: none;">Log Out</a><span></span></a>
+      </section>
+      
+      <section>
+      <img class="headerIMG" src="img/avior_logo_alt_trans.png" height="40" width="120" style="vertical-align:top;horizontal-align:center;">
+      </section>
+    </nav>
+
+    <aside class="left-off-canvas-menu" id="leftMenu">
+      <ul class="off-canvas-list" id="overview">
+        <li><label>Overview:</label></li>
+        <li><a href="#controllers">Controllers</a></li>
+        <li><a href="#hosts">Hosts</a></li>
+        <li><a href="#switches">Switches</a></li>
+        <li><a href="#topology">Topology</a></li>
+      </ul>
+    </aside>
+
+    <aside class="right-off-canvas-menu" id="rightMenu">
+      <ul class="off-canvas-list" id="tools">
+        <li><label>Tools:</label></li>
+        <li><a href="#staticflowmanager">Static Flow Manager</a></li>
+        <li><a href="#firewall">Firewall</a></li>
+        <li><a href="http://advalanche.cs.marist.edu">ADVAlanche</a></li>
+        <li><a href="#qos">QoS</a></li>
+        <li><a href="#vfilter">Virtual Network Filter</a></li>
+        <li><a href="#loadbalancer">Load Balancer</a></li>
+      </ul>
+    </aside>
+</div>
+ 	 <a class="exit-off-canvas"></a>    
+
+
+
+    <section class="main-section">
+      <!-- content goes here -->
+ 
+	<div id="content" class="responsive" data-role="content" style="height:100%"></div>
+		   </section>
+</div>
+</div> 
+ 
+	
+<!-- Footer -->
+	<div data-role="footer" class="footer-docs ui-footer ui-bar-c"  data-position="fixed" data-theme="c" role="contentinfo" >
+	<p>2013 Avior Version 2.0 </p>
+	<p>Designed & Developed at Marist College by Junaid Kapadia, Kevin Pietrow, Devin Young, Melissa Iori & Aaron Kippins</p>
+	<p>Logo Designed by Andrew Evans </p>
+	</div>
+<!-- /Footer -->	
+
+
+
+<!-- Panels  -->
+
+<!-- leftpanel3 -->
+	<div data-role="panel" id="leftpanel3" data-position="left" data-position-fixed="false" data-display="push" data-dismissible="true" data-theme="a">
+
+	<h3 id="mainmenu">Main Menu</h3>
+
+	<nav>
+	<!--<input data-rel="close" class="link" value="Home" onclick="location.href='#home';" type="button">-->
+	<div data-role="controlgroup">
+	<p>Overview:</p>
+	<input data-rel="close" class="link" type="button" value="Controllers" onclick="location.href='#controllers';">
+	<input data-rel="close" class="link" type="button" value="Hosts" onclick="location.href='#hosts';">
+	<input data-rel="close" class="link" type="button" value="Switches" onclick="location.href='#switches';">
+	<input data-rel="close" class="link" type="button" value="Topology" onclick="location.href='#topology';">
+	<p>Tools:</p>
+	<input data-rel="close" class="link" type="button" value="Static Flow Manager" onclick="location.href='#staticflowmanager';">
+	<input data-rel="close" class="link" type="button" value="Firewall" onclick="location.href='#firewall';">
+	<input data-rel="close" class="link" type="button" value="ADVAlanche" onclick="window.location.href='http://advalanche.cs.marist.edu';">
+	<input data-rel="close" class="link" type="button" value="QoS" onclick="location.href='#qos';">
+	<input data-rel="close" class="link" type="button" value="Virtual Network Filter" onclick="location.href='#vfilter';">
+	<input data-rel="close" class="link" type="button" value="Load Balancer" onclick="location.href='#loadbalancer';">
+	</div>
+	</nav>
+
+	<a href="#demo-links" data-rel="close" data-role="button" data-theme="c" data-icon="delete" data-inline="true">Close panel</a>
+
+	</div>
+<!-- /leftpanel3-->
+
+
+
+	<!--<div data-role="panel" id="rightpanel3" data-position="right" data-position-fixed="false" data-display="push" data-dismissible="true" data-theme="a">
+
+	<h3>Right Panel Menu</h3>
+
+	<div data-role="controlgroup">
+	<nav>
+	<input data-rel="close" type="button" value="Home" onclick="location.href='#index';">
+	<p>Overview:</p>
+	<input data-rel="close" type="button" value="Controllers" onclick="location.href='#controllers';">
+	<input data-rel="close" class="link" type="button" value="Hosts" onclick="location.href='#hosts';">
+	<input data-rel="close" type="button" value="Switches" onclick="location.href='#switches';">
+	<input data-rel="close" class="link" type="button" value="Topology" onclick="location.href='#topology';">
+	<p>Tools:</p>
+	<input data-rel="close" type="button" value="Static Flow Manager" onclick="location.href='#staticflowmanager';">
+	<input data-rel="close" class="link" type="button" value="Firewall" onclick="location.href='#firewall';">
+	<input data-rel="close" class="link" type="button" value="ADVAlanche" onclick="location.href='#ADVAlanche';">
+	<input data-rel="close" type="button" value="QoS" onclick="location.href='#qos';">
+	<input data-rel="close" type="button" value="Virtual Network Filter" onclick="location.href='#vfilter';">
+	<input data-rel="close" type="button" value="Load Balancer" onclick="location.href='#loadbalancer';">
+	</nav>
+	</div>
+
+	<a href="#demo-links" data-rel="close" data-role="button" data-theme="c" data-icon="delete" data-inline="true">Close panel</a>
+
+	</div>-->
+ 
+
+	</div>
+	</div>
+
+<!-- /index page -->
+
+
+
+</div>
+</body>
+</html>

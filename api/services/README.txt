@@ -1,1 +1,0 @@
-This folder holds the major packages that have been added to the code in order to make thing work. At this point the only major package that we've added is Passport.js.

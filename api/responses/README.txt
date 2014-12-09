@@ -1,1 +1,0 @@
-This holds the code for the possible error messages for Sails.

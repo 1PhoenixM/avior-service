@@ -1,1 +1,0 @@
-This file contains a bunch of CSS files that are pulled from a bunch of different addons.
