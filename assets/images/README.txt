@@ -1,0 +1,1 @@
+This file contains a bunch of image files that are used in the application.

@@ -1,0 +1,1 @@
+We use the adapters to differentiate between the different controllers. Each adapter holds all of the rest calls that would be used for Avior and on top of that it also holds the code needed to normalize the data so that it can be viewed using the Avior API. The rest calls are also being made in the adapters. 
