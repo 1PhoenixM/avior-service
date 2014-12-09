@@ -1,0 +1,1 @@
+Models hold the information that comes from the controller and stores it so that we're able to display it in the views. For each model we have to determine the name of the data and the type that is going to come into it.
