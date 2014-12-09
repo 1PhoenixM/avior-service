@@ -213,14 +213,11 @@ define([
 				
 			// Link controller aspects to id tags
             
-            $('#uptimeview').append(this.uptimeview.render().el);
+			$('#uptimeview').append(this.uptimeview.render().el);
             $('#activeview').append(this.activeview.render().el);
 			$('#statusview').append(this.statusview.render().el);
 			$('#memoryview').append(this.memoryview.render().el);
 			$('#modulesview').append(this.modulesview.render().el);
-            
-            
-             
 			//$('#hostview').append(this.hostview.render().el);
 	
 			//moved toggle button stuff back to firewallEditor.js.
@@ -252,7 +249,7 @@ define([
 					self.memoryview.model.fetch();
 					self.controllerview.model.fetch();
 					//self.hostview.model.fetch();
-				}, 2000);
+				}, 2000);	
 				
         }, 
         

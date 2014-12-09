@@ -576,275 +576,286 @@ module.exports = {
     
     
     //This function parses ODL data into the format of the Avior API
+    // Test if Helium or Hydrogen: sails.controllers.main.opendaylight_version === 'helium'
     nodeParse: function(current, obj, innerArr) {
-    
-    switch(current){
-            
-              case 'uptime':
-                //obj.Uptime_msec = obj.upTime;
-                var days = obj.upTime.search(" days");
-                var actualDays = obj.upTime.slice(0, days);
-                var Days_in_msec = parseInt(actualDays) * 86400000;
-              
-                //trim whitespace?
-                //todo: months, years (?)
-                var time = obj.upTime.search(" days") + 5;
-                time++;
-                var actualTime = obj.upTime.slice(time, obj.upTime.length);
-                
-                var hrs = actualTime.slice(0,2);
-                var hrs_in_msec = parseInt(hrs) * 3600000;
-                
-                var mins = actualTime.slice(3,5);
-                var mins_in_msec = parseInt(mins) * 60000;
-                   
-                var secs = actualTime.slice(6,8);
-                var secs_in_msec = parseInt(secs) * 1000; 
-                
-                var ms = actualTime.slice(9,12);
-                var ms = parseInt(ms);
-                
-                obj.Uptime_msec = Days_in_msec + hrs_in_msec + mins_in_msec + secs_in_msec + ms;
-               
-                return obj;
-                break;
-            
-              case 'memory':
-                obj.TotalMemory = obj.mem_free + obj.mem_used;
-                obj.TotalMemory = obj.TotalMemory * 1024;
-                obj.mem_free = obj.mem_free * 1024; 
-                //supposedly the mem. in odl is in kB. we expect bytes (?).
-                return obj;    
-                break;
-            
-              case 'topology':
-                arr = [];
-                for (var i=0; i<obj.edgeProperties.length; i++){
-                    newObj = {};
-                    newObj.SourceDPID = obj.edgeProperties[i].edge.tailNodeConnector.node.id;
-                    newObj.SourcePortNum = parseInt(obj.edgeProperties[i].edge.tailNodeConnector.id);
-                    newObj.DestinationDPID = obj.edgeProperties[i].edge.headNodeConnector.node.id;
-                    newObj.DestinationPortNum = parseInt(obj.edgeProperties[i].edge.headNodeConnector.id);
-                    //srcPortObj = this.getNodeConnectors({args:['default', 'OF', newObj.SourceDPID],call:'port'},null);
-                    //newObj.SourcePortState = srcPortObj.nodeConnectorProperties.properties.state.value;
-                    //dstPortObj = this.getNodeConnectors({args:['default', 'OF', newObj.DestinationDPID],call:'port'},null);
-                    //newObj.DestinationPortState = dstPortObj.nodeConnectorProperties.properties.state.value;
-                    arr.push(newObj);
-                }
-                normalizerObj = {};
-                normalizerObj.Stats = arr;
-                return normalizerObj;
-                break;
-            
-            case 'host':
-                arr = [];
-                //newObj = {};
-                for (var i=0; i<obj.hostConfig.length; i++){
-                    newObj = {};
-                    var MACarr = [];
-                    MACarr.push(obj.hostConfig[i].dataLayerAddress);
-                    newObj.MAC_Address = MACarr;
-                    var IParr = [];
-                    IParr.push(obj.hostConfig[i].networkAddress); 
-                    newObj.IP_Address = IParr;
-                    var VLANarr = [];
-                    VLANarr.push(obj.hostConfig[i].vlan);
-                    newObj.VLAN_ID = VLANarr;
-                    newObj.Attached_To = [];
-                    var Attached_To_Obj = {};
-                    Attached_To_Obj.DPID = obj.hostConfig[i].nodeId;
-                    Attached_To_Obj.PortNum = parseInt(obj.hostConfig[i].nodeConnectorId);
-                    newObj.Attached_To.push(Attached_To_Obj);
-                    arr.push(newObj);
-                    //Missing: LastSeen
-                }
-                normalizerObj = {};
-                normalizerObj.Stats = arr;
-                return normalizerObj;
-                break;
-            
-            case 'switch':
-                arr = [];
-                for (var i=0; i<obj.nodeProperties.length; i++){
-                    newObj = {}; //newObj has to be defined within the for loop
-                    //console.log(obj.nodeProperties);
-                    newObj.Actions = parseInt(obj.nodeProperties[i].properties.supportedFlowActions.value.length); //Correct value?
-                    newObj.Buffers = obj.nodeProperties[i].properties.buffers.value;
-                    newObj.Capabilities = obj.nodeProperties[i].properties.capabilities.value;
-                    newObj.Connected_Since = obj.nodeProperties[i].properties.timeStamp.value;
-                    newObj.DPID = obj.nodeProperties[i].node.id;
-                    this.getNodeConnectors({args:['default', 'OF', newObj.DPID],call:'port'}, function(a, b){return b;});
-                    arr.push(newObj);
-                }
-                    normalizerObj = {};
-                    normalizerObj.Stats = arr;
-                    return normalizerObj; //returns without port list, change function order
-                break;
-            
-            case 'port':
-                            portsObj = obj;
-                            Ports = [];
-                            for(var j=0; j<portsObj.nodeConnectorProperties.length; j++){
-                            portObj = {};
-                            portObj.DPID = portsObj.nodeConnectorProperties[j].nodeconnector.node.id;
-                            portObj.PortNum = parseInt(portsObj.nodeConnectorProperties[j].nodeconnector.id);
-                            portObj.PortName = portsObj.nodeConnectorProperties[j].properties.name.value;
-                            portObj.PortState = portsObj.nodeConnectorProperties[j].properties.state.value;
-                            portObj.CurrentFeatures = "N/A";
-                            portObj.AdvertisedFeatures = "N/A";
-                            portObj.SupportedFeatures = "N/A";
-                            portObj.PeerFeatures = "N/A";
-                            portObj.Config = portsObj.nodeConnectorProperties[j].properties.config.value;
-                            portObj.HardwareAddress = "N/A";
-                            Ports.push(portObj);
-                            }
-                //this.nodeParse('switch', {nodeProperties:[]}, Ports);
-                if(innerArr){
-                    for(var k=0; k<Ports.length; k++){
-                        for(var m=0; m<innerArr.length; m++){
-                            if(innerArr[m].DPID === Ports[k].DPID){
-                                innerArr[m].Ports = Ports;
-                            }
-                        }
+        switch(current){
+
+                  case 'uptime':
+                    //obj.Uptime_msec = obj.upTime;
+                    var days = obj.upTime.search(" days");
+                    var actualDays = obj.upTime.slice(0, days);
+                    var Days_in_msec = parseInt(actualDays) * 86400000;
+
+                    //trim whitespace?
+                    //todo: months, years (?)
+                    var time = obj.upTime.search(" days") + 5;
+                    time++;
+                    var actualTime = obj.upTime.slice(time, obj.upTime.length);
+
+                    var hrs = actualTime.slice(0,2);
+                    var hrs_in_msec = parseInt(hrs) * 3600000;
+
+                    var mins = actualTime.slice(3,5);
+                    var mins_in_msec = parseInt(mins) * 60000;
+
+                    var secs = actualTime.slice(6,8);
+                    var secs_in_msec = parseInt(secs) * 1000; 
+
+                    var ms = actualTime.slice(9,12);
+                    var ms = parseInt(ms);
+
+                    obj.Uptime_msec = Days_in_msec + hrs_in_msec + mins_in_msec + secs_in_msec + ms;
+
+                    return obj;
+                    break;
+
+                  case 'memory':
+                    obj.TotalMemory = obj.mem_free + obj.mem_used;
+                    obj.TotalMemory = obj.TotalMemory * 1024;
+                    obj.mem_free = obj.mem_free * 1024; 
+                    //supposedly the mem. in odl is in kB. we expect bytes (?).
+                    return obj;    
+                    break;
+
+                  case 'topology':
+                    arr = [];
+                    for (var i=0; i<obj.edgeProperties.length; i++){
+                        newObj = {};
+                        newObj.SourceDPID = obj.edgeProperties[i].edge.tailNodeConnector.node.id;
+                        newObj.SourcePortNum = parseInt(obj.edgeProperties[i].edge.tailNodeConnector.id);
+                        newObj.DestinationDPID = obj.edgeProperties[i].edge.headNodeConnector.node.id;
+                        newObj.DestinationPortNum = parseInt(obj.edgeProperties[i].edge.headNodeConnector.id);
+                        //srcPortObj = this.getNodeConnectors({args:['default', 'OF', newObj.SourceDPID],call:'port'},null);
+                        //newObj.SourcePortState = srcPortObj.nodeConnectorProperties.properties.state.value;
+                        //dstPortObj = this.getNodeConnectors({args:['default', 'OF', newObj.DestinationDPID],call:'port'},null);
+                        //newObj.DestinationPortState = dstPortObj.nodeConnectorProperties.properties.state.value;
+                        arr.push(newObj);
                     }
-                }
-                else{
-                 return Ports;   
-                }
-                break;
-            
-            case 'switchports':
-                arr = [];
-                for(var i=0; i<obj.portStatistics.length; i++){
-                    newObj = {};
-                    newObj.DPID = obj.portStatistics[i].node.id;
-                    newObj.Ports = [];
-                    for(var j=0; j<obj.portStatistics[i].portStatistic.length; j++){
-                        portObj = {};
-                        portObj.PortNum = parseInt(obj.portStatistics[i].portStatistic[j].nodeConnector.id);
-                        for(key in obj.portStatistics[i].portStatistic[j]){
-                            portObj[key] = obj.portStatistics[i].portStatistic[j][key];
-                        }
-                        newObj.Ports.push(portObj);
-                    }
-                    arr.push(newObj);    
-                }
-                return arr;
-                break;
-            
-            case 'flow':
-                arr = [];
-                for(var i=0; i<obj.flowStatistics.length; i++){
-                    newObj = {};
-                    newObj.DPID = obj.flowStatistics[i].node.id;
-                    newObj.Flows = [];
-                    for(var j=0; j<obj.flowStatistics[i].flowStatistic.length; j++){
-                        flowObj = {};
-                        flowObj.DurationSeconds = obj.flowStatistics[i].flowStatistic[j].durationSeconds;
-                        flowObj.DurationNanoSeconds = obj.flowStatistics[i].flowStatistic[j].durationNanoseconds;
-                        flowObj.PacketCount = obj.flowStatistics[i].flowStatistic[j].packetCount;
-                        flowObj.ByteCount = obj.flowStatistics[i].flowStatistic[j].byteCount;
-                        flowObj.Match = {};
-                        
-                        //Match fields not accurate yet. Also, the same flowmatch appears on all switches?
-                        for(var k=0; k<obj.flowStatistics[i].flowStatistic[j].flow.match.matchField.length; k++){
-                            flowObj.Match.Wildcards = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "WILDCARDS" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.DataLayerDestination = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_DST" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.DataLayerSource = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_SRC" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.DataLayerType = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_TYPE" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.DataLayerVLAN = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_VLAN" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.DataLayerVLAN_PCP = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_VLAN_PR" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.InputPort = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "IN_PORT" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.NetworkDestination = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_DST" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.NetworkDestinationMaskLen = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_DST_MASK" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.NetworkProtocol = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_PROTOCOL" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.NetworkSource = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_SRC" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.NetworkSourceMaskLen = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_SRC_MASK" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.NetworkTOS = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_TOS" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.TransportDestination = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "TP_DST" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                            flowObj.Match.TransportSource = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "TP_SRC" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
-                        }
-                        
-                        flowObj.Actions = [];
-                            
-                        for(var m=0; m<obj.flowStatistics[i].flowStatistic[j].flow.actions.length; m++){
-                             actionObj = {}; //specify the switch that port belongs to?
-                             actionObj.Type = obj.flowStatistics[i].flowStatistic[j].flow.actions[m].type;
-                             if(obj.flowStatistics[i].flowStatistic[j].flow.actions[m].port){
-                             actionObj.PortNum = parseInt(obj.flowStatistics[i].flowStatistic[j].flow.actions[m].port.id);
-                             }
-                             flowObj.Actions.push(actionObj);
-                            }
-                        
-                        flowObj.Priority = obj.flowStatistics[i].flowStatistic[j].flow.priority;
-                        flowObj.IdleTimeout = obj.flowStatistics[i].flowStatistic[j].flow.idleTimeout;
-                        flowObj.HardTimeout = obj.flowStatistics[i].flowStatistic[j].flow.hardTimeout;
-                        flowObj.Cookie = obj.flowStatistics[i].flowStatistic[j].flow.id;
-                        /*for(key in obj.flowStatistics[i].flowStatistic[j]){
-                            flowObj[key] = obj.flowStatistics[i].flowStatistic[j][key];
-                        }*/
-                        newObj.Flows.push(flowObj);
-                    }
-                    arr.push(newObj);    
-                }
-                return arr;
-                break;
-            
-            case 'alterflow':
-                arr = [];
-                for(var i=0; i<obj.flowConfig.length; i++){
-                    newObj = {};
-                    newObj.DPID = obj.flowConfig[i].node.id;
-                    newObj.Flows = [];
-                    flowObj = {}; //soon: multiple flows
-                    flowObj.IdleTimeout = obj.flowConfig[i].idleTimeout;
-                    flowObj.HardTimeout = obj.flowConfig[i].hardTimeout;
-                    flowObj.Actions = [];
-                    flowObj.Match = {};  //todo: add match and actions
-                    flowObj.Cookie = obj.flowConfig[i].cookie;
-                    flowObj.Priority =obj.flowConfig[i].priority;
-                    flowObj.Flow = obj.flowConfig[i].name;
-                    newObj.Flows.push(flowObj);
-                    arr.push(newObj);    
-                }
-                return arr;
-                break;
-                
-            
-            case 'switchdesc': //actually calling nodes (switches) call first
-                arr = [];
-                for (var i=0; i<obj.nodeProperties.length; i++){
-                    newObj = {}; //newObj has to be defined within the for loop
-                    newObj.DPID = obj.nodeProperties[i].node.id;
-                    arr.push(newObj);
-                }
                     normalizerObj = {};
                     normalizerObj.Stats = arr;
                     return normalizerObj;
-                break;
-            
-            case 'switchdesc2':
-                 //newObj = {};
-                //improve the accuracy of this
-            
-                //Note that would be much easier and more accurate to use the DPID that was sent to Opendaylight to compare,
-                //but can't seem to find this.
-                for(var j=0; j<innerArr.length; j++){
-                    var description = obj.description.slice(14, obj.description.length);
-                    var parseDP = innerArr[j].DPID.replace(/:/g, "");
-                     if(parseDP === description || innerArr[j].DPID.toUpperCase() === obj.description){ //handles how switches broadcast datapath id?
-                     innerArr[j].Manufacturer = obj.manufacturer;
-                     innerArr[j].Hardware = obj.hardware;
-                     innerArr[j].Software = obj.software;
-                     innerArr[j].SerialNum = obj.serialNumber;
-                     }
-                 }  
-                return innerArr;
-                break;
-            
-            default:
-                return obj;
-      }  
-    },
+                    break;
+
+                case 'host':
+                    arr = [];
+                    //newObj = {};
+                    for (var i=0; i<obj.hostConfig.length; i++){
+                        newObj = {};
+                        var MACarr = [];
+                        MACarr.push(obj.hostConfig[i].dataLayerAddress);
+                        newObj.MAC_Address = MACarr;
+                        var IParr = [];
+                        IParr.push(obj.hostConfig[i].networkAddress); 
+                        newObj.IP_Address = IParr;
+                        var VLANarr = [];
+                        VLANarr.push(obj.hostConfig[i].vlan);
+                        newObj.VLAN_ID = VLANarr;
+                        newObj.Attached_To = [];
+                        var Attached_To_Obj = {};
+                        Attached_To_Obj.DPID = obj.hostConfig[i].nodeId;
+                        Attached_To_Obj.PortNum = parseInt(obj.hostConfig[i].nodeConnectorId);
+                        newObj.Attached_To.push(Attached_To_Obj);
+                        arr.push(newObj);
+                        //Missing: LastSeen
+                    }
+                    normalizerObj = {};
+                    normalizerObj.Stats = arr;
+                    return normalizerObj;
+                    break;
+
+                case 'switch':
+                    arr = [];
+                    for (var i=0; i<obj.nodeProperties.length; i++){
+                        newObj = {}; //newObj has to be defined within the for loop
+                        //console.log(obj.nodeProperties);
+                        newObj.Actions = 0;
+                        if(obj.nodeProperties[i].properties.buffers){
+                        newObj.Buffers = obj.nodeProperties[i].properties.buffers.value;
+                        }
+                        else{
+                        newObj.Buffers = 0;    
+                        }
+                        if(obj.nodeProperties[i].properties.capabilities){
+                        newObj.Capabilities = obj.nodeProperties[i].properties.capabilities.value;
+                        }
+                        else{
+                        newObj.Capabilities = 0;    
+                        }
+                        newObj.Connected_Since = obj.nodeProperties[i].properties.timeStamp.value;
+                        newObj.DPID = obj.nodeProperties[i].node.id;
+                        this.getNodeConnectors({args:['default', 'OF', newObj.DPID],call:'port'}, function(a, b){return b;});
+                        arr.push(newObj);
+                    }
+                        normalizerObj = {};
+                        normalizerObj.Stats = arr;
+                        return normalizerObj; //returns without port list, change function order
+                    break;
+
+                case 'port':
+                                portsObj = obj;
+                                Ports = [];
+                                for(var j=0; j<portsObj.nodeConnectorProperties.length; j++){
+                                portObj = {};
+                                portObj.DPID = portsObj.nodeConnectorProperties[j].nodeconnector.node.id;
+                                portObj.PortNum = parseInt(portsObj.nodeConnectorProperties[j].nodeconnector.id);
+                                portObj.PortName = portsObj.nodeConnectorProperties[j].properties.name.value;
+                                portObj.PortState = portsObj.nodeConnectorProperties[j].properties.state.value;
+                                portObj.CurrentFeatures = "N/A";
+                                portObj.AdvertisedFeatures = "N/A";
+                                portObj.SupportedFeatures = "N/A";
+                                portObj.PeerFeatures = "N/A";
+                                portObj.Config = portsObj.nodeConnectorProperties[j].properties.config.value;
+                                portObj.HardwareAddress = "N/A";
+                                Ports.push(portObj);
+                                }
+                    //this.nodeParse('switch', {nodeProperties:[]}, Ports);
+                    if(innerArr){
+                        for(var k=0; k<Ports.length; k++){
+                            for(var m=0; m<innerArr.length; m++){
+                                if(innerArr[m].DPID === Ports[k].DPID){
+                                    innerArr[m].Ports = Ports;
+                                }
+                            }
+                        }
+                    }
+                    else{
+                     return Ports;   
+                    }
+                    break;
+
+                case 'switchports':
+                    arr = [];
+                    for(var i=0; i<obj.portStatistics.length; i++){
+                        newObj = {};
+                        newObj.DPID = obj.portStatistics[i].node.id;
+                        newObj.Ports = [];
+                        for(var j=0; j<obj.portStatistics[i].portStatistic.length; j++){
+                            portObj = {};
+                            portObj.PortNum = parseInt(obj.portStatistics[i].portStatistic[j].nodeConnector.id);
+                            for(key in obj.portStatistics[i].portStatistic[j]){
+                                portObj[key] = obj.portStatistics[i].portStatistic[j][key];
+                            }
+                            newObj.Ports.push(portObj);
+                        }
+                        arr.push(newObj);    
+                    }
+                    return arr;
+                    break;
+
+                case 'flow':
+                    arr = [];
+                    for(var i=0; i<obj.flowStatistics.length; i++){
+                        newObj = {};
+                        newObj.DPID = obj.flowStatistics[i].node.id;
+                        newObj.Flows = [];
+                        for(var j=0; j<obj.flowStatistics[i].flowStatistic.length; j++){
+                            flowObj = {};
+                            flowObj.DurationSeconds = obj.flowStatistics[i].flowStatistic[j].durationSeconds;
+                            flowObj.DurationNanoSeconds = obj.flowStatistics[i].flowStatistic[j].durationNanoseconds;
+                            flowObj.PacketCount = obj.flowStatistics[i].flowStatistic[j].packetCount;
+                            flowObj.ByteCount = obj.flowStatistics[i].flowStatistic[j].byteCount;
+                            flowObj.Match = {};
+
+                            //Match fields not accurate yet. Also, the same flowmatch appears on all switches?
+                            for(var k=0; k<obj.flowStatistics[i].flowStatistic[j].flow.match.matchField.length; k++){
+                                flowObj.Match.Wildcards = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "WILDCARDS" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                                flowObj.Match.DataLayerDestination = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_DST" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                                flowObj.Match.DataLayerSource = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_SRC" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                                flowObj.Match.DataLayerType = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_TYPE" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                                flowObj.Match.DataLayerVLAN = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_VLAN" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                                flowObj.Match.DataLayerVLAN_PCP = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "DL_VLAN_PR" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                                flowObj.Match.InputPort = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "IN_PORT" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                                flowObj.Match.NetworkDestination = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_DST" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                                flowObj.Match.NetworkDestinationMaskLen = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_DST_MASK" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                                flowObj.Match.NetworkProtocol = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_PROTOCOL" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                                flowObj.Match.NetworkSource = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_SRC" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                                flowObj.Match.NetworkSourceMaskLen = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_SRC_MASK" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                                flowObj.Match.NetworkTOS = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "NW_TOS" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                                flowObj.Match.TransportDestination = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "TP_DST" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                                flowObj.Match.TransportSource = obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].type === "TP_SRC" ?                      obj.flowStatistics[i].flowStatistic[j].flow.match.matchField[k].value : 0;
+                            }
+
+                            flowObj.Actions = [];
+
+                            for(var m=0; m<obj.flowStatistics[i].flowStatistic[j].flow.actions.length; m++){
+                                 actionObj = {}; //specify the switch that port belongs to?
+                                 actionObj.Type = obj.flowStatistics[i].flowStatistic[j].flow.actions[m].type;
+                                 if(obj.flowStatistics[i].flowStatistic[j].flow.actions[m].port){
+                                 actionObj.PortNum = parseInt(obj.flowStatistics[i].flowStatistic[j].flow.actions[m].port.id);
+                                 }
+                                 flowObj.Actions.push(actionObj);
+                                }
+
+                            flowObj.Priority = obj.flowStatistics[i].flowStatistic[j].flow.priority;
+                            flowObj.IdleTimeout = obj.flowStatistics[i].flowStatistic[j].flow.idleTimeout;
+                            flowObj.HardTimeout = obj.flowStatistics[i].flowStatistic[j].flow.hardTimeout;
+                            flowObj.Cookie = obj.flowStatistics[i].flowStatistic[j].flow.id;
+                            /*for(key in obj.flowStatistics[i].flowStatistic[j]){
+                                flowObj[key] = obj.flowStatistics[i].flowStatistic[j][key];
+                            }*/
+                            newObj.Flows.push(flowObj);
+                        }
+                        arr.push(newObj);    
+                    }
+                    return arr;
+                    break;
+
+                case 'alterflow':
+                    arr = [];
+                    for(var i=0; i<obj.flowConfig.length; i++){
+                        newObj = {};
+                        newObj.DPID = obj.flowConfig[i].node.id;
+                        newObj.Flows = [];
+                        flowObj = {}; //soon: multiple flows
+                        flowObj.IdleTimeout = obj.flowConfig[i].idleTimeout;
+                        flowObj.HardTimeout = obj.flowConfig[i].hardTimeout;
+                        flowObj.Actions = [];
+                        flowObj.Match = {};  //todo: add match and actions
+                        flowObj.Cookie = obj.flowConfig[i].cookie;
+                        flowObj.Priority =obj.flowConfig[i].priority;
+                        flowObj.Flow = obj.flowConfig[i].name;
+                        newObj.Flows.push(flowObj);
+                        arr.push(newObj);    
+                    }
+                    return arr;
+                    break;
+
+
+                case 'switchdesc': //actually calling nodes (switches) call first
+                    arr = [];
+                    for (var i=0; i<obj.nodeProperties.length; i++){
+                        newObj = {}; //newObj has to be defined within the for loop
+                        newObj.DPID = obj.nodeProperties[i].node.id;
+                        arr.push(newObj);
+                    }
+                        normalizerObj = {};
+                        normalizerObj.Stats = arr;
+                        return normalizerObj;
+                    break;
+
+                case 'switchdesc2':
+                     //newObj = {};
+                    //improve the accuracy of this
+
+                    //Note that would be much easier and more accurate to use the DPID that was sent to Opendaylight to compare,
+                    //but can't seem to find this.
+                    for(var j=0; j<innerArr.length; j++){
+                        var description = obj.description.slice(14, obj.description.length);
+                        var parseDP = innerArr[j].DPID.replace(/:/g, "");
+                         if(parseDP === description || innerArr[j].DPID.toUpperCase() === obj.description){ //handles how switches broadcast datapath id?
+                         innerArr[j].Manufacturer = obj.manufacturer;
+                         innerArr[j].Hardware = obj.hardware;
+                         innerArr[j].Software = obj.software;
+                         innerArr[j].SerialNum = obj.serialNumber;
+                         }
+                     }  
+                    return innerArr;
+                    break;
+
+                default:
+                    return obj;
+          }
+        
+    }
     
 }

@@ -10,6 +10,8 @@ module.exports = {
         
         sails.controllers.main.hostname = req.param('hostname');
         
+        sails.controllers.main.opendaylight_version = req.param('odl_ver');
+        
         //must enter a valid hostname, TODO: validation
 
         //console.log(sails.adapters.util.sdncontroller);
