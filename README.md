@@ -79,10 +79,18 @@ Management:
 FAQ:
 
 Q: The interface isn't loading, or reports 0 switches when there are switches connected.
- * A: Especially for OpenDaylight, the web interface is still a little buggy. Clearing your web cache and refreshing your browser should fix the issue.
+ * A: Especially for OpenDaylight Hydrogen, the web interface is still a little buggy. Clearing your web cache and refreshing your browser should fix the issue.
 
 Q: The Sails server crashes with an ECONN_REFUSED error.
  * A: Close all instances of Avior in the browser and restart the server. Be sure to visit localhost:1337 first to select your controller and point Avior at a valid IP address.
+
+Notes on configuring OpenDaylight Helium SR-1:
+
+On OpenDaylight Karaf Distribution startup, install the following components: 
+
+> feature:install odl-restconf odl-l2switch-switch odl-mdsal-apidocs odl-dlux-core odl-adsal-compatibility odl-nsf-all odl-openflowplugin-flow-services odl-openflowplugin-flow-services-rest odl-openflowplugin-flow-services-ui
+
+Once the API servers are running, Avior can poll data from them.
 
 API:
 
