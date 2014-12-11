@@ -1,0 +1,1 @@
+This folder contains most of the JavaScript files for avior's back end. Within this folder are most of the of the files that pull data from the controllers. All of the major files are held in the Floodlight, Collection, and Model folders. Those 3 folders together hold the major parts of whats needed to pull the data. 
