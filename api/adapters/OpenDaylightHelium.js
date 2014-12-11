@@ -242,13 +242,17 @@ module.exports = {
                          break;
                 case 'topology': return this.getTopology({args:['default'],call:coll},cb);
                          break;
+                    
+                    
                 case 'topologylinks': return this.getTopologyLinks({args:['default'],call:coll},cb);
                          break;
                 
-                case 'host': return this.getNodes({args:['default'],call:coll},cb);
+                case 'host': return this.getNodes({args:['openflow:1'],call:coll},cb);
                          break;
                 case 'allhost': return this.getHosts({args: options.a_switch,call:coll,current_array:options.current_array,switches:options.switches,switch_no:options.switch_no},cb);
                          break;
+                case 'host_attachments': return this.getTopology({args:['default'],call:coll,current_array:options.current_array},cb);
+                         break;    
                 
                 case 'alterflow': return this.getNodes({args:['default'],call:coll},cb);  
                          break;
@@ -846,10 +850,10 @@ GET /config/network-topology:network-topology/topology/{topology-id}/link/{link-
         parsed_port_stats.push(newObj);
         return parsed_port_stats;
      } 
-     else if(current === 'allhost'){
-         var switch_ = obj.node;
+     else if(current === 'host'){
+         var switch_ = obj.nodes.node;
          var ports = switch_[0]["node-connector"];
-         var dpid = obj.node[0].id;
+         var dpid = obj.nodes.node[0].id;
          var parsed_hosts = [];
          for(var i = 0; i < ports.length; i++){
          if(ports[i]["address-tracker:addresses"]){   
@@ -864,21 +868,22 @@ GET /config/network-topology:network-topology/topology/{topology-id}/link/{link-
                  host.IP_Address.push(host_data["ip"]);
                  host.VLAN_ID = [];
                  host.VLAN_ID.push("0");
-                 host.Attached_To = [];
+                 //host.Attached_To = [];
                  host.Last_Seen = [host_data["last-seen"]];
-                 var attach = {};
-                 attach.DPID = dpid;
-                 attach.PortNum = parseInt(ports[i]["flow-node-inventory:port-number"]); //Not correct attachment point. Use topology to find direct links instead
-                 host.Attached_To.push(attach);
-                 parsed_hosts.push(host);
+                 //var attach = {};
+                 //attach.DPID = dpid;
+                 //attach.PortNum = parseInt(ports[i]["flow-node-inventory:port-number"]); //Not correct attachment point. Use topology to find direct links instead
+                 //host.Attached_To.push(attach);
+                 parsed_hosts.push(host);    
             }
            
          }
         
         }
+        //console.log(parsed_hosts);
         return parsed_hosts;
      }
-     else if(current === 'host' || current === 'switchports' || current === 'alterflow'){ //First we need to know all switches on the network
+     else if(current === 'switchports' || current === 'alterflow'){ //First we need to know all switches on the network
          var nodes = obj.nodes.node; 
          var sw_array = [];
          for(var i = 0; i < nodes.length; i++){
@@ -886,6 +891,36 @@ GET /config/network-topology:network-topology/topology/{topology-id}/link/{link-
          }
          return sw_array;
      }
+     else if(current === 'host_attachments'){ //First we need to know all switches on the network
+         var links = obj.topology[0].link;
+         var parsed_hosts = [];
+         //Hosts are disallowed
+         for(var i = 0; i < links.length; i++){
+             var host = {};
+             host.Attached_To = [];
+             host.MAC_Address = [];
+             var attach = {};
+             if(links[i].source["source-node"].substring(0,4) === "host"){
+                 attach.DPID = links[i].destination["dest-node"];
+                 var dstport = links[i].destination["dest-tp"].split(":");
+                 attach.PortNum = parseInt(dstport[dstport.length-1]);
+                 host.Attached_To.push(attach);
+                 var mac = links[i].source["source-node"].substring(5, links[i].source["source-node"].length);
+                 host.MAC_Address.push(mac);
+                 parsed_hosts.push(host);
+             }
+             else if(links[i].destination["dest-node"].substring(0,4) === "host"){
+                 attach.DPID =  links[i].source["source-node"];
+                 var srcport = links[i].source["source-tp"].split(":");
+                 attach.PortNum = parseInt(srcport[srcport.length-1]);
+                 host.Attached_To.push(attach);
+                 var mac = links[i].destination["dest-node"].substring(5, links[i].destination["dest-node"].length);
+                 host.MAC_Address.push(mac);
+                 parsed_hosts.push(host);
+             }
+         }
+        return parsed_hosts;
+     }    
      else{
      return obj;
      }

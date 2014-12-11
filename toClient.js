@@ -462,7 +462,7 @@ module.exports = function (ctlr,call,postData,cb) {
         //Here, we call ctlr.find() again and concatenate the array of information with each call.
         //May be a bit messy, but better than the above desc example which used a for loop and set all the connection information too
         
-        else if((call === 'host' || call === 'switchports' || call === 'alterflow' || call === 'allhost' || call === 'allswitchports' || call === 'allalterflow') && ctlr.nodeParse &&  sails.controllers.main.opendaylight_version === 'helium'){
+        else if((call === 'switchports' || call === 'alterflow' || call === 'allswitchports' || call === 'allalterflow') && ctlr.nodeParse &&  sails.controllers.main.opendaylight_version === 'helium'){
             
                 
             if(call === 'allhost' || call === 'allswitchports' || call === 'allalterflow') {
@@ -518,6 +518,26 @@ module.exports = function (ctlr,call,postData,cb) {
                     }
             }
                
+        }
+        
+        else if(call === 'host' && ctlr.nodeParse &&  sails.controllers.main.opendaylight_version === 'helium'){
+            ctlr.find('util', 'host_attachments', { where: null, limit: 30, skip: 0, recursive: 'yes', current_array: normalizedObject }, cb);
+        }
+        
+        else if(call === 'host_attachments' && ctlr.nodeParse &&  sails.controllers.main.opendaylight_version === 'helium'){
+            //console.log(normalizedObject[0].Attached_To);
+            for(var i = 0; i < normalizedObject.length; i++){
+                for(var j = 0; j < postData.current_array.length; j++){
+                    if(normalizedObject[i].MAC_Address[0] === postData.current_array[j].MAC_Address[0]){
+                       postData.current_array[j].Attached_To = [];
+                       obj = {};
+                       obj.DPID =  normalizedObject[i].Attached_To[0].DPID;
+                       obj.PortNum =  normalizedObject[i].Attached_To[0].PortNum; 
+                       postData.current_array[j].Attached_To.push(obj);            
+                    }
+                }
+            }
+            cb(null,postData.current_array);
         }
         
         else if(ctlr.dpParse && (call === 'flowstats' || call === 'switchports' || call === 'switchdesc')){ //Ryu
