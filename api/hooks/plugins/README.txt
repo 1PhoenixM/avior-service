@@ -1,0 +1,1 @@
+This hook always loads before Avior starts. It looks for file uploads in a certain directory and, if the naming scheme is consistent with an Avior plugin, it moves those files into the appropriate directories. There is also an uninstall script that can be invoked on a per-plugin basis from the front-end.

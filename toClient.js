@@ -456,7 +456,71 @@ module.exports = function (ctlr,call,postData,cb) {
             cb(null,normalizedObject);
         }
         
-        else if(ctlr.dpParse && (call === 'flowstats' || call === 'switchports' || call === 'switchdesc')){
+        //Why this is here:
+        //Sometimes we need information from the first REST call to create URLs for a second REST call.
+        //The only way to ensure that we get the initial information is to do this process inside the callback.
+        //Here, we call ctlr.find() again and concatenate the array of information with each call.
+        //May be a bit messy, but better than the above desc example which used a for loop and set all the connection information too
+        
+        else if((call === 'host' || call === 'switchports' || call === 'alterflow' || call === 'allhost' || call === 'allswitchports' || call === 'allalterflow') && ctlr.nodeParse &&  sails.controllers.main.opendaylight_version === 'helium'){
+            
+                
+            if(call === 'allhost' || call === 'allswitchports' || call === 'allalterflow') {
+                      var switches = postData.switches;
+                      
+                      var count = postData.switch_no;
+                      var DPID = postData.switches[count];
+                      count++;
+                      var switch_no = count;
+                      var sw_arr = [];
+                      sw_arr.push(DPID);
+                      var new_array = postData.current_array.concat(normalizedObject);
+                      if(count !== postData.switches.length){
+                        switch(call){
+                        case "allhost": ctlr.find('util', 'allhost', { where: null, limit: 30, skip: 0, recursive: 'yes', a_switch: sw_arr, current_array: new_array, switches: switches, switch_no: count }, cb);
+                                    break;
+                        case "allswitchports": ctlr.find('util', 'allswitchports', { where: null, limit: 30, skip: 0, recursive: 'yes', a_switch: sw_arr, current_array: new_array, switches: switches, switch_no: count }, cb);
+                                    break;
+                        case "allalterflow": ctlr.find('util', 'allalterflow', { where: null, limit: 30, skip: 0, recursive: 'yes', a_switch: sw_arr, current_array: new_array, switches: switches, switch_no: count }, cb);
+                                    break;
+                        default: console.log("Error in per-switch collection.");
+                                    break;
+                        }
+                      }
+                      
+                  
+                else if(count === postData.switches.length){
+                    cb(null,new_array);
+                }   
+            }
+            
+            
+            else if(call === 'host' || call === 'switchports' || call === 'alterflow'){
+                   var switches = normalizedObject;
+                    var DPID = switches[0];
+                    //delete switches[0];
+                    var count = 1;
+                    var sw_arr = [];
+                    var new_array = [];
+                    var current_array = [];
+
+                    sw_arr.push(DPID);
+
+                    switch(call){
+                        case "host": ctlr.find('util', 'allhost', { where: null, limit: 30, skip: 0, recursive: 'yes', a_switch: sw_arr, current_array: new_array, switches: switches, switch_no: count }, cb);
+                                    break;
+                        case "switchports": ctlr.find('util', 'allswitchports', { where: null, limit: 30, skip: 0, recursive: 'yes', a_switch: sw_arr, current_array: new_array, switches: switches, switch_no: count }, cb);
+                                    break;
+                        case "alterflow": ctlr.find('util', 'allalterflow', { where: null, limit: 30, skip: 0, recursive: 'yes', a_switch: sw_arr, current_array: new_array, switches: switches, switch_no: count }, cb);
+                                    break;
+                        default: console.log("Error in per-switch collection.");
+                                    break;
+                    }
+            }
+               
+        }
+        
+        else if(ctlr.dpParse && (call === 'flowstats' || call === 'switchports' || call === 'switchdesc')){ //Ryu
            console.log(normalizedObject);
             cb(null,normalizedObject);
         }
