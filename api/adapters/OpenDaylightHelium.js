@@ -308,17 +308,19 @@ module.exports = {
                         console.log(" odl POSTED DATA: " + JSON.stringify(options.data) + '\n');
                         unparsed = options.data;
                         flowData = {};
-                        flowData.node = {};
-                        flowData.node.id = unparsed.switch;
-                        flowData.node.type = 'OF';
-                        flowData.name = unparsed.name;
-                        flowData.ingressPort = unparsed["ingress-port"];
-                        flowData.actions = [];
-                        flowData.actions.push(unparsed.actions.toUpperCase());
+                        flowData['flow-node-inventory:flow'] = {};
+                        flowData['flow-node-inventory:flow']['flow-node-inventory:match'] = {};
+                        flowData['flow-node-inventory:flow']['flow-node-inventory:match']['flow-node-inventory:ethernet-match'] = {};
+                        flowData['flow-node-inventory:flow']['flow-node-inventory:match']['flow-node-inventory:ethernet-match']['opendaylight-group-statistics:ethernet-destination'] = {};
+                        flowData['flow-node-inventory:flow']['flow-node-inventory:match']['flow-node-inventory:ethernet-match']['opendaylight-group-statistics:ethernet-destination']['opendaylight-group-statistics:address'] = unparsed['dst-ip'];
+                        flowData['flow-node-inventory:flow']['flow-node-inventory:match']['flow-node-inventory:ethernet-match']['opendaylight-group-statistics:ethernet-type'] = {};
+                        flowData['flow-node-inventory:flow']['flow-node-inventory:match']['flow-node-inventory:ethernet-match']['opendaylight-group-statistics:ethernet-type']['opendaylight-group-statistics:type'] = unparsed['tos-bits'];
+                        flowData['flow-node-inventory:flow']['flow-node-inventory:match']['flow-node-inventory:ethernet-match']['opendaylight-group-statistics:ethernet-source'] = {};
+                        flowData['flow-node-inventory:flow']['flow-node-inventory:match']['flow-node-inventory:ethernet-match']['opendaylight-group-statistics:ethernet-source']['opendaylight-group-statistics:address'] = unparsed['src-ip'];
                         
                         string = JSON.stringify(flowData);
                         parsed = JSON.parse(string);
-                        parsed.switch = flowData.node.id;
+                        parsed.switch = unparsed.switch;
                         
                         resp = options.response;
                         if(sails.controllers.main.hostname){
@@ -327,7 +329,7 @@ module.exports = {
                         var username = 'admin';
                         var password = 'admin';
                         var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
-                        var opts = {method:'PUT',hostname:host,port:8181,path:'/controller/nb/v2/flowprogrammer/default/node/OF/' + unparsed.switch +  '/staticFlow/' + unparsed.name +'',auth:auth};
+                        var opts = {method:'PUT',hostname:host,port:8181,path:'/restconf/config/opendaylight-inventory:nodes/node/' + unparsed.switch + '/table/0/flow/' + unparsed.name + '',auth:auth};
                         console.log(opts.path);
                         opts.headers = {'Host': opts.hostname + ':' + opts.port, 'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                             'Accept-Encoding': 'gzip,deflate,sdch',
@@ -385,7 +387,7 @@ module.exports = {
                         if(sails.controllers.main.hostname){
                                   var host = sails.controllers.main.hostname;
                                 }
-                        var opts = {method:'DELETE',hostname:host,port:8181,path:'http://localhost:8181/controller/nb/v2/flowprogrammer/default/node/OF/' + parsed.switch +  '/staticFlow/' + parsed.name +'',auth:'admin:admin'};
+                        var opts = {method:'DELETE',hostname:host,port:8181,path:'/restconf/config/opendaylight-inventory:nodes/node/' + parsed.switch + '/table/0/flow/' + parsed.name + '',auth:'admin:admin'};
                         console.log(opts.path);
                         var requ = http.request(opts,  function(res) {
                           console.log('STATUS: ' + res.statusCode);
@@ -454,7 +456,7 @@ GET /config/network-topology:network-topology/topology/{topology-id}/link/{link-
     //everything
     
     //push flow: POST??
-    //PUT : http://localhost:8080/restconf/config/opendaylight-inventory:nodes/node/openflow:1/table/0/flow/1234
+    //PUT : http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:1/table/0/flow/1234
     
     /*
     {
@@ -778,24 +780,26 @@ GET /config/network-topology:network-topology/topology/{topology-id}/link/{link-
              node.Buffers = nodes[i]["flow-node-inventory:switch-features"].max_buffers;
              node.Capabilities = nodes[i]["flow-node-inventory:switch-features"].capabilities.length;
              //node.SerialNum = nodes[i]["flow-node-inventory:serial-number"];
-             var ports = nodes[i]["node-connector"];
-             var parsed_ports = [];
-             for(var j = 0; j < ports.length; j++){
-                var port = {};
-                port.DPID =  nodes[i].id;
-                port.PortNum = parseInt(ports[j]["flow-node-inventory:port-number"]);
-                port.PortName = ports[j]["flow-node-inventory:name"];
-                port.CurrentFeatures = ports[j]["flow-node-inventory:current-feature"];
-                port.AdvertisedFeatures = ports[j]["flow-node-inventory:advertised-feature"];
-                port.SupportedFeatures = ports[j]["flow-node-inventory:supported"];                  
-                port.PeerFeatures = ports[j]["flow-node-inventory:port-peer-features"];
-                port.HardwareAddress = ports[j]["flow-node-inventory:hardware-address"];   
-                port.Config = ports[j]["flow-node-inventory:configuration"];
-                port.PortState = 1;
-                parsed_ports.push(port); 
+             if(nodes[i]["node-connector"]){
+                 var ports = nodes[i]["node-connector"];
+                 var parsed_ports = [];
+                 for(var j = 0; j < ports.length; j++){
+                    var port = {};
+                    port.DPID =  nodes[i].id;
+                    port.PortNum = parseInt(ports[j]["flow-node-inventory:port-number"]);
+                    port.PortName = ports[j]["flow-node-inventory:name"];
+                    port.CurrentFeatures = ports[j]["flow-node-inventory:current-feature"];
+                    port.AdvertisedFeatures = ports[j]["flow-node-inventory:advertised-feature"];
+                    port.SupportedFeatures = ports[j]["flow-node-inventory:supported"];                  
+                    port.PeerFeatures = ports[j]["flow-node-inventory:port-peer-features"];
+                    port.HardwareAddress = ports[j]["flow-node-inventory:hardware-address"];   
+                    port.Config = ports[j]["flow-node-inventory:configuration"];
+                    port.PortState = 1;
+                    parsed_ports.push(port); 
+                 }
+                 node.Ports = parsed_ports;
+                 parsed_nodes.push(node);
              }
-             node.Ports = parsed_ports;
-             parsed_nodes.push(node);
          }
         return parsed_nodes;         
      }
@@ -815,7 +819,7 @@ GET /config/network-topology:network-topology/topology/{topology-id}/link/{link-
      } 
     else if(current === 'allswitchports'){
          var switch_ = obj.node;
-         var portstats = switch_[0]["node-connector"];
+         
          var dpid = obj.node[0].id;
          var parsed_port_stats = [];
          
@@ -823,63 +827,69 @@ GET /config/network-topology:network-topology/topology/{topology-id}/link/{link-
          newObj.DPID = dpid;
          newObj.Ports = [];
         
-         for(var i = 0; i < portstats.length; i++){
-             var port_stats = {};
-             var inner_port = {};
-             if(parseInt(portstats[i]["flow-node-inventory:port-number"])){
-                inner_port.PortNum = parseInt(portstats[i]["flow-node-inventory:port-number"]);
+        if(switch_[0]["node-connector"]){
+            var portstats = switch_[0]["node-connector"];    
+             for(var i = 0; i < portstats.length; i++){
+                 var port_stats = {};
+                 var inner_port = {};
+                 if(parseInt(portstats[i]["flow-node-inventory:port-number"])){
+                    inner_port.PortNum = parseInt(portstats[i]["flow-node-inventory:port-number"]);
+                 }
+                 else{
+                    inner_port.PortNum = 0; 
+                 }
+                 if(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]){
+                     inner_port.receivePackets = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["packets"]["received"]);
+                     inner_port.transmitPackets = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["packets"]["received"]);
+                     inner_port.receiveBytes = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["bytes"]["received"]);
+                     inner_port.transmitBytes = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["bytes"]["transmitted"]);
+                     inner_port.receiveDrops = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-drops"]);
+                     inner_port.transmitDrops = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["transmit-drops"]);
+                     inner_port.receiveErrors = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-errors"]);
+                     inner_port.transmitErrors = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["transmit-errors"]);
+                     inner_port.receiveFrameError  = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-frame-error"]);
+                     inner_port.receiveOverRunError  = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-over-run-error"]);
+                     inner_port.receiveCrcError = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-crc-error"]);
+                     inner_port.collisionCount = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["collision-count"]);
+                     newObj.Ports.push(inner_port);
+                 }
              }
-             else{
-                inner_port.PortNum = 0; 
-             }
-             inner_port.receivePackets = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["packets"]["received"]);
-             inner_port.transmitPackets = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["packets"]["received"]);
-             inner_port.receiveBytes = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["bytes"]["received"]);
-             inner_port.transmitBytes = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["bytes"]["transmitted"]);
-             inner_port.receiveDrops = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-drops"]);
-             inner_port.transmitDrops = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["transmit-drops"]);
-             inner_port.receiveErrors = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-errors"]);
-             inner_port.transmitErrors = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["transmit-errors"]);
-             inner_port.receiveFrameError  = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-frame-error"]);
-             inner_port.receiveOverRunError  = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-over-run-error"]);
-             inner_port.receiveCrcError = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["receive-crc-error"]);
-             inner_port.collisionCount = parseInt(portstats[i]["opendaylight-port-statistics:flow-capable-node-connector-statistics"]["collision-count"]);
-             newObj.Ports.push(inner_port);
-            
-         }
-        parsed_port_stats.push(newObj);
+            parsed_port_stats.push(newObj);
+        }
         return parsed_port_stats;
      } 
      else if(current === 'host'){
          var switch_ = obj.nodes.node;
-         var ports = switch_[0]["node-connector"];
          var dpid = obj.nodes.node[0].id;
          var parsed_hosts = [];
-         for(var i = 0; i < ports.length; i++){
-         if(ports[i]["address-tracker:addresses"]){   
-             
-             for(var j = 0; j < ports[i]["address-tracker:addresses"].length; j++){
-                 var host_data = ports[i]["address-tracker:addresses"][j];
-                 //console.log(host_data);
-                 var host = {};
-                 host.MAC_Address = [];
-                 host.MAC_Address.push(host_data["mac"]);
-                 host.IP_Address = [];
-                 host.IP_Address.push(host_data["ip"]);
-                 host.VLAN_ID = [];
-                 host.VLAN_ID.push("0");
-                 //host.Attached_To = [];
-                 host.Last_Seen = [host_data["last-seen"]];
-                 //var attach = {};
-                 //attach.DPID = dpid;
-                 //attach.PortNum = parseInt(ports[i]["flow-node-inventory:port-number"]); //Not correct attachment point. Use topology to find direct links instead
-                 //host.Attached_To.push(attach);
-                 parsed_hosts.push(host);    
+         if(switch_[0]["node-connector"]){
+             var ports = switch_[0]["node-connector"];
+             for(var i = 0; i < ports.length; i++){
+             if(ports[i]["address-tracker:addresses"]){   
+
+                 for(var j = 0; j < ports[i]["address-tracker:addresses"].length; j++){
+                     var host_data = ports[i]["address-tracker:addresses"][j];
+                     //console.log(host_data);
+                     var host = {};
+                     host.MAC_Address = [];
+                     host.MAC_Address.push(host_data["mac"]);
+                     host.IP_Address = [];
+                     host.IP_Address.push(host_data["ip"]);
+                     host.VLAN_ID = [];
+                     host.VLAN_ID.push("0");
+                     //host.Attached_To = [];
+                     host.Last_Seen = [host_data["last-seen"]];
+                     //var attach = {};
+                     //attach.DPID = dpid;
+                     //attach.PortNum = parseInt(ports[i]["flow-node-inventory:port-number"]); //Not correct attachment point. Use topology to find direct links instead
+                     //host.Attached_To.push(attach);
+                     parsed_hosts.push(host);    
+                }
+
+             }
+
             }
-           
-         }
-        
-        }
+       }
         //console.log(parsed_hosts);
         return parsed_hosts;
      }

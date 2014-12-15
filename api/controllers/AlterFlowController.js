@@ -41,11 +41,15 @@ module.exports = {
     create: function(req, res) {
         var floodlight = require('../adapters/FloodlightAdapter');
         var opendaylight = require('../adapters/OpenDaylightAdapter');
+        var helium = require('../adapters/OpenDaylightHelium');
         if(sails.controllers.main.sdncontroller === 'floodlight'){
             var Adapter = floodlight;    
         }
-        else if(sails.controllers.main.sdncontroller === 'opendaylight'){
+        else if(sails.controllers.main.sdncontroller === 'opendaylight' && sails.controllers.main.opendaylight_version === 'hydrogen'){
             var Adapter = opendaylight;
+        }
+        else if(sails.controllers.main.sdncontroller === 'opendaylight' && sails.controllers.main.opendaylight_version === 'helium'){
+            var Adapter = helium;
         }
         else{
             console.log("Flow push error: No controller specified at localhost:1337");
@@ -117,11 +121,15 @@ module.exports = {
     destroy: function(req, res) {
         var floodlight = require('../adapters/FloodlightAdapter');
         var opendaylight = require('../adapters/OpenDaylightAdapter');
+        var helium = require('../adapters/OpenDaylightHelium');
         if(sails.controllers.main.sdncontroller === 'floodlight'){
             var Adapter = floodlight;    
         }
-        else if(sails.controllers.main.sdncontroller === 'opendaylight'){
+        else if(sails.controllers.main.sdncontroller === 'opendaylight' && sails.controllers.main.opendaylight_version === 'hydrogen'){
             var Adapter = opendaylight;
+        }
+        else if(sails.controllers.main.sdncontroller === 'opendaylight' && sails.controllers.main.opendaylight_version === 'helium'){
+            var Adapter = helium;
         }
         else{
             console.log("Flow delete error: No controller specified at localhost:1337");
