@@ -200,6 +200,17 @@ server.js - An Express dependency for the purpose of authentication.
 
 toClient.js  - A very important file to the Avior source code. Within this module is the callback function to be executed when the data has come back from the controller. This file is run no matter what controller is being used. It makes many checks for validation of the JSON, catches some errors, then calls .parse and .normalize for the controller when it is satisfied that the JSON is valid. Finally, it calls cb(), Sails' function to send the JSON up to the browser. This is only done for GET requests.
 
+---
+
+Action Items for the future of Avior:
+
+- Authentication system: Loading Express dependencies for Passport.js within Sails.js so that authenticated users can log in. Role-based authentication at the API level with policies.
+    Users can be created, but cannot log in without a valid session.
+- Opendaylight stability: Implementing support for the MD-SAL API, which is better suited to asynchronous REST calls than the currently-used AD-SAL API in Hydrogen and Helium modes.
+- Identities: User "accounts" with custom settings, probably saved in MongoDB. Flow configurations, panel configurations and firewall rules can be saved. Even topology color schemes.
+- General load times of the GUI.
+- Plugins for the plugin system. See github.com/1PhoenixM/avior-plugins and github.com/1PhoenixM/avior-plugin-template
+
 If you get stuck, Google and StackOverflow are your friends, as is the documentation on... everything! Avior is, of course, open source. I look forward to seeing it be developed even further.
 
 -Melissa Iori (Melissa.Iori1@marist.edu)

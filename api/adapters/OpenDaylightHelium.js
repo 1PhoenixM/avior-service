@@ -307,6 +307,8 @@ module.exports = {
                 case 'flow': 
                         console.log(" odl POSTED DATA: " + JSON.stringify(options.data) + '\n');
                         unparsed = options.data;
+                        
+                        //PUT
                         flowData = {};
                         flowData['flow-node-inventory:flow'] = {};
                         flowData['flow-node-inventory:flow']['flow-node-inventory:match'] = {};
@@ -317,6 +319,12 @@ module.exports = {
                         flowData['flow-node-inventory:flow']['flow-node-inventory:match']['flow-node-inventory:ethernet-match']['opendaylight-group-statistics:ethernet-type']['opendaylight-group-statistics:type'] = unparsed['tos-bits'];
                         flowData['flow-node-inventory:flow']['flow-node-inventory:match']['flow-node-inventory:ethernet-match']['opendaylight-group-statistics:ethernet-source'] = {};
                         flowData['flow-node-inventory:flow']['flow-node-inventory:match']['flow-node-inventory:ethernet-match']['opendaylight-group-statistics:ethernet-source']['opendaylight-group-statistics:address'] = unparsed['src-ip'];
+                        
+                        //POST
+                        /*flowData = {};
+                        flowData['flowPOST'] = {};
+                        flowData['flowPOST']['id'] = unparsed.name;
+                        */
                         
                         string = JSON.stringify(flowData);
                         parsed = JSON.parse(string);
@@ -329,7 +337,7 @@ module.exports = {
                         var username = 'admin';
                         var password = 'admin';
                         var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
-                        var opts = {method:'PUT',hostname:host,port:8181,path:'/restconf/config/opendaylight-inventory:nodes/node/' + unparsed.switch + '/table/0/flow/' + unparsed.name + '',auth:auth};
+                        var opts = {method:'PUT',hostname:host,port:8181,path:'/restconf/config/opendaylight-inventory:nodes/node/' + unparsed.switch + '/flow-node-inventory:table/0/flow/' + unparsed.name + '',auth:auth};
                         console.log(opts.path);
                         opts.headers = {'Host': opts.hostname + ':' + opts.port, 'Authorization': auth, 'Accept': 'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                             'Accept-Encoding': 'gzip,deflate,sdch',
@@ -387,7 +395,7 @@ module.exports = {
                         if(sails.controllers.main.hostname){
                                   var host = sails.controllers.main.hostname;
                                 }
-                        var opts = {method:'DELETE',hostname:host,port:8181,path:'/restconf/config/opendaylight-inventory:nodes/node/' + parsed.switch + '/table/0/flow/' + parsed.name + '',auth:'admin:admin'};
+                        var opts = {method:'DELETE',hostname:host,port:8181,path:'/restconf/config/opendaylight-inventory:nodes/node/' + parsed.switch + '/flow-node-inventory:table/0/flow/' + parsed.name + '',auth:'admin:admin'};
                         console.log(opts.path);
                         var requ = http.request(opts,  function(res) {
                           console.log('STATUS: ' + res.statusCode);
