@@ -360,7 +360,7 @@ module.exports = {
                         innerObj.DPID = dpid;
                         //innerObj.Ports = Ports;
                         //arr.push(innerObj);
-                        innerArr = obj[dpid];
+                        innerArr = obj[dpid].port;
                     
                         if(innerArr.constructor === Array && innerArr.length > 1){
                             for (i=0;i<innerArr.length;i++){
@@ -389,6 +389,12 @@ module.exports = {
                         innerObj.DPID = dpid;
                         Desc = obj[dpid];
                         Desc = Desc[0];
+						if(current === 'aggregate'){
+							Desc = Desc.aggregate;
+						}
+						if(current === 'switchdesc'){
+							Desc = Desc.desc;
+						}
                         for (key in Desc){
                             innerObj[key] = Desc[key];
                         }
@@ -417,6 +423,9 @@ module.exports = {
                      innerObj.DPID = dpid;
                      Features = obj[dpid];
                      
+					 if(current === 'flow'){
+						 Features = obj[dpid].flows;
+					 }
                      for (flow in Features){
                         flowObj = {};
                         flowObj.Flow = flow;
