@@ -248,8 +248,8 @@ module.exports = {
                         if(sails.controllers.main.hostname){
                                   var host = sails.controllers.main.hostname;
                                 }
-                        var opts = {method:'POST',hostname:host,port:8080,path:'/wm/staticflowentrypusher/json'};
-                        //var opts = {method:'POST',hostname:'10.11.17.40',port:8080,path:'/wm/staticflowentrypusher/json'};
+                        var opts = {method:'POST',hostname:host,port:8080,path:'/wm/staticflowpusher/json'};
+                        //var opts = {method:'POST',hostname:'10.11.17.40',port:8080,path:'/wm/staticflowpusher/json'};
                         var requ = http.request(opts,  function(res) {
                           console.log('STATUS: ' + res.statusCode);
                           console.log('HEADERS: ' + JSON.stringify(res.headers));
@@ -292,7 +292,7 @@ module.exports = {
             var options = {
                 hostname:host, 
                 port:8080, 
-                path:'/wm/staticflowentrypusher/json',
+                path:'/wm/staticflowpusher/json',
                 method:'DELETE'};
 
             var req = http.request(options, function(res) {
@@ -489,7 +489,7 @@ module.exports = {
 	getTableStats: restCall('GET','/wm/core/switch/:arg:/table/json'),  //"all" returns switch dpid objects
 	getCounters: restCall('GET','/wm/core/counter/:arg:/:arg:/json'), //an object with dynamic counter titles as property names
     getTopologyClusters: restCall('GET','/wm/topology/switchclusters/json'), //an object with switch dpids as property names
-    getFlows: restCall('GET','/wm/staticflowentrypusher/list/:arg:/json'),  //an object with switch dpids as property names
+    getFlows: restCall('GET','/wm/staticflowpusher/list/:arg:/json'),  //an object with switch dpids as property names
     
     getSwitches: restCall('GET','/wm/core/controller/switches/json'), //array of unnamed Switch objects
     getSummary: restCall('GET','/wm/core/controller/summary/json'), //one unnamed Controller object  
@@ -500,10 +500,10 @@ module.exports = {
     getMemory: restCall('GET','/wm/core/memory/json'), //an unnamed object with memory
     getHealth: restCall('GET','/wm/core/health/json'), //an unnamed object with health
     getTopologyExternalLinks: restCall('GET','/wm/topology/external-links/json'), //unknown
-    clearFlows: restCall('GET','/wm/staticflowentrypusher/clear/:arg:/json'), //unknown
+    clearFlows: restCall('GET','/wm/staticflowpusher/clear/:arg:/json'), //unknown
     
-    postFlow: restCall('POST','/wm/staticflowentrypusher/json'),
-    delFlow: restCall('DELETE','/wm/staticflowentrypusher/json'),
+    postFlow: restCall('POST','/wm/staticflowpusher/json'),
+    delFlow: restCall('DELETE','/wm/staticflowpusher/json'),
     
     
 	//////////////// PLACEHOLDER FOR VIRTUAL NETWORK CALLS
