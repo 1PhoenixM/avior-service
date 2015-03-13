@@ -390,10 +390,10 @@ module.exports = {
                         Desc = obj[dpid];
                         Desc = Desc[0];
 						if(current === 'aggregate'){
-							Desc = Desc.aggregate;
+							Desc = obj[dpid].aggregate;
 						}
 						if(current === 'switchdesc'){
-							Desc = Desc.desc;
+							Desc = obj[dpid].desc;
 						}
                         for (key in Desc){
                             innerObj[key] = Desc[key];
