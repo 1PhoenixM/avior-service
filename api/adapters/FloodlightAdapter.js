@@ -564,7 +564,7 @@ module.exports = {
 			    actionObj = {};
 			    newActions = [];
 				for(action in flowObj.actions){
-					actionObj.type = action;
+					actionObj.type = action.toUpperCase();
 					actionObj.portNumber = flowObj.actions[action];
 					newActions.push(actionObj);		    
 			        }					
@@ -596,7 +596,7 @@ module.exports = {
 			    actionObj = {};
 			    newActions = [];
 				for(action in flowObj.actions){
-					actionObj.type = action;
+					actionObj.type = action.toUpperCase();
 					actionObj.portNumber = flowObj.actions[action];
 					newActions.push(actionObj);		    
 			        }	
