@@ -176,7 +176,7 @@ module.exports = function (ctlr,call,postData,cb) {
                             
                             if(ctlr.dpidParse){
                                 //console.log('\n\n\n\n\n\n\n\n\n\n\n' + responseObject);
-                                var newObject = ctlr.dpidParse(call, responseObject);
+                                var newObject = ctlr.dpidParse(call, postData.path, responseObject);
                                 //console.log('\n\n\n\n\n\n\n\n\n\n\n' + newObject);
                                 var normalizedObject = ctlr.normalize(newObject);
                             }
@@ -544,7 +544,10 @@ module.exports = function (ctlr,call,postData,cb) {
            console.log(normalizedObject);
             cb(null,normalizedObject);
         }
-        
+
+	/*else if(ctlr.dpidParse && call === 'switch'){
+            ctlr.find('util', 'switchports', { where: null, limit: 30, skip: 0, recursive: 'yes', switches: normalizedObject }, cb);
+        }*/
                      
         else{
             cb(null,normalizedObject);

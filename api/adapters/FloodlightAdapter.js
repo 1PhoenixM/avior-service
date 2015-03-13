@@ -16,7 +16,7 @@ var restCall = function(apiMethod,apiPath){
                   var host = sails.controllers.main.hostname;
                 }
                 opts = {method:apiMethod,hostname:host,port:8080,path:apiPath};
-                
+                options.path = apiPath;
                 req = http.request(opts, toClient(this,options.call,options,cb));
                 if (options.data) {
                         req.write(JSON.stringify(options.data));
@@ -42,8 +42,9 @@ module.exports = {
 	attachmentPoint: 'Attached_To',
 	switchDPID: 'DPID',
 	port: 'Port',
-    idleTimeout: 'IdleTimeout', 
-    hardTimeout: 'HardTimeout',
+    portDesc: 'Ports',
+    idleTimeoutSec: 'IdleTimeout', 
+    hardTimeoutSec: 'HardTimeout',
     tableId: 'TableID',
     durationSeconds:'DurationSeconds', 
     durationNanoseconds:'DurationNanoSeconds',
@@ -204,9 +205,10 @@ module.exports = {
                         break;
                 case 'aggregate': return this.getAggregateStats({args:['all'],call:coll},cb);
                         break;
-                case 'switch': return this.getSwitches({args:['all'],call:coll},cb);
-                        break;
-                        
+                case 'switch': return this.getSwitchFeatures({args:['all'],call:coll},cb);
+			break;
+                case 'ports': return this.getSwitchPorts({args:['all'],call:coll},cb);
+                        break;        
                 
                 //fl only
                 case 'uptime': return this.getUptime({args:['all'],call:coll},cb);
@@ -350,16 +352,46 @@ module.exports = {
         },
     
     
-        dpidParse: function (current, obj) { //This function will fix a parsing issue that occurs when the DPID is given to us as a property name. Since to display the information we need to have the name of the property. To fix this this function take the DPID and sets it as the property and set DPID as the property name. Giving us a static property name no matter what the DPID
+        dpidParse: function (current, path, obj) { //This function will fix a parsing issue that occurs when the DPID is given to us as a property name. Since to display the information we need to have the name of the property. To fix this this function take the DPID and sets it as the property and set DPID as the property name. Giving us a static property name no matter what the DPID
                 arr = [];
                     
                 if(current === 'switchports'){   
-                for (dpid in obj){
+
+		if(path.indexOf(":") !== -1){
+			innerObj = {};
+                        Ports = [];
+			innerObj.DPID = path.substring(path.indexOf('switch/')+7, path.indexOf('/port'));
+			//console.log(innerObj.DPID);
+			innerArr = obj.port;
+			if(innerArr.constructor === Array && innerArr.length > 1){
+                            for (i=0;i<innerArr.length;i++){
+                            ob = innerArr[i]; //TODO: Iterate
+                            portObj = {};
+                            for (key in ob){
+                                portObj[key] = ob[key];
+                                }
+			    portObj.state = 0;
+			    portObj["name"] = portObj.portNumber;
+                            Ports.push(portObj);
+                            innerObj.Ports = Ports;
+                            }
+                        }
+                    
+                        else if(innerArr.constructor === Array && innerArr.length < 1){
+                            innerObj.Ports = [];   
+                        } //what if length = 1?
+                    
+                        arr.push(innerObj);
+			
+		}
+		else{                
+		for (dpid in obj){
                         innerObj = {};
                         Ports = [];
                         innerObj.DPID = dpid;
                         //innerObj.Ports = Ports;
                         //arr.push(innerObj);
+			
                         innerArr = obj[dpid].port;
                     
                         if(innerArr.constructor === Array && innerArr.length > 1){
@@ -369,6 +401,8 @@ module.exports = {
                             for (key in ob){
                                 portObj[key] = ob[key];
                                 }
+			    portObj.state = 0;
+			    portObj["name"] = portObj.portNumber;
                             Ports.push(portObj);
                             innerObj.Ports = Ports;
                             }
@@ -380,11 +414,31 @@ module.exports = {
                     
                         arr.push(innerObj);
                     }
+		  }
                       return arr;
                 }
             
                 else if(current === 'switchdesc' || current === 'aggregate'){
-                    for (dpid in obj){
+                if(path.indexOf(":") !== -1){
+		 	innerObj = {};
+                        
+                 
+						if(current === 'aggregate'){
+							innerObj.DPID = path.substring(path.indexOf('switch/')+7, path.indexOf('/aggregate'));
+							Desc = obj.aggregate;
+						}
+						if(current === 'switchdesc'){
+							innerObj.DPID = path.substring(path.indexOf('switch/')+7, path.indexOf('/desc'));
+							Desc = obj.desc;
+						}
+                        for (key in Desc){
+                            innerObj[key] = Desc[key];
+                        }
+                        arr.push(innerObj);
+
+		}
+		else{    
+		for (dpid in obj){
                         innerObj = {};
                         innerObj.DPID = dpid;
                         Desc = obj[dpid];
@@ -400,19 +454,71 @@ module.exports = {
                         }
                         arr.push(innerObj);
                     }
+		  }
                     return arr;
                 }
             
-             else if(current === 'switchfeatures'){
-                 for (dpid in obj){
+             else if(current === 'switchfeatures' || current === 'switch'){
+                if(path.indexOf(":") !== -1){
                         innerObj = {};
+			Ports = [];
+                        innerObj.DPID = path.substring(path.indexOf('switch/')+7, path.indexOf('/features'));
+                        Features = obj;
+                        for (key in Features){
+                            innerObj[key] = Features[key];
+                        }
+			innerArr = obj.portDesc;
+			if(innerArr.constructor === Array && innerArr.length > 1){
+                            for (i=0;i<innerArr.length;i++){
+                            ob = innerArr[i]; //TODO: Iterate
+                            portObj = {};
+                            for (key in ob){
+                                portObj[key] = ob[key];
+                                }
+			    //portObj.state = 0;
+			    //portObj["name"] = portObj.portNumber;
+                            Ports.push(portObj);
+                            innerObj.Ports = Ports;
+                            }
+                        }
+                    
+                        else if(innerArr.constructor === Array && innerArr.length < 1){
+                            innerObj.Ports = [];   
+                        } //what if length = 1?
+                        arr.push(innerObj);
+			
+		}
+		else{
+			for (dpid in obj){
+                        innerObj = {};
+			Ports = [];
                         innerObj.DPID = dpid;
                         Features = obj[dpid];
                         for (key in Features){
                             innerObj[key] = Features[key];
                         }
+			innerArr = obj[dpid].portDesc;
+			if(innerArr.constructor === Array && innerArr.length > 1){
+                            for (i=0;i<innerArr.length;i++){
+                            ob = innerArr[i]; //TODO: Iterate
+                            portObj = {};
+                            for (key in ob){
+                                portObj[key] = ob[key];
+                                }
+			    //portObj.state = 0;
+			    //portObj["name"] = portObj.portNumber;
+                            Ports.push(portObj);
+                            innerObj.Ports = Ports;
+                            }
+                        }
+                    
+                        else if(innerArr.constructor === Array && innerArr.length < 1){
+                            innerObj.Ports = [];   
+                        } //what if length = 1?
                         arr.push(innerObj);
                     }
+		} 
+		
                     return arr;
              }
 
@@ -443,13 +549,42 @@ module.exports = {
              }
             
              else if(current === 'flowstats'){   
-                for (dpid in obj){
+                if(path.indexOf(":") !== -1){
+			innerObj = {};
+                        Flows = [];
+			innerObj.DPID = path.substring(path.indexOf('switch/')+7, path.indexOf('/flow'));
+			innerArr = obj.flows;
+			if(innerArr.constructor === Array && innerArr.length > 1){
+                            for (i=0;i<innerArr.length;i++){
+                            ob = innerArr[i]; //TODO: Iterate
+                            flowObj = {};
+                            for (key in ob){
+                                flowObj[key] = ob[key];
+                                }
+			    actionObj = {};
+			    newActions = [];
+				for(action in flowObj.actions){
+					actionObj.type = action;
+					actionObj.portNumber = flowObj.actions[action];
+					newActions.push(actionObj);		    
+			        }					
+			    flowObj.actions = newActions;
+                            Flows.push(flowObj);
+                            innerObj.Flows = Flows;
+                            }
+                        }
+  
+                        arr.push(innerObj);
+			
+		}
+		else{
+		for (dpid in obj){
                         innerObj = {};
                         Flows = [];
                         innerObj.DPID = dpid;
                         //innerObj.Ports = Ports;
                         //arr.push(innerObj);
-                        innerArr = obj[dpid];
+                        innerArr = obj[dpid].flows;
                     
                         if(innerArr.constructor === Array && innerArr.length >= 1){
                             for (i=0;i<innerArr.length;i++){
@@ -458,12 +593,21 @@ module.exports = {
                             for (key in ob){
                                 flowObj[key] = ob[key];
                                 }
+			    actionObj = {};
+			    newActions = [];
+				for(action in flowObj.actions){
+					actionObj.type = action;
+					actionObj.portNumber = flowObj.actions[action];
+					newActions.push(actionObj);		    
+			        }	
+			    flowObj.actions = newActions;
                             Flows.push(flowObj);
                             innerObj.Flows = Flows;
                             }
                         }
                         arr.push(innerObj);
                     }
+		  }
                       return arr;
                 }
             else if(current === 'modules'){
