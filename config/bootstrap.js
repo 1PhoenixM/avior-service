@@ -53,6 +53,7 @@ module.exports.bootstrap = function(cb) {
                 
             var Floodlight = sails.adapters.floodlight;
             var Opendaylight = sails.adapters.opendaylight;
+            var Mul = sails.adapters.mul;
             var toClient = sails.adapters.util;   //for now
                 
             for(var g=0; g<files.length; g++){
@@ -126,6 +127,18 @@ module.exports.bootstrap = function(cb) {
                                 Opendaylight[key] = adp.opendaylight[key];
                                 }
                             }   
+                        }
+                        if(adp.mul){
+                            for(key in adp.mul){
+                                if(key === 'TO_OFP'){
+                                    for(ky in adp.mul.TO_OFP){
+                                        Mul.TO_OFP[ky] = adp.mul.TO_OFP[ky];
+                                    }
+                                }
+                                else{
+                                Mul.TO_OFP[key] = adp.mul[key];
+                                }
+                            }
                         }
                     }
                  var callbackindex = file.search(/Callback.js$/); //regex

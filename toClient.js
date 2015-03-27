@@ -198,7 +198,12 @@ module.exports = function (ctlr,call,postData,cb) {
                                 var normalizedObject = ctlr.normalize(newObject); 
                                 //console.log(normalizedObject);
                             }
-                            
+
+                            else if(ctlr.mulParse){
+                                var newObject = ctlr.mulParse(call, responseObject, postData, cb);
+                                var normalizedObject = ctlr.normalize(newObject);
+                            }                            
+
                             if(ctlr.dpid){
                                 ctlr.dpid = '';
                             }
@@ -543,6 +548,13 @@ module.exports = function (ctlr,call,postData,cb) {
         else if(ctlr.dpParse && (call === 'flowstats' || call === 'switchports' || call === 'switchdesc')){ //Ryu
            console.log(normalizedObject);
             cb(null,normalizedObject);
+        }
+
+        else if(ctlr.mulParse){
+            //if(call==='flowstats'){
+                console.log("toClient mul "+call);
+            //}
+            cb(null, normalizedObject);
         }
 
 	/*else if(ctlr.dpidParse && call === 'switch'){

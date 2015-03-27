@@ -3,14 +3,18 @@ module.exports = {
      
     //Sets dpid for any switchport call, not just floodlight
         
-    //if(sails.controllers.main.sdncontroller === 'floodlight'){    
+    if(sails.controllers.main.sdncontroller === 'floodlight'){    
         var DPID = req.param('id');
         
         var Floodlight = require('../adapters/FloodlightAdapter');
         
         Floodlight.dpid = DPID;
         
-    //}
+    } else if(sails.controllers.main.sdncontroller == 'mul'){
+        var DPID = req.param('id');
+        var Mul = require('../adapters/MulAdapter');
+        Mul.dpid = DPID;
+    }
         
         SwitchPorts.find({}, function(err, ports) {
           if(err) {return console.log(err);}

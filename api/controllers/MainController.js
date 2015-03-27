@@ -43,6 +43,9 @@ module.exports = {
             else if(jsonObj.sdncontroller === 'ryu'){
             jsonObj.icon = '/avior/img/ryu-icon.png';    
             }
+            else if(jsonObj.sdncontroller === 'mul'){
+            jsonObj.icon = '/avior/img/mul-icon.ico';
+            }
             else{
             jsonObj.icon = '';    
             }
@@ -60,6 +63,9 @@ module.exports = {
             }
             else if(jsonObj.sdncontroller === 'ryu'){
             jsonObj.icon = '/avior/img/ryu-icon.png';    
+            }
+            else if(jsonObj.sdncontroller === 'mul'){
+            jsonObj.icon = '/avior/img/mul-icon.png';
             }
             else{
             jsonObj.icon = '';    

@@ -42,8 +42,13 @@ module.exports = {
         var floodlight = require('../adapters/FloodlightAdapter');
         var opendaylight = require('../adapters/OpenDaylightAdapter');
         var helium = require('../adapters/OpenDaylightHelium');
+        var mul = require('../adapters/MulAdapter');
+
         if(sails.controllers.main.sdncontroller === 'floodlight'){
             var Adapter = floodlight;    
+        }
+        else if(sails.controllers.main.sdncontroller === 'mul'){
+            var Adapter = mul;
         }
         else if(sails.controllers.main.sdncontroller === 'opendaylight' && sails.controllers.main.opendaylight_version === 'hydrogen'){
             var Adapter = opendaylight;
@@ -122,8 +127,12 @@ module.exports = {
         var floodlight = require('../adapters/FloodlightAdapter');
         var opendaylight = require('../adapters/OpenDaylightAdapter');
         var helium = require('../adapters/OpenDaylightHelium');
+        var mul = require('../adapters/MulAdapter');
         if(sails.controllers.main.sdncontroller === 'floodlight'){
             var Adapter = floodlight;    
+        }
+        else if(sails.controllers.main.sdncontroller === 'mul'){
+            var Adapter = mul;
         }
         else if(sails.controllers.main.sdncontroller === 'opendaylight' && sails.controllers.main.opendaylight_version === 'hydrogen'){
             var Adapter = opendaylight;

@@ -2,6 +2,7 @@ var Floodlight = require('./FloodlightAdapter');
 var OpenDaylight = require('./OpenDaylightAdapter');
 var OpenDaylight_Helium = require('./OpenDaylightHelium');
 var Ryu = require('./RyuAdapter');
+var Mul = require('./MulAdapter');
 
 module.exports = {
 	identity: 'util',
@@ -28,7 +29,7 @@ module.exports = {
     //establishes a connection to the proper adapter when given the Controller Type and Ip Address
     find: function (conn, coll, options, cb) {  
         if(!sails.controllers.main.sdncontroller && sails.config.models.connection === 'util'){
-            sails.controllers.main.sdncontroller = 'floodlight'; 
+            sails.controllers.main.sdncontroller = 'mul'; 
         }
         if(sails.controllers.main.sdncontroller === 'opendaylight' && sails.controllers.main.opendaylight_version === 'helium'){
             OpenDaylight_Helium.find(conn, coll, options, cb);
@@ -44,6 +45,9 @@ module.exports = {
             case 'ryu':
                     Ryu.find(conn, coll, options, cb);
                     break;
+            case 'mul':
+                    Mul.find(conn, coll, options, cb);
+                    break;
             default:
                     console.log("Error: No valid controller was provided.");
                     break;
@@ -54,7 +58,7 @@ module.exports = {
 
     create: function (conn, coll, options, cb) {
         if(!sails.controllers.main.sdncontroller && sails.config.models.connection === 'util'){
-            sails.controllers.main.sdncontroller = 'floodlight';
+            sails.controllers.main.sdncontroller = 'mul';
         }
         if(sails.controllers.main.sdncontroller === 'opendaylight' && sails.controllers.main.opendaylight_version === 'helium'){
             OpenDaylight_Helium.create(conn, coll, options, cb);
@@ -66,6 +70,9 @@ module.exports = {
                     break;
              case 'opendaylight':
                     OpenDaylight.create(conn, coll, options, cb);
+                    break;
+            case 'mul':
+                    Mul.create(conn, coll, options, cb);
                     break;
             default:
                     console.log("Error: No valid controller was provided.");

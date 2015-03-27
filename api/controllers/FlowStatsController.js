@@ -1,5 +1,11 @@
 module.exports = {
     find: function(req, res){
+    if(sails.controllers.main.sdncontroller == 'mul'){
+        var DPID = req.param('id');
+        var Mul = require('../adapters/MulAdapter');
+        Mul.dpid = DPID;
+    }
+
          FlowStats.find({}, function(err, flows) {
           if(err) {return console.log(err);}
           else { 
