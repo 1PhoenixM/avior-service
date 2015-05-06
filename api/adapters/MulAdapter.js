@@ -252,11 +252,12 @@ module.exports = {
                         if (data['src-port']) flowData['tp_src']=data['src-port']
                         if (data['dst-port']) flowData['tp_dst']=data['dst-port']
                         if (data['ingress-port']) flowData['in_port']=data['ingress-port']
-                        instruction=[];
+                        instructions=[];
                         actions=[];
                         if (data['actions']) {//for multi-actions
+                            instruction={};
                             //for(var i=0; i<data['actions'].length;i++){
-                            //act=data['actions'][i]
+                            //act=data['actions'][i].toString()
                             act=data['actions'].toString()
                             action={};
                             if (act.match("^"+'output')) action={'action':'OUTPUT','value':act.replace('output=','')}
@@ -271,13 +272,15 @@ module.exports = {
                             else if (act.startsWith('set-dst-ip')) action={'action':'SET_NW_DST','value':act.replace('set-dst-ip=','')}
                             else if (act.startsWith('set-src-port')) action={'action':'SET_TP_SRC','value':act.replace('set-src-port=','')}
                             else if (act.startsWith('set-dst-port')) action={'action':'SET_TP_DST','value':act.replace('set-dst-port=','')}
-                            actions.append(action)
-                            instruction.append({'instruction':'APPLY_ACTIONS','actions':actions})
+                            actions.push(action);
+                            instruction.instruction='APPLY_ACTIONS';
+                            instruction.actions=actions;
                             //}
                             //mul can support instruction apply, write, meter, goto-table
+                            instructions.push(instruction)
                         }
                         
-                        flowData['instructions']=instruction;
+                        flowData['instructions']=instructions;
                         resp = options.response;
                         if(sails.controllers.main.hostname){
                                   var host = sails.controllers.main.hostname;
