@@ -21,6 +21,7 @@ module.exports = function (ctlr,call,postData,cb) {
                         //console.log('/////////////////');
                         responseString = responseString.trim();
                                    
+			//console.log(responseString);
                         if(ctlr.nodeParse && ctlr.cookieGet === false){
                             
                             //console.log(res.headers["set-cookie"]);

@@ -14,7 +14,7 @@ var restCall = function(apiMethod,apiPath){
                 if(sails.controllers.main.hostname){
                   var host = sails.controllers.main.hostname;
                 }
-                opts = {method:apiMethod,hostname:host,port:8080,path:apiPath};
+                opts = {method:apiMethod,hostname:host,port:8181,path:apiPath};
                 //console.log("["+options.call+"]"+apiMethod+" http://"+host+":8080"+apiPath);
                 req = http.request(opts, toClient(this,options.call,options,cb));
                 if (options.data) {
