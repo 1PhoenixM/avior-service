@@ -76,7 +76,13 @@
                                 if (Action != _.last(Actions)) {
                     				%><br> <%
                     			} 
-                                return; 
+                                return;
+                            default:
+                                %> Type = <%= temp %>, value = <%= Action.value %> <%
+                                if( Action !=_.last(Actions)) {
+                                    %><br> <%
+                                }
+                            return; 
                          }                     
 					}) %>
 		</td>
