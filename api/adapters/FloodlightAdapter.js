@@ -362,7 +362,7 @@ module.exports = {
                         Ports = [];
 			innerObj.DPID = path.substring(path.indexOf('switch/')+7, path.indexOf('/port'));
 			//console.log(innerObj.DPID);
-			innerArr = obj.port;
+			innerArr = obj.port_reply;
 			if(innerArr.constructor === Array && innerArr.length > 1){
                             for (i=0;i<innerArr.length;i++){
                             ob = innerArr[i]; //TODO: Iterate
