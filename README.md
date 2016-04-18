@@ -31,6 +31,9 @@ Dependencies: node.js, sails.js (via npm)
 2. In a terminal, run:
 
     > cd avior-service
+    
+ To fix package problems, run:
+    > npm install
 
 3. If you need to stop the server, go to the terminal, hold the CTRL key, and type 'C'. To start the server, run: 
 
